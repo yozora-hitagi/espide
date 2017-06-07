@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
-import static yh.espide.Context.*;
+import static yh.espide.Regedit.*;
 
 public class EspIDE extends javax.swing.JFrame {
 
@@ -72,7 +72,7 @@ public class EspIDE extends javax.swing.JFrame {
         LeftBasePane = new javax.swing.JLayeredPane();
 
         NodeMCU = new javax.swing.JPanel();
-        TextTab = new javax.swing.JTabbedPane();
+
         SriptsTab = new javax.swing.JLayeredPane();
         FilesToolBar = new javax.swing.JToolBar();
         ButtonFileNew = new javax.swing.JButton();
@@ -103,35 +103,6 @@ public class EspIDE extends javax.swing.JFrame {
         FileSendESP = new javax.swing.JToggleButton();
 
         FilesUpload = new javax.swing.JButton();
-
-
-        NodeMCUSettings = new javax.swing.JLayeredPane();
-
-
-        OptionsOther = new javax.swing.JLayeredPane();
-        FileAutoSaveDisk = new javax.swing.JCheckBox();
-        FileAutoSaveESP = new javax.swing.JCheckBox();
-        FileAutoRun = new javax.swing.JCheckBox();
-        EditorThemeLabel = new javax.swing.JLabel();
-        EditorTheme = new javax.swing.JComboBox();
-        OptionsFileSendMode = new javax.swing.JLayeredPane();
-        DelayLabel = new javax.swing.JLabel();
-        Delay = new javax.swing.JSlider();
-        AnswerDelayLabel = new javax.swing.JLabel();
-        AnswerDelay = new javax.swing.JSlider();
-        DumbMode = new javax.swing.JCheckBox();
-        LineDelayLabel = new javax.swing.JLabel();
-        LineDelay = new javax.swing.JSlider();
-        TurboMode = new javax.swing.JCheckBox();
-        jLayeredPane2 = new javax.swing.JLayeredPane();
-        jLabel1 = new javax.swing.JLabel();
-        TerminalMaxSize = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jLayeredPane3 = new javax.swing.JLayeredPane();
-        CustomPortName = new javax.swing.JTextField();
-        UseCustomPortName = new javax.swing.JCheckBox();
-        jLabel10 = new javax.swing.JLabel();
-        CommandEcho = new javax.swing.JCheckBox();
 
 
         RightBasePane = new javax.swing.JLayeredPane();
@@ -389,12 +360,6 @@ public class EspIDE extends javax.swing.JFrame {
                 NodeMCUComponentShown(evt);
             }
         });
-
-        TextTab.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        TextTab.setComponentPopupMenu(ContextMenuEditor);
-        TextTab.setMinimumSize(new java.awt.Dimension(462, 365));
-        TextTab.setOpaque(true);
-        TextTab.setPreferredSize(new java.awt.Dimension(462, 365));
 
 
         SriptsTab.setToolTipText("");
@@ -746,369 +711,20 @@ public class EspIDE extends javax.swing.JFrame {
                                 .addComponent(LeftMainButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        TextTab.addTab("Scripts", SriptsTab);
+
         SriptsTab.getAccessibleContext().setAccessibleName("Files");
 
-
-        NodeMCUSettings.setAutoscrolls(true);
-        NodeMCUSettings.setOpaque(true);
-
-
-        OptionsOther.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Other", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10))); // NOI18N
-
-        FileAutoSaveDisk.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        FileAutoSaveDisk.setSelected(true);
-        FileAutoSaveDisk.setText("AutoSave file to disk before save to ESP");
-        FileAutoSaveDisk.setToolTipText("");
-        FileAutoSaveDisk.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        FileAutoSaveDisk.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        FileAutoSaveDisk.addItemListener(evt -> FileAutoSaveDiskItemStateChanged(evt));
-
-        FileAutoSaveESP.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        FileAutoSaveESP.setSelected(true);
-        FileAutoSaveESP.setText("AutoSave file to ESP after save to disk");
-        FileAutoSaveESP.setToolTipText("");
-        FileAutoSaveESP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        FileAutoSaveESP.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        FileAutoSaveESP.addItemListener(evt -> FileAutoSaveESPItemStateChanged(evt));
-
-        FileAutoRun.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        FileAutoRun.setText("AutoRun file after save to ESP");
-        FileAutoRun.setToolTipText("");
-        FileAutoRun.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        FileAutoRun.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        FileAutoRun.addItemListener(evt -> FileAutoRunItemStateChanged(evt));
-
-        EditorThemeLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        EditorThemeLabel.setText("Editor color theme");
-
-        EditorTheme.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        EditorTheme.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Default", "Dark", "Eclipse", "IDEA", "Visual Studio", "Default-alt"}));
-        EditorTheme.addActionListener(evt -> EditorThemeActionPerformed(evt));
-
-
-        OptionsOther.setLayer(FileAutoSaveDisk, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsOther.setLayer(FileAutoSaveESP, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsOther.setLayer(FileAutoRun, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsOther.setLayer(EditorThemeLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsOther.setLayer(EditorTheme, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout OptionsOtherLayout = new javax.swing.GroupLayout(OptionsOther);
-        OptionsOther.setLayout(OptionsOtherLayout);
-        OptionsOtherLayout.setHorizontalGroup(
-                OptionsOtherLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(FileAutoSaveDisk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(FileAutoSaveESP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(OptionsOtherLayout.createSequentialGroup()
-                                .addComponent(EditorThemeLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(EditorTheme, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())
-
-                        .addComponent(FileAutoRun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        OptionsOtherLayout.setVerticalGroup(
-                OptionsOtherLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(OptionsOtherLayout.createSequentialGroup()
-                                .addComponent(FileAutoSaveDisk, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(1, 1, 1)
-                                .addComponent(FileAutoSaveESP, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(OptionsOtherLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(EditorThemeLabel)
-                                        .addComponent(EditorTheme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FileAutoRun)
-                                .addContainerGap(39, Short.MAX_VALUE))
-        );
-
-        OptionsFileSendMode.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Send", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10))); // NOI18N
-        OptionsFileSendMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-
-        DelayLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        DelayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        DelayLabel.setText("Delay after answer = 0 ms");
-        DelayLabel.setToolTipText("It's not \"line delay\", as you known. It's delay between answer from ESP and send new data");
-
-        Delay.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        Delay.setMajorTickSpacing(500);
-        Delay.setMaximum(1000);
-        Delay.setMinorTickSpacing(100);
-        Delay.setPaintLabels(true);
-        Delay.setPaintTicks(true);
-        Delay.setSnapToTicks(true);
-        Delay.setToolTipText("Delay between answer from ESP and send new data");
-        Delay.setValue(0);
-        Delay.setAlignmentY(1.0F);
-        Delay.addChangeListener(evt -> DelayStateChanged(evt));
-
-        AnswerDelayLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        AnswerDelayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        AnswerDelayLabel.setText("Answer timeout = 3 s");
-        AnswerDelayLabel.setToolTipText("How many time we waiting answer from ESP8266");
-
-        AnswerDelay.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        AnswerDelay.setMajorTickSpacing(5);
-        AnswerDelay.setMaximum(10);
-        AnswerDelay.setMinorTickSpacing(1);
-        AnswerDelay.setPaintLabels(true);
-        AnswerDelay.setPaintTicks(true);
-        AnswerDelay.setSnapToTicks(true);
-        AnswerDelay.setToolTipText("Maximum time for waiting firmware answer");
-        AnswerDelay.setValue(3);
-        AnswerDelay.addChangeListener(evt -> AnswerDelayStateChanged(evt));
-
-        DumbMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        DumbMode.setText("\"Dumb Mode\", never check answers");
-        DumbMode.setToolTipText("");
-        DumbMode.addItemListener(evt -> DumbModeItemStateChanged(evt));
-
-        LineDelayLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        LineDelayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LineDelayLabel.setText("Line delay for \"Dumb Mode\" = 200 ms");
-        LineDelayLabel.setToolTipText("It's usual \"line delay\", as you known.");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, DumbMode, org.jdesktop.beansbinding.ELProperty.create("${selected}"), LineDelayLabel, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        LineDelay.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        LineDelay.setMajorTickSpacing(500);
-        LineDelay.setMaximum(1000);
-        LineDelay.setMinorTickSpacing(100);
-        LineDelay.setPaintLabels(true);
-        LineDelay.setPaintTicks(true);
-        LineDelay.setSnapToTicks(true);
-        LineDelay.setToolTipText("Fixed delay between lines");
-        LineDelay.setValue(200);
-        LineDelay.setAlignmentY(1.0F);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, DumbMode, org.jdesktop.beansbinding.ELProperty.create("${selected}"), LineDelay, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        LineDelay.addChangeListener(evt -> LineDelayStateChanged(evt));
-
-        TurboMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        TurboMode.setText("\"Turbo Mode\"");
-        TurboMode.setToolTipText("");
-        TurboMode.addActionListener(evt -> TurboModeActionPerformed(evt));
-
-        OptionsFileSendMode.setLayer(DelayLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(Delay, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(AnswerDelayLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(AnswerDelay, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(DumbMode, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(LineDelayLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(LineDelay, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(TurboMode, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout OptionsFileSendModeLayout = new javax.swing.GroupLayout(OptionsFileSendMode);
-        OptionsFileSendMode.setLayout(OptionsFileSendModeLayout);
-        OptionsFileSendModeLayout.setHorizontalGroup(
-                OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(OptionsFileSendModeLayout.createSequentialGroup()
-                                .addGroup(OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(OptionsFileSendModeLayout.createSequentialGroup()
-                                                .addGroup(OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(TurboMode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(DelayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
-                                                .addGap(0, 0, Short.MAX_VALUE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OptionsFileSendModeLayout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                .addGroup(OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(DumbMode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(Delay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(AnswerDelayLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(AnswerDelay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(LineDelayLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addComponent(LineDelay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
-        );
-        OptionsFileSendModeLayout.setVerticalGroup(
-                OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(OptionsFileSendModeLayout.createSequentialGroup()
-                                .addComponent(TurboMode)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DelayLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Delay, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AnswerDelayLabel)
-                                .addGap(1, 1, 1)
-                                .addComponent(AnswerDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DumbMode)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(LineDelayLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(LineDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jLayeredPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data scrollback", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10))); // NOI18N
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jLabel1.setText("terminal text size");
-        jLabel1.setPreferredSize(new java.awt.Dimension(40, 20));
-
-
-        TerminalMaxSize.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        TerminalMaxSize.setText("100");
-        TerminalMaxSize.setToolTipText("");
-        TerminalMaxSize.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                TerminalMaxSizeFocusLost(evt);
-            }
-        });
-
-
-        jLabel8.setText("kb");
-
-
-        jLayeredPane2.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(TerminalMaxSize, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jLayeredPane2.setLayer(jLabel8, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
-        jLayeredPane2.setLayout(jLayeredPane2Layout);
-        jLayeredPane2Layout.setHorizontalGroup(
-                jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(TerminalMaxSize, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                                )
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel8)
-                                )
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jLayeredPane2Layout.setVerticalGroup(
-                jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jLayeredPane2Layout.createSequentialGroup()
-                                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(TerminalMaxSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel8))
-                        )
-        );
-
-        jLayeredPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SerialPort", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10))); // NOI18N
-
-        CustomPortName.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        CustomPortName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        CustomPortName.setText("/dev/AnySerialDevice");
-        CustomPortName.setToolTipText("");
-        CustomPortName.setEnabled(false);
-        CustomPortName.setMinimumSize(new java.awt.Dimension(50, 19));
-        CustomPortName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                CustomPortNameFocusLost(evt);
-            }
-        });
-
-        UseCustomPortName.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        UseCustomPortName.setText("Use custom serial port name");
-        UseCustomPortName.setToolTipText("Use custom serial port name (AutoScan will be disabled)");
-        UseCustomPortName.addActionListener(evt -> UseCustomPortNameActionPerformed(evt));
-
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("(AutoScan will be disabled)");
-        jLabel10.setPreferredSize(new java.awt.Dimension(17, 23));
-
-
-        CommandEcho.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        CommandEcho.setSelected(true);
-        CommandEcho.setText("Command Echo");
-        CommandEcho.setToolTipText("Use custom serial port name (AutoScan will be disabled)");
-        CommandEcho.addItemListener(evt -> CommandEchoItemStateChanged(evt));
-
-        jLayeredPane3.setLayer(CustomPortName, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane3.setLayer(UseCustomPortName, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane3.setLayer(jLabel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane3.setLayer(CommandEcho, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout jLayeredPane3Layout = new javax.swing.GroupLayout(jLayeredPane3);
-        jLayeredPane3.setLayout(jLayeredPane3Layout);
-        jLayeredPane3Layout.setHorizontalGroup(
-                jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(UseCustomPortName, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(CustomPortName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-
-                        .addComponent(CommandEcho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jLayeredPane3Layout.setVerticalGroup(
-                jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jLayeredPane3Layout.createSequentialGroup()
-                                .addComponent(UseCustomPortName)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(CustomPortName, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CommandEcho)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-
-        NodeMCUSettings.setLayer(OptionsOther, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        NodeMCUSettings.setLayer(OptionsFileSendMode, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        NodeMCUSettings.setLayer(jLayeredPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        NodeMCUSettings.setLayer(jLayeredPane3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout NodeMCUSettingsLayout = new javax.swing.GroupLayout(NodeMCUSettings);
-        NodeMCUSettings.setLayout(NodeMCUSettingsLayout);
-        NodeMCUSettingsLayout.setHorizontalGroup(
-                NodeMCUSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(NodeMCUSettingsLayout.createSequentialGroup()
-                                .addGroup(NodeMCUSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(OptionsOther)
-
-                                        .addComponent(OptionsFileSendMode, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(NodeMCUSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLayeredPane2)
-                                        .addComponent(jLayeredPane3))
-                                .addContainerGap(135, Short.MAX_VALUE))
-        );
-        NodeMCUSettingsLayout.setVerticalGroup(
-                NodeMCUSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(NodeMCUSettingsLayout.createSequentialGroup()
-                                .addGroup(NodeMCUSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(NodeMCUSettingsLayout.createSequentialGroup()
-
-                                                .addComponent(OptionsOther, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(NodeMCUSettingsLayout.createSequentialGroup()
-                                                .addComponent(jLayeredPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(45, 45, 45)
-                                .addComponent(OptionsFileSendMode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 134, Short.MAX_VALUE))
-        );
-
-        TextTab.addTab("Settings", new javax.swing.ImageIcon(getClass().getResource("/resources/settings2.png")), NodeMCUSettings, "Settings for file sending"); // NOI18N
 
         javax.swing.GroupLayout NodeMCULayout = new javax.swing.GroupLayout(NodeMCU);
         NodeMCU.setLayout(NodeMCULayout);
         NodeMCULayout.setHorizontalGroup(
                 NodeMCULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(TextTab, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
+                        .addComponent(SriptsTab, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
         );
         NodeMCULayout.setVerticalGroup(
                 NodeMCULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(TextTab, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+                        .addComponent(SriptsTab, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
         );
-
-        TextTab.getAccessibleContext().setAccessibleName("NewFile");
 
 
         LeftBasePane.setLayer(NodeMCU, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -1207,6 +823,8 @@ public class EspIDE extends javax.swing.JFrame {
         Port.setMaximumSize(new java.awt.Dimension(150, 25));
         Port.setMinimumSize(new java.awt.Dimension(150, 25));
         Port.setPreferredSize(new java.awt.Dimension(150, 25));
+
+        Port.setEditable(true);
 
         EOL.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         EOL.setText("EOL");
@@ -1598,6 +1216,13 @@ public class EspIDE extends javax.swing.JFrame {
         MenuFile.setText("File");
         MenuFile.addActionListener(evt -> MenuFileActionPerformed(evt));
 
+        JMenuItem settings = new JMenuItem("ÉèÖÃ");
+        settings.setIcon(new ImageIcon(getClass().getResource("/resources/settings2.png")));
+        settings.addActionListener(evt -> {
+            new SettingsFrame(this).setVisible(true);
+        });
+        MenuFile.add(settings);
+
         MenuItemFileNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemFileNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/document.png"))); // NOI18N
         MenuItemFileNew.setText("<html><u>N</u>ew");
@@ -1836,15 +1461,12 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void OpenActionPerformed(java.awt.event.ActionEvent evt) {
         if (Open.isSelected()) {
-            String port;
-            if (UseCustomPortName.isSelected()) {
-                port = CustomPortName.getText().trim();
-            } else {
-                port = Port.getSelectedItem().toString().trim();
-            }
-            Context.setString(Context.SERIAL_PORT, port);
-            Context.setInt(Context.SERIAL_BAUD_RATE, getBaudRate());
             Open.setSelected(portOpen());
+            if (Open.isSelected()) {
+                String port = Port.getSelectedItem().toString().trim();
+                Regedit.setString(Regedit.SERIAL_PORT, port);
+                Regedit.setInt(Regedit.SERIAL_BAUD_RATE, getBaudRate());
+            }
         } else {
             portClose();
         }
@@ -1915,10 +1537,10 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void SetWindowSize() {
         int x, y, h, w;
-        x = Context.getInt(WIN_X, 0);
-        y = Context.getInt(WIN_Y, 0);
-        h = Context.getInt(WIN_H, 768);
-        w = Context.getInt(WIN_W, 1024);
+        x = Regedit.getInt(WIN_X, 0);
+        y = Regedit.getInt(WIN_Y, 0);
+        h = Regedit.getInt(WIN_H, 768);
+        w = Regedit.getInt(WIN_W, 1024);
         this.setBounds(x, y, w, h);
     }
 
@@ -1952,7 +1574,7 @@ public class EspIDE extends javax.swing.JFrame {
 
 
     private void SendCommandActionPerformed(java.awt.event.ActionEvent evt) {
-        if (CommandEcho.isSelected()) {
+        if (Config.ins.isCommand_echo()) {
             thandler.echo(Command.getSelectedItem().toString(), true);
         }
 
@@ -2022,7 +1644,7 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void MenuItemFileSaveActionPerformed(java.awt.event.ActionEvent evt) {
         SaveFile();
-        if (FileAutoSaveESP.isSelected() && !FileSaveESP.isSelected()) {
+        if (Config.ins.isFile_auto_save_esp() && !FileSaveESP.isSelected()) {
             FileSaveESP.doClick();
         }
     }
@@ -2145,7 +1767,7 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void SavePath() {
         workDir = chooser.getCurrentDirectory().toString();
-        Context.setString(PATH, workDir);
+        Regedit.setString(PATH, workDir);
     }
 
     private void OpenFile() {
@@ -2976,17 +2598,17 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void MenuItemEditSendSelectedActionPerformed(java.awt.event.ActionEvent evt) {
         int l = 0;
-        if (TextTab.getSelectedIndex() == 0) { // NodeMCU and Scripts
-            try {
-                l = TextEditor1.get(iTab).getSelectedText().length();
-            } catch (Exception e) {
-                LOGGER.info("Can't send: nothing selected.");
-                return;
-            }
-            if (l > 0) {
-                SendToESP(TextEditor1.get(iTab).getSelectedText());
-            }
+
+        try {
+            l = TextEditor1.get(iTab).getSelectedText().length();
+        } catch (Exception e) {
+            LOGGER.info("Can't send: nothing selected.");
+            return;
         }
+        if (l > 0) {
+            SendToESP(TextEditor1.get(iTab).getSelectedText());
+        }
+
     }
 
     private void MenuItemFileRemoveESPActionPerformed(java.awt.event.ActionEvent evt) {
@@ -3016,11 +2638,11 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void MenuItemEditSendLineActionPerformed(java.awt.event.ActionEvent evt) {
         int nLine;
-        if (TextTab.getSelectedIndex() == 0) { // NodeMCU and Scripts
-            nLine = TextEditor1.get(iTab).getCaretLineNumber();
-            String cmd = TextEditor1.get(iTab).getText().split("\r?\n")[nLine];
-            btnSend(cmd);
-        }
+
+        nLine = TextEditor1.get(iTab).getCaretLineNumber();
+        String cmd = TextEditor1.get(iTab).getText().split("\r?\n")[nLine];
+        btnSend(cmd);
+
 
     }
 
@@ -3052,7 +2674,7 @@ public class EspIDE extends javax.swing.JFrame {
         } else {
             thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(TERMINAL_FONT_SIZE_MAX));
         }
-        Context.setFloat(TERMINAL_FONT_SIZE, thandler.getRSyntaxTextArea().getFont().getSize());
+        Regedit.setFloat(TERMINAL_FONT_SIZE, thandler.getRSyntaxTextArea().getFont().getSize());
     }
 
     private void MenuItemViewTermFontDecActionPerformed(java.awt.event.ActionEvent evt) {
@@ -3062,7 +2684,7 @@ public class EspIDE extends javax.swing.JFrame {
         } else {
             thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(TERMINAL_FONT_SIZE_MIN));
         }
-        Context.setFloat(TERMINAL_FONT_SIZE, thandler.getRSyntaxTextArea().getFont().getSize());
+        Regedit.setFloat(TERMINAL_FONT_SIZE, thandler.getRSyntaxTextArea().getFont().getSize());
     }
 
     private void MenuItemViewEditorFontIncActionPerformed(java.awt.event.ActionEvent evt) {
@@ -3072,8 +2694,8 @@ public class EspIDE extends javax.swing.JFrame {
         } else {
             TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(EDITOR_FONT_SIZE_MAX));
         }
-        Context.setFloat(EDITOR_FONT_SIZE, TextEditor1.get(iTab).getFont().getSize());
-        SetTheme(Context.getInt(COLOR_THEME, 0), true); // for all
+        Regedit.setFloat(EDITOR_FONT_SIZE, TextEditor1.get(iTab).getFont().getSize());
+        updateTheme( true); // for all
     }
 
     private void MenuItemViewEditorFontDecActionPerformed(java.awt.event.ActionEvent evt) {
@@ -3083,15 +2705,15 @@ public class EspIDE extends javax.swing.JFrame {
         } else {
             TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(EDITOR_FONT_SIZE_MIN));
         }
-        Context.setFloat(EDITOR_FONT_SIZE, TextEditor1.get(iTab).getFont().getSize());
-        SetTheme(Context.getInt(COLOR_THEME, 0), true); // for all
+        Regedit.setFloat(EDITOR_FONT_SIZE, TextEditor1.get(iTab).getFont().getSize());
+        updateTheme( true); // for all
     }
 
     private void MenuItemViewFontDefaultActionPerformed(java.awt.event.ActionEvent evt) {
-        Context.setFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT);
-        Context.setFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT);
-        Context.setFloat(LOG_FONT_SIZE, LOG_FONT_SIZE_DEFAULT);
-        SetTheme(Context.getInt(COLOR_THEME, 0), true); // for all
+        Regedit.setFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT);
+        Regedit.setFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT);
+        Regedit.setFloat(LOG_FONT_SIZE, LOG_FONT_SIZE_DEFAULT);
+        updateTheme(true); // for all
         thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(TERMINAL_FONT_SIZE_DEFAULT));
     }
 
@@ -3116,7 +2738,7 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void RightFilesSplitPanePropertyChange(java.beans.PropertyChangeEvent evt) {
         if ("dividerLocation".equals(evt.getPropertyName()) && MenuItemViewFileManager.isSelected()) {
-            Context.setInt(Context.FM_DIV, RightFilesSplitPane.getDividerLocation());
+            Regedit.setInt(Regedit.FM_DIV, RightFilesSplitPane.getDividerLocation());
         }
     }
 
@@ -3147,23 +2769,23 @@ public class EspIDE extends javax.swing.JFrame {
 
 
     private void MenuItemViewFileManagerActionPerformed(java.awt.event.ActionEvent evt) {
-        Context.setBoolean(SHOW_FM_RIGHT, MenuItemViewFileManager.isSelected());
+        Regedit.setBoolean(SHOW_FM_RIGHT, MenuItemViewFileManager.isSelected());
         isFileManagerShow();
     }
 
 
     private void MenuItemViewToolbarActionPerformed(java.awt.event.ActionEvent evt) {
-        Context.setBoolean(SHOW_TOOLBAR, MenuItemViewToolbar.isSelected());
+        Regedit.setBoolean(SHOW_TOOLBAR, MenuItemViewToolbar.isSelected());
         isToolbarShow();
     }
 
 
     private void AutoScrollActionPerformed(java.awt.event.ActionEvent evt) {
-        Context.setBoolean(AUTO_SCROLL, AutoScroll.isSelected());
+        Regedit.setBoolean(AUTO_SCROLL, AutoScroll.isSelected());
     }
 
     private void PortDTRActionPerformed(java.awt.event.ActionEvent evt) {
-        Context.setBoolean(PORT_DTR, PortDTR.isSelected());
+        Regedit.setBoolean(PORT_DTR, PortDTR.isSelected());
         try {
             serialPort.setDTR(PortDTR.isSelected());
             if (PortDTR.isSelected()) {
@@ -3180,7 +2802,7 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void PortRTSActionPerformed(java.awt.event.ActionEvent evt) {
-        Context.setBoolean(PORT_RTS, PortRTS.isSelected());
+        Regedit.setBoolean(PORT_RTS, PortRTS.isSelected());
         try {
             serialPort.setRTS(PortRTS.isSelected());
             if (PortRTS.isSelected()) {
@@ -3197,13 +2819,13 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void MenuItemViewToolbarItemStateChanged(java.awt.event.ItemEvent evt) {
-        Context.setBoolean(SHOW_TOOLBAR, MenuItemViewToolbar.isSelected());
+        Regedit.setBoolean(SHOW_TOOLBAR, MenuItemViewToolbar.isSelected());
         isToolbarShow();
     }
 
 
     private void MenuItemViewFileManagerItemStateChanged(java.awt.event.ItemEvent evt) {
-        Context.setBoolean(SHOW_FM_RIGHT, MenuItemViewFileManager.isSelected());
+        Regedit.setBoolean(SHOW_FM_RIGHT, MenuItemViewFileManager.isSelected());
         ShowFileManager.setSelected(MenuItemViewFileManager.isSelected());
         isFileManagerShow();
     }
@@ -3225,10 +2847,10 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void AppClose() {
         Rectangle r = this.getBounds();
-        Context.setInt(WIN_X, r.x);
-        Context.setInt(WIN_Y, r.y);
-        Context.setInt(WIN_H, r.height);
-        Context.setInt(WIN_W, r.width);
+        Regedit.setInt(WIN_X, r.x);
+        Regedit.setInt(WIN_Y, r.y);
+        Regedit.setInt(WIN_H, r.height);
+        Regedit.setInt(WIN_W, r.width);
         while (FilesTabbedPane.getTabCount() > 0) {
             if (CloseFile() == JOptionPane.CANCEL_OPTION) {
                 return;
@@ -3265,95 +2887,6 @@ public class EspIDE extends javax.swing.JFrame {
     private void NodeMCUComponentShown(java.awt.event.ComponentEvent evt) {
         UpdateEditorButtons();
         UpdateButtons();
-    }
-
-
-    private void UseCustomPortNameActionPerformed(java.awt.event.ActionEvent evt) {
-        Port.setEnabled(!UseCustomPortName.isSelected());
-        Port.setVisible(!UseCustomPortName.isSelected());
-        CustomPortName.setEnabled(UseCustomPortName.isSelected());
-        Context.setBoolean(USE_CUSTOM_PORT, UseCustomPortName.isSelected());
-    }
-
-    private void CustomPortNameFocusLost(java.awt.event.FocusEvent evt) {
-        Context.setString(CUSTOM_PORT_NAME, CustomPortName.getText());
-    }
-
-
-    private void TerminalMaxSizeFocusLost(java.awt.event.FocusEvent evt) {
-        int size = 100;
-        try {
-            size = Integer.parseInt(TerminalMaxSize.getText());
-        } catch (Exception e) {
-        }
-        TerminalMaxSize.setText(String.valueOf(size));
-        Context.setInt(Context.TERMINAL_MAX_SIZE, size);
-    }
-
-    private void TurboModeActionPerformed(java.awt.event.ActionEvent evt) {
-        if (TurboMode.isSelected()) {
-            DumbMode.setEnabled(false);
-            DumbMode.setSelected(false);
-        } else {
-            DumbMode.setEnabled(true);
-        }
-        Context.setBoolean(TURBO_MODE, TurboMode.isSelected());
-    }
-
-    private void LineDelayStateChanged(javax.swing.event.ChangeEvent evt) {
-        LineDelayLabel.setText("Line delay for \"Dumb Mode\" = " + Integer.toString(LineDelay.getValue()) + " ms");
-        Context.setInt(LINE_DELAY, LineDelay.getValue());
-    }
-
-    private void DumbModeItemStateChanged(java.awt.event.ItemEvent evt) {
-        if (DumbMode.isSelected()) {
-            DelayLabel.setEnabled(false);
-            Delay.setEnabled(false);
-            AnswerDelayLabel.setEnabled(false);
-            AnswerDelay.setEnabled(false);
-            LineDelayLabel.setEnabled(true);
-            LineDelay.setEnabled(true);
-            TurboMode.setSelected(false);
-            TurboMode.setEnabled(false);
-        } else {
-            DelayLabel.setEnabled(true);
-            Delay.setEnabled(true);
-            AnswerDelayLabel.setEnabled(true);
-            AnswerDelay.setEnabled(true);
-            LineDelayLabel.setEnabled(false);
-            LineDelay.setEnabled(false);
-            TurboMode.setEnabled(true);
-        }
-        Context.setBoolean(DUMB_MODE, DumbMode.isSelected());
-    }
-
-    private void AnswerDelayStateChanged(javax.swing.event.ChangeEvent evt) {
-        AnswerDelayLabel.setText("Answer timout = " + Integer.toString(AnswerDelay.getValue()) + " s");
-        Context.setInt(TIMEOUT, AnswerDelay.getValue());
-    }
-
-    private void DelayStateChanged(javax.swing.event.ChangeEvent evt) {
-        DelayLabel.setText("Delay after answer = " + Integer.toString(Delay.getValue()) + " ms");
-        Context.setInt(DELAY, Delay.getValue());
-    }
-
-
-    private void EditorThemeActionPerformed(java.awt.event.ActionEvent evt) {
-        int n = EditorTheme.getSelectedIndex();
-        Context.setInt(COLOR_THEME, n);
-        SetTheme(n, true); // for all
-    }
-
-    private void FileAutoRunItemStateChanged(java.awt.event.ItemEvent evt) {
-        Context.setBoolean(FILE_AUTO_RUN, FileAutoRun.isSelected());
-    }
-
-    private void FileAutoSaveESPItemStateChanged(java.awt.event.ItemEvent evt) {
-        Context.setBoolean(FILE_AUTO_SAVE_ESP, FileAutoSaveESP.isSelected());
-    }
-
-    private void FileAutoSaveDiskItemStateChanged(java.awt.event.ItemEvent evt) {
-        Context.setBoolean(FILE_AUTO_SAVE_DISK, FileAutoSaveDisk.isSelected());
     }
 
 
@@ -3394,7 +2927,7 @@ public class EspIDE extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, msg);
             return;
         }
-        if (FileAutoSaveDisk.isSelected()) {
+        if (Config.ins.isFile_auto_save_disk()) {
             if (!SaveFile()) { // first save file
                 FileSaveESP.setSelected(false);
                 return;
@@ -3506,11 +3039,6 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
 
-    private void CommandEchoItemStateChanged(java.awt.event.ItemEvent evt) {
-        Context.setBoolean(COMMAND_ECHO, CommandEcho.isSelected());
-    }
-
-
     private void NodeFileSystemInfo() {
         String cmd = "r,u,t=file.fsinfo() print(\"Total : \"..t..\" bytes\\r\\nUsed  : \"..u..\" bytes\\r\\nRemain: \"..r..\" bytes\\r\\n\") r=nil u=nil t=nil";
         send(addCRLF(cmd), true);
@@ -3519,8 +3047,6 @@ public class EspIDE extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem AlwaysOnTop;
-    private javax.swing.JSlider AnswerDelay;
-    private javax.swing.JLabel AnswerDelayLabel;
     private javax.swing.JCheckBox AutoScroll;
     private javax.swing.JLabel Busy;
     private javax.swing.JButton ButtonCopy;
@@ -3538,24 +3064,18 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JButton ButtonUndo;
     private javax.swing.JCheckBox CR;
     private javax.swing.JComboBox Command;
-    private javax.swing.JCheckBox CommandEcho;
+
     private javax.swing.JPopupMenu ContextMenuESPFileLUA;
     private javax.swing.JPopupMenu ContextMenuEditor;
     private javax.swing.JPopupMenu ContextMenuFileManager;
     private javax.swing.JPopupMenu ContextMenuTerminal;
-    private javax.swing.JTextField CustomPortName;
-    private javax.swing.JSlider Delay;
-    private javax.swing.JLabel DelayLabel;
-    private javax.swing.JCheckBox DumbMode;
+
+
     private javax.swing.JCheckBox EOL;
     private javax.swing.JPopupMenu.Separator EditorSeparator;
     private javax.swing.JPopupMenu.Separator EditorSeparator1;
     private javax.swing.JPopupMenu.Separator EditorSeparator2;
-    private javax.swing.JComboBox EditorTheme;
-    private javax.swing.JLabel EditorThemeLabel;
-    private javax.swing.JCheckBox FileAutoRun;
-    private javax.swing.JCheckBox FileAutoSaveDisk;
-    private javax.swing.JCheckBox FileAutoSaveESP;
+
 
     private javax.swing.JButton FileFormat;
     private javax.swing.JLayeredPane FileLayeredPane;
@@ -3580,8 +3100,6 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JCheckBox LF;
     private javax.swing.JLayeredPane LeftBasePane;
     private javax.swing.JLayeredPane LeftMainButtons;
-    private javax.swing.JSlider LineDelay;
-    private javax.swing.JLabel LineDelayLabel;
     private javax.swing.JMenuBar MainMenuBar;
     private javax.swing.JMenu MenuEdit;
     private javax.swing.JMenu MenuFile;
@@ -3632,10 +3150,9 @@ public class EspIDE extends javax.swing.JFrame {
 
     private javax.swing.JLayeredPane NodeFileManagerPane;
     private javax.swing.JPanel NodeMCU;
-    private javax.swing.JLayeredPane NodeMCUSettings;
+
     private javax.swing.JToggleButton Open;
-    private javax.swing.JLayeredPane OptionsFileSendMode;
-    private javax.swing.JLayeredPane OptionsOther;
+
 
     private javax.swing.JComboBox Port;
     private javax.swing.JLabel PortCTS;
@@ -3656,23 +3173,15 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JComboBox Speed;
     private javax.swing.JLayeredPane SriptsTab;
 
-    private javax.swing.JTextField TerminalMaxSize;
+
     private org.fife.ui.rtextarea.RTextScrollPane TerminalPane;
     private javax.swing.JPopupMenu.Separator TerminalSeparator1;
     private javax.swing.JPopupMenu.Separator TerminalSeparator2;
     private javax.swing.JPopupMenu.Separator TerminalSeparator3;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea TextEditor;
     private org.fife.ui.rtextarea.RTextScrollPane TextScroll;
-    private javax.swing.JTabbedPane TextTab;
-    private javax.swing.JCheckBox TurboMode;
-    private javax.swing.JCheckBox UseCustomPortName;
 
 
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLayeredPane jLayeredPane2;
-    private javax.swing.JLayeredPane jLayeredPane3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator11;
@@ -3777,29 +3286,20 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     public void PortFinder() {
-        Speed.setSelectedItem(String.valueOf(Context.getInt(Context.SERIAL_PORT, 115200)));
+        Speed.setSelectedItem(String.valueOf(Regedit.getInt(Regedit.SERIAL_PORT, 115200)));
         Port.removeAllItems();
-        if (UseCustomPortName.isSelected()) {
-            LOGGER.info("Using custom port name " + CustomPortName.getText());
-            return;
-        }
+
         String[] portNames = SerialPortList.getPortNames();
         for (String p : portNames) {
             Port.addItem(p);
         }
-        String lastPort = Context.getString(Context.SERIAL_PORT, null);
+        String lastPort = Regedit.getString(Regedit.SERIAL_PORT, null);
         Port.setSelectedItem(lastPort != null ? lastPort : portNames[0]);
     }
 
 
     public String GetSerialPortName() {
-        String portName;
-        if (UseCustomPortName.isSelected()) {
-            portName = CustomPortName.getText().trim();
-        } else {
-            portName = Port.getSelectedItem().toString();
-        }
-        return portName;
+        return Port.getSelectedItem().toString();
     }
 
     public int getBaudRate() {
@@ -3928,44 +3428,35 @@ public class EspIDE extends javax.swing.JFrame {
         FileRenamePanel.setVisible(false);
 
         AddTab("");
+
+        updateTheme(true);
     }
 
     private void LoadPrefs() {
         // Settings - Firmware
-        workDir = Context.getString(PATH, "");
+        workDir = Regedit.getString(PATH, "");
         chooser = new JFileChooser(workDir);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setMultiSelectionEnabled(false);
         chooser.setCurrentDirectory(new File(workDir));
 
 
-        FileAutoSaveDisk.setSelected(Context.getBoolean(FILE_AUTO_SAVE_DISK, true));
-        FileAutoSaveESP.setSelected(Context.getBoolean(FILE_AUTO_SAVE_ESP, true));
-        FileAutoRun.setSelected(Context.getBoolean(FILE_AUTO_RUN, false));
-        EditorTheme.setSelectedIndex(Context.getInt(COLOR_THEME, 1));
-        Delay.setValue(Context.getInt(DELAY, 0));
-        AnswerDelay.setValue(Context.getInt(TIMEOUT, 3));
-        DumbMode.setSelected(Context.getBoolean(DUMB_MODE, false));
-        TurboMode.setSelected(Context.getBoolean(TURBO_MODE, false));
-        LineDelay.setValue(Context.getInt(LINE_DELAY, 200));
         // Font size
-        thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(Context.getFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT)));
+        thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(Regedit.getFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT)));
 
 
-        TerminalMaxSize.setText(String.valueOf(Context.getInt(Context.TERMINAL_MAX_SIZE, 100)));
-        AutoScroll.setSelected(Context.getBoolean(AUTO_SCROLL, true));
+        AutoScroll.setSelected(Regedit.getBoolean(AUTO_SCROLL, true));
 
-        MenuItemViewToolbar.setSelected(Context.getBoolean(SHOW_TOOLBAR, true));
+        MenuItemViewToolbar.setSelected(Regedit.getBoolean(SHOW_TOOLBAR, true));
 
-        MenuItemViewFileManager.setSelected(Context.getBoolean(SHOW_FM_RIGHT, true));
+        MenuItemViewFileManager.setSelected(Regedit.getBoolean(SHOW_FM_RIGHT, true));
 
-        UseCustomPortName.setSelected(Context.getBoolean(USE_CUSTOM_PORT, false));
-        CustomPortName.setText(Context.getString(CUSTOM_PORT_NAME, "/dev/AnySerialDevice"));
-        PortDTR.setSelected(Context.getBoolean(PORT_DTR, false));
-        PortRTS.setSelected(Context.getBoolean(PORT_RTS, false));
-        EOL.setSelected(Context.getBoolean(SHOW_EOL, false));
 
-        CommandEcho.setSelected(Context.getBoolean(COMMAND_ECHO, true));
+        PortDTR.setSelected(Regedit.getBoolean(PORT_DTR, false));
+        PortRTS.setSelected(Regedit.getBoolean(PORT_RTS, false));
+        EOL.setSelected(Regedit.getBoolean(SHOW_EOL, false));
+
+
         LOGGER.info("Load saved settings: DONE.");
     }
 
@@ -4214,12 +3705,14 @@ public class EspIDE extends javax.swing.JFrame {
 
         FilesTabbedPane.setSelectedIndex(i);
         iTab = i;
-        SetTheme(EditorTheme.getSelectedIndex(), false);
+        updateTheme( false);
         FileLabelUpdate();
         TextEditor1.get(i).setText(s);
     }
 
-    private void SetTheme(int t, boolean all) {
+    public void updateTheme( boolean all) {
+        int t = Config.ins.getColor_theme();
+
         String res;
         if (t == 1) {
             res = "/org/fife/ui/rsyntaxtextarea/themes/dark.xml";
@@ -4239,18 +3732,18 @@ public class EspIDE extends javax.swing.JFrame {
             if (all) {
                 for (int i = 0; i < FilesTabbedPane.getTabCount(); i++) {
                     theme.apply(TextEditor1.get(i));
-                    TextEditor1.get(i).setFont(TextEditor1.get(i).getFont().deriveFont(Context.getFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT)));
+                    TextEditor1.get(i).setFont(TextEditor1.get(i).getFont().deriveFont(Regedit.getFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT)));
                 }
 
 
                 theme.apply(thandler.getRSyntaxTextArea());
-                thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(Context.getFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT)));
+                thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(Regedit.getFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT)));
                 themeTextBackground = thandler.getRSyntaxTextArea().getBackground();
                 //SnippetText.setBackground(SnippetTopPane.getBackground());
                 LOGGER.info("Set new color theme: Success.");
             } else {
                 theme.apply(TextEditor1.get(iTab));
-                TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(Context.getFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT)));
+                TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(Regedit.getFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT)));
             }
         } catch (IOException e) {
             LOGGER.info(e.toString());
@@ -4576,7 +4069,7 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void WatchDog() {
-        if (DumbMode.isSelected()) {
+        if (Config.ins.isDumb_mode()) {
             return;
         }
         watchDog = evt -> {
@@ -4585,7 +4078,7 @@ public class EspIDE extends javax.swing.JFrame {
             thandler.echo("Waiting answer from ESP - Timeout reached. Command aborted.", true);
             LOGGER.info("Waiting answer from ESP - Timeout reached. Command aborted.");
         };
-        int delay = AnswerDelay.getValue() * 1000;
+        int delay = Config.ins.getAnswer_timeout() * 1000;
         if (delay == 0) {
             delay = 300;
         }
@@ -4599,7 +4092,7 @@ public class EspIDE extends javax.swing.JFrame {
         boolean success = false;
         LOGGER.info("FileSaveESP: Try to save file to ESP...");
         sendBuf = new ArrayList<>();
-        if (TurboMode.isSelected()) {
+        if (Config.ins.isTurbo_mode()) {
             return nodeSaveFileESPTurbo(ft);
         }
         sendBuf.add("file.remove(\"" + ft + "\");");
@@ -4610,7 +4103,7 @@ public class EspIDE extends javax.swing.JFrame {
             sendBuf.add("w([==[" + subs + "]==]);");
         }
         sendBuf.add("file.close();");
-        if (FileAutoRun.isSelected()) {
+        if (Config.ins.isFile_auto_run()) {
             sendBuf.add("dofile(\"" + ft + "\");");
         }
         // data ready
@@ -4641,7 +4134,7 @@ public class EspIDE extends javax.swing.JFrame {
         }
         sendBuf.add("ESP_cmd_close");
         sendBuf.add("\r\n");
-        if (FileAutoRun.isSelected()) {
+        if (Config.ins.isFile_auto_run()) {
             sendBuf.add("dofile(\"" + ft + "\")");
         }
         success = SendTurboTimerStart();
@@ -4665,7 +4158,7 @@ public class EspIDE extends javax.swing.JFrame {
         }
         int delay = 0;
         j0();
-        delay = Delay.getValue();
+        delay = Config.ins.getDelay_after_answer();
         if (delay == 0) {
             delay = 10;
         }
@@ -4703,7 +4196,7 @@ public class EspIDE extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         try {
-            if (DumbMode.isSelected()) {
+            if (Config.ins.isDumb_mode()) {
                 serialPort.addEventListener(new PortReader(), portMask);
             } else {
                 serialPort.addEventListener(new PortExtraReader(), portMask);
@@ -4714,8 +4207,8 @@ public class EspIDE extends javax.swing.JFrame {
         }
         int delay = 0;
         j0();
-        if (DumbMode.isSelected()) { // DumbMode
-            delay = LineDelay.getValue();
+        if (Config.ins.isDumb_mode()) { // DumbMode
+            delay = Config.ins.getLine_delay_for_dumb();
             if (FirmwareType.current.eq(FirmwareType.NodeMCU)) {
                 taskPerformer = evt -> {
                     if (j < sendBuf.size()) {
@@ -4762,7 +4255,7 @@ public class EspIDE extends javax.swing.JFrame {
             timer.start();
             LOGGER.info("DataSender: start \"Dumb Mode\"");
         } else { // SmartMode
-            delay = Delay.getValue();
+            delay = Config.ins.getDelay_after_answer();
             if (delay == 0) {
                 delay = 10;
             }
@@ -4802,7 +4295,7 @@ public class EspIDE extends javax.swing.JFrame {
         } catch (SerialPortException ex) {
             LOGGER.info("send FAIL:" + s.replace("\r\n", "<CR><LF>"));
         }
-        if (!DumbMode.isSelected() && !simple) {
+        if (!Config.ins.isDumb_mode() && !simple) {
             try {
                 timeout.restart();
             } catch (Exception e) {
@@ -5414,7 +4907,7 @@ public class EspIDE extends javax.swing.JFrame {
             }
             SendUnLock();
         };
-        int delay = AnswerDelay.getValue() * 1000;
+        int delay = Config.ins.getAnswer_timeout() * 1000;
         if (delay == 0) {
             delay = 300;
         }

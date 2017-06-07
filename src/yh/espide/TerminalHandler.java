@@ -4,8 +4,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import javax.swing.text.Document;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Logger;
 
 /**
@@ -43,7 +41,7 @@ public class TerminalHandler {
 
     public void add(String rc) {
         Document doc = rSyntaxTextArea.getDocument();
-        if (doc.getLength() > Context.getInt(Context.TERMINAL_MAX_SIZE, 100) * 1024) {
+        if (doc.getLength() > Config.ins.getTermnal_max_text_size() * 1024) {
             try {
                 doc.remove(0, 1024);
             } catch (Exception e) {
@@ -54,7 +52,7 @@ public class TerminalHandler {
         } catch (Exception e) {
             logger.info(e.toString());
         }
-        if (Context.getBoolean(Context.AUTO_SCROLL, true)) {
+        if (Regedit.getBoolean(Regedit.AUTO_SCROLL, true)) {
             try {
                 rSyntaxTextArea.setCaretPosition(doc.getLength());
             } catch (Exception e) {

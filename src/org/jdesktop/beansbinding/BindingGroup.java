@@ -50,7 +50,7 @@ public class BindingGroup {
         String name = binding.getName();
         if (name != null) {
             if (getBinding(name) != null) {
-                throw new IllegalArgumentException("Context already contains a binding with name \"" + name + "\"");
+                throw new IllegalArgumentException("Regedit already contains a binding with name \"" + name + "\"");
             } else {
                 putNamed(name, binding);
             }
