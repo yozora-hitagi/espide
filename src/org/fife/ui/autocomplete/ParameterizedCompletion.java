@@ -27,7 +27,7 @@ public interface ParameterizedCompletion extends Completion {
 	 * 
 	 * @return The definition string.
 	 */
-	public String getDefinitionString();
+    String getDefinitionString();
 
 
 	/**
@@ -37,7 +37,7 @@ public interface ParameterizedCompletion extends Completion {
 	 * @return The parameter.
 	 * @see #getParamCount()
 	 */
-	public Parameter getParam(int index);
+    Parameter getParam(int index);
 
 
 	/**
@@ -46,11 +46,11 @@ public interface ParameterizedCompletion extends Completion {
 	 * @return The number of parameters this completion takes.
 	 * @see #getParam(int)
 	 */
-	public int getParamCount();
+    int getParamCount();
 
 
-	public ParameterizedCompletionInsertionInfo getInsertionInfo(
-			JTextComponent tc, boolean replaceTabsWithSpaces);
+	ParameterizedCompletionInsertionInfo getInsertionInfo(
+            JTextComponent tc, boolean replaceTabsWithSpaces);
 
 
 	/**
@@ -59,13 +59,13 @@ public interface ParameterizedCompletion extends Completion {
 	 *
 	 * @return Whether the tool tip is appropriate to display.
 	 */
-	public boolean getShowParameterToolTip();
+    boolean getShowParameterToolTip();
 
 
 	/**
 	 * A parameter passed to a parameterized {@link Completion}.
 	 */
-	public static class Parameter {
+    class Parameter {
 
 		private String name;
 		private Object type;

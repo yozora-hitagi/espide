@@ -47,7 +47,7 @@ public interface Completion extends Comparable<Completion> {
 	 * @return How this completion compares to the other one.
 	 */
 	@Override
-	public int compareTo(Completion other);
+    int compareTo(Completion other);
 
 
 	/**
@@ -60,7 +60,7 @@ public interface Completion extends Comparable<Completion> {
 	 * @param comp The text component.
 	 * @return The already-entered portion of this completion.
 	 */
-	public String getAlreadyEntered(JTextComponent comp);
+    String getAlreadyEntered(JTextComponent comp);
 
 
 	/**
@@ -68,7 +68,7 @@ public interface Completion extends Comparable<Completion> {
 	 *
 	 * @return The icon, or <code>null</code> for none.
 	 */
-	public Icon getIcon();
+    Icon getIcon();
 
 
 	/**
@@ -82,7 +82,7 @@ public interface Completion extends Comparable<Completion> {
 	 *         be offered.
 	 * @see #getReplacementText()
 	 */
-	public String getInputText();
+    String getInputText();
 
 
 	/**
@@ -90,7 +90,7 @@ public interface Completion extends Comparable<Completion> {
 	 *
 	 * @return The provider.
 	 */
-	public CompletionProvider getProvider();
+    CompletionProvider getProvider();
 
 
 	/**
@@ -107,7 +107,7 @@ public interface Completion extends Comparable<Completion> {
 	 *
 	 * @return The relevance of this completion.
 	 */
-	public int getRelevance();
+    int getRelevance();
 
 
 	/**
@@ -118,7 +118,7 @@ public interface Completion extends Comparable<Completion> {
 	 * @return The replacement text.
 	 * @see #getInputText()
 	 */
-	public String getReplacementText();
+    String getReplacementText();
 
 
 	/**
@@ -129,7 +129,7 @@ public interface Completion extends Comparable<Completion> {
 	 *         <code>null</code> if there is no description for this
 	 *         completion.
 	 */
-	public String getSummary();
+    String getSummary();
 
 
 	/**
@@ -148,7 +148,7 @@ public interface Completion extends Comparable<Completion> {
 	 * @return The tool tip text for this completion, or <code>null</code> if
 	 *         none.
 	 */
-	public String getToolTipText();
+    String getToolTipText();
 
 
 }

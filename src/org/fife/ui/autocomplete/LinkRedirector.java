@@ -14,7 +14,7 @@ import java.net.URL;
 public interface LinkRedirector {
 
 
-	public URL possiblyRedirect(URL original);
+	URL possiblyRedirect(URL original);
 
 
 }

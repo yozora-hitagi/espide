@@ -86,8 +86,8 @@ public class Util {
 			if (desktop!=null) {
 				try {
 					Method m = desktop.getClass().getDeclaredMethod(
-								"browse", new Class[] { URI.class });
-					m.invoke(desktop, new Object[] { uri });
+								"browse", URI.class);
+					m.invoke(desktop, uri);
 					success = true;
 				} catch (RuntimeException re) {
 					throw re; // Keep FindBugs happy

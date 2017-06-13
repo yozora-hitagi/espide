@@ -39,8 +39,8 @@ public interface ExternalURLHandler {
 	 * @param callback Allows you to display new content in the description
 	 *        window.
 	 */
-	public void urlClicked(HyperlinkEvent e, Completion c,
-						DescWindowCallback callback);
+    void urlClicked(HyperlinkEvent e, Completion c,
+                    DescWindowCallback callback);
 
 
 }

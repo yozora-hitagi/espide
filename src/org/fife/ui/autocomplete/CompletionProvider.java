@@ -36,7 +36,7 @@ public interface CompletionProvider {
 	 *
 	 * @see #setParameterizedCompletionParams(char, String, char)
 	 */
-	public void clearParameterizedCompletionParams();
+    void clearParameterizedCompletionParams();
 
 
 	/**
@@ -49,7 +49,7 @@ public interface CompletionProvider {
 	 *         (<code>""</code>) means auto-completion should still be
 	 *         considered (i.e., all possible choices are valid).
 	 */
-	public String getAlreadyEnteredText(JTextComponent comp);
+    String getAlreadyEnteredText(JTextComponent comp);
 
 
 	/**
@@ -60,7 +60,7 @@ public interface CompletionProvider {
 	 * @return The list of {@link Completion}s.  If no completions are
 	 *         available, this method should return an empty list.
 	 */
-	public List<Completion> getCompletions(JTextComponent comp);
+    List<Completion> getCompletions(JTextComponent comp);
 
 
 	/**
@@ -72,7 +72,7 @@ public interface CompletionProvider {
 	 * @param p The position, usually from a <tt>MouseEvent</tt>.
 	 * @return The completions, or an empty list if there are none.
 	 */
-	public List<Completion> getCompletionsAt(JTextComponent comp, Point p);
+    List<Completion> getCompletionsAt(JTextComponent comp, Point p);
 
 
 	/**
@@ -82,7 +82,7 @@ public interface CompletionProvider {
 	 *         be used.
 	 * @see #setListCellRenderer(ListCellRenderer)
 	 */
-	public ListCellRenderer getListCellRenderer();
+    ListCellRenderer getListCellRenderer();
 
 
 	/**
@@ -94,7 +94,7 @@ public interface CompletionProvider {
 	 * @return The parameter choices provider, or <code>null</code> if
 	 *         none is installed.
 	 */
-	public ParameterChoicesProvider getParameterChoicesProvider();
+    ParameterChoicesProvider getParameterChoicesProvider();
 
 
 	/**
@@ -106,7 +106,7 @@ public interface CompletionProvider {
 	 * @return The list of {@link ParameterizedCompletion}s.  If no completions
 	 *         are available, this may be <code>null</code>.
 	 */
-	public List<ParameterizedCompletion> getParameterizedCompletions(JTextComponent tc);
+    List<ParameterizedCompletion> getParameterizedCompletions(JTextComponent tc);
 
 
 	/**
@@ -119,7 +119,7 @@ public interface CompletionProvider {
 	 * @see #getParameterListSeparator()
 	 * @see #setParameterizedCompletionParams(char, String, char)
 	 */
-	public char getParameterListEnd();
+    char getParameterListEnd();
 
 
 	/**
@@ -131,7 +131,7 @@ public interface CompletionProvider {
 	 * @see #getParameterListEnd()
 	 * @see #setParameterizedCompletionParams(char, String, char)
 	 */
-	public String getParameterListSeparator();
+    String getParameterListSeparator();
 
 
 	/**
@@ -144,7 +144,7 @@ public interface CompletionProvider {
 	 * @see #getParameterListSeparator()
 	 * @see #setParameterizedCompletionParams(char, String, char)
 	 */
-	public char getParameterListStart();
+    char getParameterListStart();
 
 
 	/**
@@ -153,7 +153,7 @@ public interface CompletionProvider {
 	 * @return The parent completion provider.
 	 * @see #setParent(CompletionProvider)
 	 */
-	public CompletionProvider getParent();
+    CompletionProvider getParent();
 
 
 	/**
@@ -168,7 +168,7 @@ public interface CompletionProvider {
 	 * @param tc The text component.
 	 * @return Whether auto-activation would be appropriate.
 	 */
-	public boolean isAutoActivateOkay(JTextComponent tc);
+    boolean isAutoActivateOkay(JTextComponent tc);
 
 
 	/**
@@ -177,7 +177,7 @@ public interface CompletionProvider {
 	 * @param r The renderer to use.
 	 * @see #getListCellRenderer()
 	 */
-	public void setListCellRenderer(ListCellRenderer r);
+    void setListCellRenderer(ListCellRenderer r);
 
 
 	/**
@@ -196,8 +196,8 @@ public interface CompletionProvider {
 	 *         <tt>separator</tt> is <code>null</code> or an empty string.
 	 * @see #clearParameterizedCompletionParams()
 	 */
-	public void setParameterizedCompletionParams(char listStart,
-										String separator, char listEnd);
+    void setParameterizedCompletionParams(char listStart,
+                                          String separator, char listEnd);
 
 
 	/**
@@ -207,7 +207,7 @@ public interface CompletionProvider {
 	 *        be no parent provider.
 	 * @see #getParent()
 	 */
-	public void setParent(CompletionProvider parent);
+    void setParent(CompletionProvider parent);
 
 
 }

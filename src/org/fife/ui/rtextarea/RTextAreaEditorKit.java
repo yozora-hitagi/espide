@@ -1488,7 +1488,7 @@ searchOffs = Math.max(lastWordStart - 1, 0);
 		@Override
 		public boolean isEnabled() {
 			JTextComponent tc = getTextComponent(null);
-			return (tc==null || tc.isEditable()) ? super.isEnabled() : false;
+			return (tc == null || tc.isEditable()) && super.isEnabled();
 		}
 
 	}

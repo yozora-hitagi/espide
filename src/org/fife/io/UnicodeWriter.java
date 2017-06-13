@@ -161,11 +161,8 @@ public class UnicodeWriter extends Writer {
 	public static boolean getWriteUtf8BOM() {
 		String prop = System.getProperty(PROPERTY_WRITE_UTF8_BOM);
 		// We default to writing the BOM, for some reason.
-		if (prop!=null && Boolean.valueOf(prop).equals(Boolean.FALSE)) {
-			return false;
-		}
-		return true;
-	}
+        return !(prop != null && Boolean.valueOf(prop).equals(Boolean.FALSE));
+    }
 
 
 	/**

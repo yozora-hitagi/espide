@@ -360,10 +360,10 @@ public abstract class RTextAreaBase extends JTextArea {
 			return null;
 		}
 		return (backgroundPainter instanceof ImageBackgroundPainterStrategy) ?
-			(Object)((ImageBackgroundPainterStrategy)backgroundPainter).
-					getMasterImage() :
-			(Object)((ColorBackgroundPainterStrategy)backgroundPainter).
-					getColor();
+                ((ImageBackgroundPainterStrategy)backgroundPainter).
+                        getMasterImage() :
+                ((ColorBackgroundPainterStrategy)backgroundPainter).
+                        getColor();
 	}
 
 

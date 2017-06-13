@@ -1,0 +1,81 @@
+function end
+function
+function return end
+end
+do
+print("")
+if
+else
+elseif
+if else end
+while
+while do end
+do end
+for
+for do end
+repeat
+until
+repeat until
+for
+for key, value in pairs() do  end
+for do end
+wifi.setmode(wifi.STATION)
+wifi.getmode()
+wifi.startsmart()
+wifi.stopsmart()
+wifi.sta.config("SSID","password")
+wifi.sta.connect()
+wifi.sta.disconnect()
+wifi.sta.autoconnect()
+wifi.sta.getip()
+wifi.sta.getmac()
+wifi.sta.getap()
+wifi.sta.status()
+wifi.ap.config()
+wifi.ap.getip()
+wifi.ap.getmac()
+gpio.mode(pin,gpio.OUTPUT)
+gpio.write(pin,gpio.HIGH)
+gpio.write(pin,gpio.LOW)
+gpio.read(pin)
+gpio.trig(0, "act",func)
+conn=net.createConnection(net.TCP, 0)
+net.createConnection(net.TCP, 0)
+on("receive", function(conn, payload) print(payload) end )
+connect(80,"0.0.0.0")
+srv=net.createServer(net.TCP)
+srv:listen(80,function(conn) conn:on("receive",function(conn,payload) print(payload) conn:send("<h1> Hello, NodeMcu.</h1>") end) conn:on("sent",function(conn) conn:close() end) end)
+net.createServer(net.TCP, timeout)
+net.server.listen(port,[ip],function(net.socket))
+dns(domain, function(net.socket, ip))
+pwm.setduty(0,0)
+pwm.getduty(0)
+pwm.setup(0,0,0)
+pwm.start(0)
+pwm.close(0)
+pwm.setclock(0, 100)
+pwm.getclock(0)
+pwm.close(0)
+file.open("","r")
+file.writeline()
+file.readline()
+file.write()
+file.close()
+file.remove()
+file.flush()
+file.seek()
+file.list()
+node.restart()
+node.dsleep()
+node.chipid()
+node.heap()
+node.key(type, function())
+node.led()
+node.input()
+node.output()
+tmr.alarm(0,1000,1,function()  end)
+tmr.delay()
+tmr.now()
+tmr.stop(id)
+tmr.wdclr()
+dofile("")

@@ -29,7 +29,7 @@ public interface DescWindowCallback {
 	 * @param completion The new completion.
 	 * @param anchor The anchor to scroll to, or <code>null</code> if none.
 	 */
-	public void showSummaryFor(Completion completion, String anchor);
+    void showSummaryFor(Completion completion, String anchor);
 
 
 }

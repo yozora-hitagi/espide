@@ -23,7 +23,7 @@ interface TemplatePiece {
 	String getText();
 
 
-	public class Text implements TemplatePiece {
+	class Text implements TemplatePiece {
 
 		private String text;
 
@@ -44,7 +44,7 @@ interface TemplatePiece {
 	}
 
 
-	public class Param implements TemplatePiece {
+	class Param implements TemplatePiece {
 
 		String text;
 
@@ -65,7 +65,7 @@ interface TemplatePiece {
 	}
 
 
-	public class ParamCopy implements TemplatePiece {
+	class ParamCopy implements TemplatePiece {
 
 		private String text;
 

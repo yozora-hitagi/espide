@@ -62,7 +62,7 @@ public class AutoCompletionEvent extends EventObject {
 	/**
 	 * Enumeration of the various types of this event.
 	 */
-	public static enum Type {
+	public enum Type {
 		POPUP_SHOWN,
 		POPUP_HIDDEN
 	}

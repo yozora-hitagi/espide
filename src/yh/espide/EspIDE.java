@@ -3,14 +3,17 @@ package yh.espide;
 
 import jssc.*;
 import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +35,12 @@ public class EspIDE extends javax.swing.JFrame {
 
     public EspIDE() {
         setTitle(Version.title());
+
+        LED_GREY = new javax.swing.ImageIcon(getClass().getResource("/resources/led_grey.png"));
+        LED_GREEN = new javax.swing.ImageIcon(getClass().getResource("/resources/led_green.png"));
+        LED_RED = new javax.swing.ImageIcon(getClass().getResource("/resources/led_red.png"));
+        LED_BLUE = new javax.swing.ImageIcon(getClass().getResource("/resources/led_blue.png"));
+
         initComponents();
         FinalInit();
     }
@@ -75,21 +84,6 @@ public class EspIDE extends javax.swing.JFrame {
 
         SriptsTab = new javax.swing.JLayeredPane();
         FilesToolBar = new javax.swing.JToolBar();
-        ButtonFileNew = new javax.swing.JButton();
-        ButtonFileOpen = new javax.swing.JButton();
-        ButtonFileReload = new javax.swing.JButton();
-        ButtonFileSave = new javax.swing.JButton();
-        ButtonFileClose = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JToolBar.Separator();
-        ButtonUndo = new javax.swing.JButton();
-        ButtonRedo = new javax.swing.JButton();
-        jSeparator8 = new javax.swing.JToolBar.Separator();
-        ButtonCut = new javax.swing.JButton();
-        ButtonCopy = new javax.swing.JButton();
-        ButtonPaste = new javax.swing.JButton();
-        jSeparator6 = new javax.swing.JToolBar.Separator();
-        ButtonSendSelected = new javax.swing.JButton();
-        ButtonSendLine = new javax.swing.JButton();
         FilesTabbedPane = new javax.swing.JTabbedPane();
         FileLayeredPane = new javax.swing.JLayeredPane();
         TextScroll = new org.fife.ui.rtextarea.RTextScrollPane();
@@ -121,7 +115,6 @@ public class EspIDE extends javax.swing.JFrame {
         LF = new javax.swing.JCheckBox();
         RightBottomPane = new javax.swing.JLayeredPane();
         Command = new javax.swing.JComboBox();
-        RightBigPane = new javax.swing.JLayeredPane();
         RightFilesSplitPane = new javax.swing.JSplitPane();
 
         TerminalPane = new org.fife.ui.rtextarea.RTextScrollPane();
@@ -141,48 +134,44 @@ public class EspIDE extends javax.swing.JFrame {
 
         SendCommand = new javax.swing.JButton();
         MainMenuBar = new javax.swing.JMenuBar();
-        MenuFile = new javax.swing.JMenu();
+
         MenuItemFileNew = new javax.swing.JMenuItem();
         MenuItemFileOpen = new javax.swing.JMenuItem();
         MenuItemFileReload = new javax.swing.JMenuItem();
         MenuItemFileSave = new javax.swing.JMenuItem();
         MenuItemFileClose = new javax.swing.JMenuItem();
-        jSeparatorFileMenu = new javax.swing.JPopupMenu.Separator();
+
         MenuItemFileSaveESP = new javax.swing.JMenuItem();
         MenuItemFileSendESP = new javax.swing.JMenuItem();
 
-        MenuItemFileRemoveESP = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        MenuItemFileExit = new javax.swing.JMenuItem();
-        MenuEdit = new javax.swing.JMenu();
+
         MenuItemEditUndo = new javax.swing.JMenuItem();
         MenuItemEditRedo = new javax.swing.JMenuItem();
-        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+
         MenuItemEditCut = new javax.swing.JMenuItem();
         MenuItemEditCopy = new javax.swing.JMenuItem();
         MenuItemEditPaste = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+
         MenuItemEditSendSelected = new javax.swing.JMenuItem();
         MenuItemEditSendLine = new javax.swing.JMenuItem();
 
-        MenuView = new javax.swing.JMenu();
+
         AlwaysOnTop = new javax.swing.JCheckBoxMenuItem();
         MenuItemViewClearTerminal = new javax.swing.JMenuItem();
-        jSeparator9 = new javax.swing.JPopupMenu.Separator();
+
         MenuItemViewTerminalOnly = new javax.swing.JCheckBoxMenuItem();
         MenuItemViewEditorOnly = new javax.swing.JCheckBoxMenuItem();
-        jSeparator18 = new javax.swing.JPopupMenu.Separator();
+
         MenuItemViewToolbar = new javax.swing.JCheckBoxMenuItem();
         MenuItemViewFileManager = new javax.swing.JCheckBoxMenuItem();
 
 
-        jSeparator13 = new javax.swing.JPopupMenu.Separator();
         MenuItemViewTermFontInc = new javax.swing.JMenuItem();
         MenuItemViewTermFontDec = new javax.swing.JMenuItem();
-        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+
         MenuItemViewEditorFontInc = new javax.swing.JMenuItem();
         MenuItemViewEditorFontDec = new javax.swing.JMenuItem();
-        jSeparator11 = new javax.swing.JPopupMenu.Separator();
+
         MenuItemViewFontDefault = new javax.swing.JMenuItem();
 
 
@@ -202,7 +191,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemTerminalClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal_clear.png"))); // NOI18N
         MenuItemTerminalClear.setText("Clear");
         MenuItemTerminalClear.setToolTipText("");
-        MenuItemTerminalClear.addActionListener(evt -> MenuItemTerminalClearActionPerformed(evt));
+        MenuItemTerminalClear.addActionListener(evt -> thandler.getRSyntaxTextArea().setText(""));
         ContextMenuTerminal.add(MenuItemTerminalClear);
 
         MenuItemTerminalCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
@@ -210,20 +199,20 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemTerminalCopy.setText("Copy");
         MenuItemTerminalCopy.setToolTipText("Copy selected text to system clipboard");
         MenuItemTerminalCopy.setEnabled(false);
-        MenuItemTerminalCopy.addActionListener(evt -> MenuItemTerminalCopyActionPerformed(evt));
+        MenuItemTerminalCopy.addActionListener(evt -> thandler.getRSyntaxTextArea().copy());
         ContextMenuTerminal.add(MenuItemTerminalCopy);
         ContextMenuTerminal.add(TerminalSeparator1);
 
         MenuItemTerminalFontInc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemTerminalFontInc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom in.png"))); // NOI18N
         MenuItemTerminalFontInc.setText("Inc font size");
-        MenuItemTerminalFontInc.addActionListener(evt -> MenuItemTerminalFontIncActionPerformed(evt));
+        MenuItemTerminalFontInc.addActionListener(evt -> MenuItemViewTermFontInc.doClick());
         ContextMenuTerminal.add(MenuItemTerminalFontInc);
 
         MenuItemTerminalFontDec.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemTerminalFontDec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom out.png"))); // NOI18N
         MenuItemTerminalFontDec.setText("Dec font size");
-        MenuItemTerminalFontDec.addActionListener(evt -> MenuItemTerminalFontDecActionPerformed(evt));
+        MenuItemTerminalFontDec.addActionListener(evt -> MenuItemViewTermFontDec.doClick());
         ContextMenuTerminal.add(MenuItemTerminalFontDec);
         ContextMenuTerminal.add(TerminalSeparator2);
 
@@ -233,15 +222,15 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemEditorUndo.setText("Undo");
         MenuItemEditorUndo.setToolTipText("");
         MenuItemEditorUndo.setEnabled(false);
-        MenuItemEditorUndo.addActionListener(evt -> MenuItemEditorUndoActionPerformed(evt));
+        MenuItemEditorUndo.addActionListener(evt -> MenuItemEditUndo.doClick());
         ContextMenuEditor.add(MenuItemEditorUndo);
 
-        MenuItemEditorRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        MenuItemEditorRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK));
         MenuItemEditorRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/redo1.png"))); // NOI18N
         MenuItemEditorRedo.setText("Redo");
         MenuItemEditorRedo.setToolTipText("");
         MenuItemEditorRedo.setEnabled(false);
-        MenuItemEditorRedo.addActionListener(evt -> MenuItemEditorRedoActionPerformed(evt));
+        MenuItemEditorRedo.addActionListener(evt -> MenuItemEditRedo.doClick());
         ContextMenuEditor.add(MenuItemEditorRedo);
         ContextMenuEditor.add(EditorSeparator1);
 
@@ -249,14 +238,14 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemEditorSendSelected.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/send_selected.png"))); // NOI18N
         MenuItemEditorSendSelected.setText("Send selected to ESP");
         MenuItemEditorSendSelected.setToolTipText("Send selected fragment to ESP");
-        MenuItemEditorSendSelected.addActionListener(evt -> MenuItemEditorSendSelectedActionPerformed(evt));
+        MenuItemEditorSendSelected.addActionListener(evt -> MenuItemEditSendSelected.doClick());
         ContextMenuEditor.add(MenuItemEditorSendSelected);
 
         MenuItemEditorSendLine.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
         MenuItemEditorSendLine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/run_line.png"))); // NOI18N
         MenuItemEditorSendLine.setText("Send current line to ESP");
         MenuItemEditorSendLine.setToolTipText("Send current line to ESP");
-        MenuItemEditorSendLine.addActionListener(evt -> MenuItemEditorSendLineActionPerformed(evt));
+        MenuItemEditorSendLine.addActionListener(evt -> MenuItemEditSendLine.doClick());
         ContextMenuEditor.add(MenuItemEditorSendLine);
         ContextMenuEditor.add(EditorSeparator);
 
@@ -264,34 +253,34 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemEditorCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cut.png"))); // NOI18N
         MenuItemEditorCut.setText("Cut");
         MenuItemEditorCut.setEnabled(false);
-        MenuItemEditorCut.addActionListener(evt -> MenuItemEditorCutActionPerformed(evt));
+        MenuItemEditorCut.addActionListener(evt -> MenuItemEditCut.doClick());
         ContextMenuEditor.add(MenuItemEditorCut);
 
         MenuItemEditorCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemEditorCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/copy.png"))); // NOI18N
         MenuItemEditorCopy.setText("Copy");
         MenuItemEditorCopy.setEnabled(false);
-        MenuItemEditorCopy.addActionListener(evt -> MenuItemEditorCopyActionPerformed(evt));
+        MenuItemEditorCopy.addActionListener(evt -> MenuItemEditCopy.doClick());
         ContextMenuEditor.add(MenuItemEditorCopy);
 
         MenuItemEditorPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemEditorPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/paste.png"))); // NOI18N
         MenuItemEditorPaste.setText("Paste");
         MenuItemEditorPaste.setEnabled(false);
-        MenuItemEditorPaste.addActionListener(evt -> MenuItemEditorPasteActionPerformed(evt));
+        MenuItemEditorPaste.addActionListener(evt -> MenuItemEditPaste.doClick());
         ContextMenuEditor.add(MenuItemEditorPaste);
         ContextMenuEditor.add(EditorSeparator2);
 
         MenuItemEditorFontInc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.ALT_MASK));
         MenuItemEditorFontInc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom in.png"))); // NOI18N
         MenuItemEditorFontInc.setText("Inc font size");
-        MenuItemEditorFontInc.addActionListener(evt -> MenuItemEditorFontIncActionPerformed(evt));
+        MenuItemEditorFontInc.addActionListener(evt -> MenuItemViewEditorFontInc.doClick());
         ContextMenuEditor.add(MenuItemEditorFontInc);
 
         MenuItemEditorFontDec.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, java.awt.event.InputEvent.ALT_MASK));
         MenuItemEditorFontDec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom out.png"))); // NOI18N
         MenuItemEditorFontDec.setText("Dec font size");
-        MenuItemEditorFontDec.addActionListener(evt -> MenuItemEditorFontDecActionPerformed(evt));
+        MenuItemEditorFontDec.addActionListener(evt -> MenuItemViewEditorFontDec.doClick());
         ContextMenuEditor.add(MenuItemEditorFontDec);
 
 
@@ -309,7 +298,7 @@ public class EspIDE extends javax.swing.JFrame {
         ShowFileManager.setSelected(true);
         ShowFileManager.setText("Show/Hide FileManager panel");
         ShowFileManager.setToolTipText("Look at View for enabling");
-        ShowFileManager.addItemListener(evt -> ShowFileManagerItemStateChanged(evt));
+        ShowFileManager.addItemListener(evt -> MenuItemViewFileManager.setSelected(ShowFileManager.isSelected()));
         ContextMenuFileManager.add(ShowFileManager);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -331,7 +320,7 @@ public class EspIDE extends javax.swing.JFrame {
             }
         });
 
-        addPropertyChangeListener(evt -> formPropertyChange(evt));
+        addPropertyChangeListener(this::formPropertyChange);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
             }
@@ -373,196 +362,76 @@ public class EspIDE extends javax.swing.JFrame {
         FilesToolBar.setMinimumSize(new java.awt.Dimension(321, 40));
         FilesToolBar.setPreferredSize(new java.awt.Dimension(321, 40));
 
-        ButtonFileNew.setAction(MenuItemFileNew.getAction());
-        ButtonFileNew.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonFileNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/document.png"))); // NOI18N
-        ButtonFileNew.setToolTipText("New file");
-        ButtonFileNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonFileNew.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonFileNew.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonFileNew.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonFileNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
+        ButtonFileNew = new EditButton("新建", "/resources/document.png", "New file");
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileNew, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileNew, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
-
-        ButtonFileNew.addActionListener(evt -> ButtonFileNewActionPerformed(evt));
+        ButtonFileNew.addActionListener(evt -> MenuItemFileNew.doClick());
         FilesToolBar.add(ButtonFileNew);
 
-        ButtonFileOpen.setAction(MenuItemFileOpen.getAction());
-        ButtonFileOpen.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonFileOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/folder open.png"))); // NOI18N
-        ButtonFileOpen.setText("Open");
-        ButtonFileOpen.setToolTipText("Open file from disk");
-        ButtonFileOpen.setHideActionText(true);
-        ButtonFileOpen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonFileOpen.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonFileOpen.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonFileOpen.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonFileOpen.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ButtonFileOpen.addActionListener(evt -> ButtonFileOpenActionPerformed(evt));
+        ButtonFileOpen = new EditButton("打开", "/resources/folder open.png", "Open file from disk");
+        ButtonFileOpen.addActionListener(evt -> MenuItemFileOpen.doClick());
         FilesToolBar.add(ButtonFileOpen);
 
-        ButtonFileReload.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonFileReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh.png"))); // NOI18N
-        ButtonFileReload.setText("Reload");
-        ButtonFileReload.setToolTipText("Reload file from disk (for use with external editor)");
-        ButtonFileReload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonFileReload.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonFileReload.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonFileReload.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonFileReload.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-
+        ButtonFileReload = new EditButton("刷新", "/resources/refresh.png", "Reload file from disk (for use with external editor)");
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileReload, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileReload, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
-
-        ButtonFileReload.addActionListener(evt -> ButtonFileReloadActionPerformed(evt));
+        ButtonFileReload.addActionListener(evt -> MenuItemFileReload.doClick());
         FilesToolBar.add(ButtonFileReload);
 
-        ButtonFileSave.setAction(MenuItemFileSave.getAction());
-        ButtonFileSave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonFileSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/save.png"))); // NOI18N
-        ButtonFileSave.setText("Save");
-        ButtonFileSave.setToolTipText("Save file to disk");
-        ButtonFileSave.setHideActionText(true);
-        ButtonFileSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonFileSave.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonFileSave.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonFileSave.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonFileSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ButtonFileSave.addActionListener(evt -> ButtonFileSaveActionPerformed(evt));
+        ButtonFileSave = new EditButton("保存", "/resources/save.png", "Save file to disk");
+        ButtonFileSave.addActionListener(evt -> MenuItemFileSave.doClick());
         FilesToolBar.add(ButtonFileSave);
 
-
-        ButtonFileClose.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonFileClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/folder closed.png"))); // NOI18N
-        ButtonFileClose.setText("Close");
-        ButtonFileClose.setToolTipText("Close file");
-        ButtonFileClose.setHideActionText(true);
-        ButtonFileClose.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonFileClose.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonFileClose.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonFileClose.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonFileClose.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-
+        ButtonFileClose = new EditButton("关闭", "/resources/folder closed.png", "Close file");
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileClose, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileClose, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
-
-        ButtonFileClose.addActionListener(evt -> ButtonFileCloseActionPerformed(evt));
+        ButtonFileClose.addActionListener(evt -> MenuItemFileClose.doClick());
         FilesToolBar.add(ButtonFileClose);
-        FilesToolBar.add(jSeparator1);
+        FilesToolBar.add(new JSeparator());
 
-        ButtonUndo.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/undo1.png"))); // NOI18N
-        ButtonUndo.setText("Undo");
-        ButtonUndo.setToolTipText("Undo last action");
+        ButtonUndo = new EditButton("撤销", "/resources/undo1.png", "Undo last action");
         ButtonUndo.setEnabled(false);
         ButtonUndo.setFocusable(false);
-        ButtonUndo.setHideActionText(true);
-        ButtonUndo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonUndo.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonUndo.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonUndo.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonUndo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ButtonUndo.addActionListener(evt -> ButtonUndoActionPerformed(evt));
+        ButtonUndo.addActionListener(evt -> MenuItemEditUndo.doClick());
         FilesToolBar.add(ButtonUndo);
 
-        ButtonRedo.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/redo1.png"))); // NOI18N
-        ButtonRedo.setText("Redo");
-        ButtonRedo.setToolTipText("Redo last action");
+        ButtonRedo = new EditButton("重做", "/resources/redo1.png", "Redo last action");
         ButtonRedo.setEnabled(false);
         ButtonRedo.setFocusable(false);
-        ButtonRedo.setHideActionText(true);
-        ButtonRedo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonRedo.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonRedo.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonRedo.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonRedo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ButtonRedo.addActionListener(evt -> ButtonRedoActionPerformed(evt));
+        ButtonRedo.addActionListener(evt -> MenuItemEditRedo.doClick());
         FilesToolBar.add(ButtonRedo);
-        FilesToolBar.add(jSeparator8);
+        FilesToolBar.add(new JSeparator());
 
-        ButtonCut.setAction(MenuItemEditCut.getAction());
-        ButtonCut.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cut.png"))); // NOI18N
-        ButtonCut.setText("Cut");
-        ButtonCut.setToolTipText("Cut");
+        ButtonCut = new EditButton("剪切", "/resources/cut.png", "Cut");
         ButtonCut.setEnabled(false);
-        ButtonCut.setHideActionText(true);
-        ButtonCut.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonCut.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonCut.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonCut.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonCut.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ButtonCut.addActionListener(evt -> ButtonCutActionPerformed(evt));
+        ButtonCut.addActionListener(evt -> MenuItemEditCut.doClick());
         FilesToolBar.add(ButtonCut);
 
-        ButtonCopy.setAction(MenuItemEditCopy.getAction());
-        ButtonCopy.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/copy.png"))); // NOI18N
-        ButtonCopy.setText("Copy");
-        ButtonCopy.setToolTipText("Copy");
+        ButtonCopy = new EditButton("拷贝", "/resources/copy.png", "Copy");
         ButtonCopy.setEnabled(false);
-        ButtonCopy.setHideActionText(true);
-        ButtonCopy.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonCopy.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        ButtonCopy.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonCopy.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonCopy.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonCopy.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ButtonCopy.addActionListener(evt -> ButtonCopyActionPerformed(evt));
+        ButtonCopy.addActionListener(evt -> MenuItemEditCopy.doClick());
         FilesToolBar.add(ButtonCopy);
 
-        ButtonPaste.setAction(MenuItemEditPaste.getAction());
-        ButtonPaste.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/paste.png"))); // NOI18N
-        ButtonPaste.setText("Paste");
-        ButtonPaste.setToolTipText("Paste");
+        ButtonPaste = new EditButton("粘贴", "/resources/paste.png", "Paste");
         ButtonPaste.setEnabled(false);
-        ButtonPaste.setHideActionText(true);
-        ButtonPaste.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonPaste.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonPaste.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonPaste.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonPaste.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ButtonPaste.addActionListener(evt -> ButtonPasteActionPerformed(evt));
+        ButtonPaste.addActionListener(evt -> MenuItemEditPaste.doClick());
         FilesToolBar.add(ButtonPaste);
-        FilesToolBar.add(jSeparator6);
+        FilesToolBar.add(new JSeparator());
 
-        ButtonSendSelected.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonSendSelected.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/send_selected.png"))); // NOI18N
-        ButtonSendSelected.setToolTipText("Send selected block to ESP");
-        ButtonSendSelected.setHideActionText(true);
-        ButtonSendSelected.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonSendSelected.setText("Block");
-        ButtonSendSelected.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonSendSelected.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonSendSelected.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonSendSelected.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-
+        ButtonSendSelected = new EditButton("Block", "/resources/send_selected.png", "Send selected block to ESP");
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemEditorSendSelected, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonSendSelected, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
-
-        ButtonSendSelected.addActionListener(evt -> ButtonSendSelectedActionPerformed(evt));
+        ButtonSendSelected.addActionListener(evt -> MenuItemEditSendSelected.doClick());
         FilesToolBar.add(ButtonSendSelected);
 
-        ButtonSendLine.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        ButtonSendLine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/run_line.png"))); // NOI18N
-        ButtonSendLine.setText("Line");
-        ButtonSendLine.setToolTipText("Send current line to ESP");
+        ButtonSendLine = new EditButton("Line", "/resources/run_line.png", "Send current line to ESP");
         ButtonSendLine.setFocusable(false);
-        ButtonSendLine.setHideActionText(true);
-        ButtonSendLine.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ButtonSendLine.setMaximumSize(new java.awt.Dimension(40, 40));
-        ButtonSendLine.setMinimumSize(new java.awt.Dimension(40, 40));
-        ButtonSendLine.setPreferredSize(new java.awt.Dimension(40, 40));
-        ButtonSendLine.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ButtonSendLine.addActionListener(evt -> ButtonSendLineActionPerformed(evt));
+        ButtonSendLine.addActionListener(evt -> MenuItemEditSendLine.doClick());
         FilesToolBar.add(ButtonSendLine);
 
         FilesTabbedPane.setOpaque(true);
-        FilesTabbedPane.addChangeListener(evt -> FilesTabbedPaneStateChanged(evt));
+        FilesTabbedPane.addChangeListener(evt -> FileLabelUpdate());
 
         TextScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         TextScroll.setViewportBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -582,7 +451,7 @@ public class EspIDE extends javax.swing.JFrame {
         TextEditor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
         TextEditor.addCaretListener(evt -> TextEditorCaretUpdate(evt));
 
-        TextEditor.addActiveLineRangeListener(evt -> TextEditorActiveLineRangeChanged(evt));
+        TextEditor.addActiveLineRangeListener(evt -> UpdateEditorButtons());
         TextEditor.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 TextEditorCaretPositionChanged(evt);
@@ -618,11 +487,9 @@ public class EspIDE extends javax.swing.JFrame {
         Busy.setBackground(new java.awt.Color(0, 153, 0));
         Busy.setForeground(new java.awt.Color(255, 255, 255));
         Busy.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Busy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/led_grey.png"))); // NOI18N
+        Busy.setIcon(LED_GREY); // NOI18N
         Busy.setText("IDLE");
         Busy.setOpaque(true);
-
-        FilePathLabel.setText("jLabel1");
 
         ProgressBar.setToolTipText("");
         ProgressBar.setOpaque(true);
@@ -806,7 +673,7 @@ public class EspIDE extends javax.swing.JFrame {
         ReScan.setMaximumSize(new java.awt.Dimension(25, 25));
         ReScan.setMinimumSize(new java.awt.Dimension(25, 25));
         ReScan.setPreferredSize(new java.awt.Dimension(25, 25));
-        ReScan.addActionListener(evt -> ReScanActionPerformed(evt));
+        ReScan.addActionListener(evt -> PortFinder());
 
         AutoScroll.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         AutoScroll.setSelected(true);
@@ -972,8 +839,6 @@ public class EspIDE extends javax.swing.JFrame {
 
         Command.getAccessibleContext().setAccessibleName("Command");
 
-        RightBigPane.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        RightBigPane.setOpaque(true);
 
         RightFilesSplitPane.setDividerLocation(300);
         RightFilesSplitPane.setAutoscrolls(true);
@@ -1144,20 +1009,6 @@ public class EspIDE extends javax.swing.JFrame {
 
         RightFilesSplitPane.setRightComponent(FileManagerScrollPane);
 
-        RightBigPane.setLayer(RightFilesSplitPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout RightBigPaneLayout = new javax.swing.GroupLayout(RightBigPane);
-        RightBigPane.setLayout(RightBigPaneLayout);
-        RightBigPaneLayout.setHorizontalGroup(
-                RightBigPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(RightFilesSplitPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        );
-        RightBigPaneLayout.setVerticalGroup(
-                RightBigPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(RightBigPaneLayout.createSequentialGroup()
-                                .addComponent(RightFilesSplitPane))
-        );
-
 
         SendCommand.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         SendCommand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/left.png"))); // NOI18N
@@ -1170,7 +1021,7 @@ public class EspIDE extends javax.swing.JFrame {
 
         RightBasePane.setLayer(LEDPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         RightBasePane.setLayer(RightBottomPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        RightBasePane.setLayer(RightBigPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        RightBasePane.setLayer(RightFilesSplitPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
         RightBasePane.setLayer(SendCommand, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout RightBasePaneLayout = new javax.swing.GroupLayout(RightBasePane);
@@ -1179,7 +1030,7 @@ public class EspIDE extends javax.swing.JFrame {
                 RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(RightBasePaneLayout.createSequentialGroup()
                                 .addGroup(RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(RightBigPane)
+                                        .addComponent(RightFilesSplitPane)
                                         .addGroup(RightBasePaneLayout.createSequentialGroup()
                                                 .addComponent(RightBottomPane)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1197,7 +1048,7 @@ public class EspIDE extends javax.swing.JFrame {
                                 .addGap(1, 1, 1)
                                 .addComponent(LEDPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(RightBigPane)
+                                .addComponent(RightFilesSplitPane)
                                 .addGap(5, 5, 5)
 
                                 .addGroup(RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1213,8 +1064,7 @@ public class EspIDE extends javax.swing.JFrame {
         MainMenuBar.setName("MainMenu"); // NOI18N
         MainMenuBar.setPreferredSize(new java.awt.Dimension(300, 22));
 
-        MenuFile.setText("File");
-        MenuFile.addActionListener(evt -> MenuFileActionPerformed(evt));
+        JMenu MenuFile = Context.createM1("文件");
 
         JMenuItem settings = new JMenuItem("设置");
         settings.setIcon(new ImageIcon(getClass().getResource("/resources/settings2.png")));
@@ -1227,13 +1077,13 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemFileNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/document.png"))); // NOI18N
         MenuItemFileNew.setText("<html><u>N</u>ew");
         MenuItemFileNew.setToolTipText("File New");
-        MenuItemFileNew.addActionListener(evt -> MenuItemFileNewActionPerformed(evt));
+        MenuItemFileNew.addActionListener(evt -> FileNew(""));
         MenuFile.add(MenuItemFileNew);
 
         MenuItemFileOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemFileOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/folder open.png"))); // NOI18N
         MenuItemFileOpen.setText("<html><u>O</u>pen from disk");
-        MenuItemFileOpen.addActionListener(evt -> MenuItemFileOpenActionPerformed(evt));
+        MenuItemFileOpen.addActionListener(evt -> OpenFile());
         MenuFile.add(MenuItemFileOpen);
 
         MenuItemFileReload.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
@@ -1241,7 +1091,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemFileReload.setText("<html><u>R</u>eload from disk");
         MenuItemFileReload.setToolTipText("Reload file from disk, if you use external editor");
         MenuItemFileReload.setEnabled(false);
-        MenuItemFileReload.addActionListener(evt -> MenuItemFileReloadActionPerformed(evt));
+        MenuItemFileReload.addActionListener(evt -> ReloadFile());
         MenuFile.add(MenuItemFileReload);
 
         MenuItemFileSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
@@ -1256,7 +1106,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemFileClose.setText("Close");
         MenuItemFileClose.addActionListener(evt -> MenuItemFileCloseActionPerformed(evt));
         MenuFile.add(MenuItemFileClose);
-        MenuFile.add(jSeparatorFileMenu);
+        MenuFile.add(new JPopupMenu.Separator());
 
         MenuItemFileSaveESP.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
         MenuItemFileSaveESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/move.png"))); // NOI18N
@@ -1271,25 +1121,21 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemFileSendESP.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
         MenuItemFileSendESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/script_send.png"))); // NOI18N
         MenuItemFileSendESP.setText("<html>S<u>e</u>nd to ESP");
-        MenuItemFileSendESP.addActionListener(evt -> MenuItemFileSendESPActionPerformed(evt));
+        MenuItemFileSendESP.addActionListener(evt -> FileSendESP.doClick());
         MenuFile.add(MenuItemFileSendESP);
 
 
-        MenuItemFileRemoveESP.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemFileRemoveESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/trash.png"))); // NOI18N
-        MenuItemFileRemoveESP.setText("<html><u>R</u>emove from ESP");
-        MenuItemFileRemoveESP.addActionListener(evt -> MenuItemFileRemoveESPActionPerformed(evt));
-        MenuFile.add(MenuItemFileRemoveESP);
-        MenuFile.add(jSeparator2);
+        MenuFile.add(new JPopupMenu.Separator());
 
+        JMenuItem MenuItemFileExit = new JMenuItem();
         MenuItemFileExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemFileExit.setText("Exit");
-        MenuItemFileExit.addActionListener(evt -> MenuItemFileExitActionPerformed(evt));
+        MenuItemFileExit.setText("退出");
+        MenuItemFileExit.addActionListener(evt -> AppClose());
         MenuFile.add(MenuItemFileExit);
 
         MainMenuBar.add(MenuFile);
 
-        MenuEdit.setText("Edit");
+        JMenu MenuEdit = Context.createM1("编辑");
 
         MenuItemEditUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemEditUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/undo1.png"))); // NOI18N
@@ -1304,7 +1150,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemEditRedo.setEnabled(false);
         MenuItemEditRedo.addActionListener(evt -> MenuItemEditRedoActionPerformed(evt));
         MenuEdit.add(MenuItemEditRedo);
-        MenuEdit.add(jSeparator7);
+        MenuEdit.add(new JPopupMenu.Separator());
 
         MenuItemEditCut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemEditCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cut.png"))); // NOI18N
@@ -1327,7 +1173,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemEditPaste.setEnabled(false);
         MenuItemEditPaste.addActionListener(evt -> MenuItemEditPasteActionPerformed(evt));
         MenuEdit.add(MenuItemEditPaste);
-        MenuEdit.add(jSeparator5);
+        MenuEdit.add(new JPopupMenu.Separator());
 
         MenuItemEditSendSelected.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
         MenuItemEditSendSelected.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/send_selected.png"))); // NOI18N
@@ -1350,7 +1196,7 @@ public class EspIDE extends javax.swing.JFrame {
         MainMenuBar.add(MenuEdit);
 
 
-        MenuView.setText("View");
+        JMenu MenuView = Context.createM1("视图");
 
         AlwaysOnTop.setText("Always On Top");
         AlwaysOnTop.setToolTipText("");
@@ -1363,9 +1209,9 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemViewClearTerminal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal_clear.png"))); // NOI18N
         MenuItemViewClearTerminal.setText("Clear terminal");
         MenuItemViewClearTerminal.setToolTipText("Clear terminal window");
-        MenuItemViewClearTerminal.addActionListener(evt -> MenuItemViewClearTerminalActionPerformed(evt));
+        MenuItemViewClearTerminal.addActionListener(evt -> MenuItemTerminalClear.doClick());
         MenuView.add(MenuItemViewClearTerminal);
-        MenuView.add(jSeparator9);
+        MenuView.add(new JPopupMenu.Separator());
 
         MenuItemViewTerminalOnly.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.ALT_MASK));
         MenuItemViewTerminalOnly.setText("Show terminalArea only (Left panel show/hide)");
@@ -1378,7 +1224,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemViewEditorOnly.setToolTipText("Enable/disable left panel");
         MenuItemViewEditorOnly.addItemListener(evt -> MenuItemViewEditorOnlyItemStateChanged(evt));
         MenuView.add(MenuItemViewEditorOnly);
-        MenuView.add(jSeparator18);
+        MenuView.add(new JPopupMenu.Separator());
 
         MenuItemViewToolbar.setSelected(true);
         MenuItemViewToolbar.setText("Show toolbar at top left");
@@ -1396,7 +1242,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuView.add(MenuItemViewFileManager);
 
 
-        MenuView.add(jSeparator13);
+        MenuView.add(new JPopupMenu.Separator());
 
         MenuItemViewTermFontInc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemViewTermFontInc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom in.png"))); // NOI18N
@@ -1409,7 +1255,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemViewTermFontDec.setText("terminalArea font size dec");
         MenuItemViewTermFontDec.addActionListener(evt -> MenuItemViewTermFontDecActionPerformed(evt));
         MenuView.add(MenuItemViewTermFontDec);
-        MenuView.add(jSeparator10);
+        MenuView.add(new JPopupMenu.Separator());
 
         MenuItemViewEditorFontInc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.ALT_MASK));
         MenuItemViewEditorFontInc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom in.png"))); // NOI18N
@@ -1422,7 +1268,8 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemViewEditorFontDec.setText("Editor font size dec");
         MenuItemViewEditorFontDec.addActionListener(evt -> MenuItemViewEditorFontDecActionPerformed(evt));
         MenuView.add(MenuItemViewEditorFontDec);
-        MenuView.add(jSeparator11);
+
+        MenuView.add(new JPopupMenu.Separator());
 
 
         MenuItemViewFontDefault.setText("Reset all font size to default");
@@ -1454,11 +1301,6 @@ public class EspIDE extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void MenuItemFileExitActionPerformed(java.awt.event.ActionEvent evt) {
-        AppClose();
-    }
-
-
     private void OpenActionPerformed(java.awt.event.ActionEvent evt) {
         if (Open.isSelected()) {
             Open.setSelected(portOpen());
@@ -1487,7 +1329,6 @@ public class EspIDE extends javax.swing.JFrame {
             MenuItemFileSaveESP.setEnabled(true);
             FileSendESP.setEnabled(true);
             MenuItemFileSendESP.setEnabled(true);
-            MenuItemFileRemoveESP.setEnabled(true);
 
 
             MenuItemEditorSendLine.setEnabled(true);
@@ -1508,7 +1349,6 @@ public class EspIDE extends javax.swing.JFrame {
             FileSendESP.setEnabled(false);
             FileSendESP.setSelected(false);
             MenuItemFileSendESP.setEnabled(false);
-            MenuItemFileRemoveESP.setEnabled(false);
 
 
             MenuItemEditorSendLine.setEnabled(false);
@@ -1565,11 +1405,6 @@ public class EspIDE extends javax.swing.JFrame {
             FileManagerScrollPane.setVisible(false);
             RightFilesSplitPane.setDividerLocation(RightFilesSplitPane.getWidth() - RightFilesSplitPane.getDividerSize());
         }
-    }
-
-
-    private void ReScanActionPerformed(java.awt.event.ActionEvent evt) {
-        PortFinder();
     }
 
 
@@ -1631,14 +1466,6 @@ public class EspIDE extends javax.swing.JFrame {
             dec = "Set font size to " + Float.toString(TERMINAL_FONT_SIZE_MAX);
         }
         MenuItemTerminalFontDec.setText(dec);
-    }
-
-    private void MenuItemTerminalCopyActionPerformed(java.awt.event.ActionEvent evt) {
-        thandler.getRSyntaxTextArea().copy();
-    }
-
-    private void MenuItemTerminalClearActionPerformed(java.awt.event.ActionEvent evt) {
-        thandler.getRSyntaxTextArea().setText("");
     }
 
 
@@ -1733,12 +1560,8 @@ public class EspIDE extends javax.swing.JFrame {
         return success;
     }
 
-    private void MenuItemFileNewActionPerformed(java.awt.event.ActionEvent evt) {
-        FileNew("");
-    }
-
     private void FileNew(String s) {
-        AddTab(s);
+        AddTab(NewFile, s);
         if (s.isEmpty()) {
             LOGGER.info("New empty file ready.");
         } else {
@@ -1758,11 +1581,6 @@ public class EspIDE extends javax.swing.JFrame {
     private void MenuItemEditPasteActionPerformed(java.awt.event.ActionEvent evt) {
         TextEditor1.get(iTab).paste();
         FileChanged.set(iTab, true);
-    }
-
-    // File open
-    private void MenuItemFileOpenActionPerformed(java.awt.event.ActionEvent evt) {
-        OpenFile();
     }
 
     private void SavePath() {
@@ -1792,7 +1610,7 @@ public class EspIDE extends javax.swing.JFrame {
                 return;
             }
             if (!isFileNew() || isChanged()) {
-                AddTab("");
+                AddTab(NewFile, "");
             }
             LOGGER.info("Try to open file " + chooser.getSelectedFile().getName());
             try {
@@ -1877,18 +1695,6 @@ public class EspIDE extends javax.swing.JFrame {
             LOGGER.info("Loading " + filename + ": Success.");
         }
         return success;
-    }
-
-    private void MenuItemEditorCutActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditCut.doClick();
-    }
-
-    private void MenuItemEditorCopyActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditCopy.doClick();
-    }
-
-    private void MenuItemEditorPasteActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditPaste.doClick();
     }
 
 
@@ -2000,10 +1806,6 @@ public class EspIDE extends javax.swing.JFrame {
         UpdateButtons();
     }
 
-    private void MenuItemFileReloadActionPerformed(java.awt.event.ActionEvent evt) {
-        ReloadFile();
-    }
-
     private void MenuItemFileCloseActionPerformed(java.awt.event.ActionEvent evt) {
         CloseFile();
     }
@@ -2027,14 +1829,6 @@ public class EspIDE extends javax.swing.JFrame {
         if (TextEditor1.get(iTab).canRedo()) {
             TextEditor1.get(iTab).redoLastAction();
         }
-    }
-
-    private void MenuItemEditorRedoActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditRedo.doClick();
-    }
-
-    private void MenuItemEditorUndoActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditUndo.doClick();
     }
 
     private void NodeListFiles() {
@@ -2592,10 +2386,6 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
 
-    private void MenuItemEditorSendSelectedActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditSendSelected.doClick();
-    }
-
     private void MenuItemEditSendSelectedActionPerformed(java.awt.event.ActionEvent evt) {
         int l = 0;
 
@@ -2614,13 +2404,13 @@ public class EspIDE extends javax.swing.JFrame {
     private void MenuItemFileRemoveESPActionPerformed(java.awt.event.ActionEvent evt) {
         String ft = openedfiles.get(iTab).getName();
         if (ft.length() == 0) {
-            LOGGER.info("FileRemoveESP: FAIL. Can't remove file from ESP without name.");
+            LOGGER.info("removeFileFromESP: FAIL. Can't remove file from ESP without name.");
             JOptionPane.showMessageDialog(null, "Can't remove file from ESP without name.");
         }
-        FileRemoveESP(ft);
+        removeFileFromESP(ft);
     }
 
-    private void FileRemoveESP(String FileName) {
+    private void removeFileFromESP(String FileName) {
         btnSend("file.remove(\"" + FileName + "\")");
         try {
             Thread.sleep(200L);
@@ -2646,26 +2436,6 @@ public class EspIDE extends javax.swing.JFrame {
 
     }
 
-    private void MenuItemFileSendESPActionPerformed(java.awt.event.ActionEvent evt) {
-        FileSendESP.doClick();
-    }
-
-    private void MenuItemEditorSendLineActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditSendLine.doClick();
-    }
-
-    private void MenuFileActionPerformed(java.awt.event.ActionEvent evt) {
-
-    }
-
-
-    private void MenuItemTerminalFontDecActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemViewTermFontDec.doClick();
-    }
-
-    private void MenuItemTerminalFontIncActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemViewTermFontInc.doClick();
-    }
 
     private void MenuItemViewTermFontIncActionPerformed(java.awt.event.ActionEvent evt) {
         int size = thandler.getRSyntaxTextArea().getFont().getSize();
@@ -2695,7 +2465,7 @@ public class EspIDE extends javax.swing.JFrame {
             TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(EDITOR_FONT_SIZE_MAX));
         }
         Regedit.setFloat(EDITOR_FONT_SIZE, TextEditor1.get(iTab).getFont().getSize());
-        updateTheme( true); // for all
+        updateTheme(true); // for all
     }
 
     private void MenuItemViewEditorFontDecActionPerformed(java.awt.event.ActionEvent evt) {
@@ -2706,7 +2476,7 @@ public class EspIDE extends javax.swing.JFrame {
             TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(EDITOR_FONT_SIZE_MIN));
         }
         Regedit.setFloat(EDITOR_FONT_SIZE, TextEditor1.get(iTab).getFont().getSize());
-        updateTheme( true); // for all
+        updateTheme(true); // for all
     }
 
     private void MenuItemViewFontDefaultActionPerformed(java.awt.event.ActionEvent evt) {
@@ -2715,14 +2485,6 @@ public class EspIDE extends javax.swing.JFrame {
         Regedit.setFloat(LOG_FONT_SIZE, LOG_FONT_SIZE_DEFAULT);
         updateTheme(true); // for all
         thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(TERMINAL_FONT_SIZE_DEFAULT));
-    }
-
-    private void MenuItemEditorFontIncActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemViewEditorFontInc.doClick();
-    }
-
-    private void MenuItemEditorFontDecActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemViewEditorFontDec.doClick();
     }
 
 
@@ -2879,11 +2641,6 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
 
-    private void ShowFileManagerItemStateChanged(java.awt.event.ItemEvent evt) {
-        MenuItemViewFileManager.setSelected(ShowFileManager.isSelected());
-    }
-
-
     private void NodeMCUComponentShown(java.awt.event.ComponentEvent evt) {
         UpdateEditorButtons();
         UpdateButtons();
@@ -2947,11 +2704,6 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-    private void FilesTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {
-        FileLabelUpdate();
-        //   if (iTab > 0) FilesTabbedPane.setTitleAt(iTab, Integer.toString(iTab));
-    }
-
 
     private void TextEditorKeyTyped(java.awt.event.KeyEvent evt) {
         if (!isChanged()) {
@@ -2965,62 +2717,9 @@ public class EspIDE extends javax.swing.JFrame {
         UpdateEditorButtons();
     }
 
-    private void TextEditorActiveLineRangeChanged(org.fife.ui.rsyntaxtextarea.ActiveLineRangeEvent evt) {
-        UpdateEditorButtons();
-    }
-
 
     private void TextEditorCaretUpdate(javax.swing.event.CaretEvent evt) {
         UpdateEditorButtons();
-    }
-
-    private void ButtonSendLineActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditSendLine.doClick();
-    }
-
-    private void ButtonSendSelectedActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditSendSelected.doClick();
-    }
-
-    private void ButtonPasteActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditPaste.doClick();
-    }
-
-    private void ButtonCopyActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditCopy.doClick();
-    }
-
-    private void ButtonCutActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditCut.doClick();
-    }
-
-    private void ButtonRedoActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditRedo.doClick();
-    }
-
-    private void ButtonUndoActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemEditUndo.doClick();
-    }
-
-    private void ButtonFileCloseActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemFileClose.doClick();
-    }
-
-
-    private void ButtonFileSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemFileSave.doClick();
-    }
-
-    private void ButtonFileReloadActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemFileReload.doClick();
-    }
-
-    private void ButtonFileOpenActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemFileOpen.doClick();
-    }
-
-    private void ButtonFileNewActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemFileNew.doClick();
     }
 
 
@@ -3101,8 +2800,8 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JLayeredPane LeftBasePane;
     private javax.swing.JLayeredPane LeftMainButtons;
     private javax.swing.JMenuBar MainMenuBar;
-    private javax.swing.JMenu MenuEdit;
-    private javax.swing.JMenu MenuFile;
+
+
     private javax.swing.JMenuItem MenuItemESPFileDelete;
     private javax.swing.JMenuItem MenuItemESPFileDo;
     private javax.swing.JMenuItem MenuItemEditCopy;
@@ -3122,11 +2821,10 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuItemEditorSendSelected;
     private javax.swing.JMenuItem MenuItemEditorUndo;
     private javax.swing.JMenuItem MenuItemFileClose;
-    private javax.swing.JMenuItem MenuItemFileExit;
     private javax.swing.JMenuItem MenuItemFileNew;
     private javax.swing.JMenuItem MenuItemFileOpen;
     private javax.swing.JMenuItem MenuItemFileReload;
-    private javax.swing.JMenuItem MenuItemFileRemoveESP;
+
     private javax.swing.JMenuItem MenuItemFileSave;
     private javax.swing.JMenuItem MenuItemFileSaveESP;
     private javax.swing.JMenuItem MenuItemFileSendESP;
@@ -3145,7 +2843,6 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuItemViewTermFontInc;
     private javax.swing.JCheckBoxMenuItem MenuItemViewTerminalOnly;
     private javax.swing.JCheckBoxMenuItem MenuItemViewToolbar;
-    private javax.swing.JMenu MenuView;
 
 
     private javax.swing.JLayeredPane NodeFileManagerPane;
@@ -3164,7 +2861,6 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JButton PyListDir;
     private javax.swing.JButton ReScan;
     private javax.swing.JLayeredPane RightBasePane;
-    private javax.swing.JLayeredPane RightBigPane;
     private javax.swing.JLayeredPane RightBottomPane;
     private javax.swing.JSplitPane RightFilesSplitPane;
     private javax.swing.JButton SendCommand;
@@ -3182,25 +2878,10 @@ public class EspIDE extends javax.swing.JFrame {
     private org.fife.ui.rtextarea.RTextScrollPane TextScroll;
 
 
-    private javax.swing.JToolBar.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator10;
-    private javax.swing.JPopupMenu.Separator jSeparator11;
-    private javax.swing.JPopupMenu.Separator jSeparator13;
-    private javax.swing.JPopupMenu.Separator jSeparator18;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator5;
-    private javax.swing.JToolBar.Separator jSeparator6;
-    private javax.swing.JPopupMenu.Separator jSeparator7;
-    private javax.swing.JToolBar.Separator jSeparator8;
-    private javax.swing.JPopupMenu.Separator jSeparator9;
-    private javax.swing.JPopupMenu.Separator jSeparatorFileMenu;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
 
-    private ArrayList<javax.swing.JLayeredPane> FileLayeredPane1;
+    private ArrayList<javax.swing.JLayeredPane> FilePaneList;
     private ArrayList<org.fife.ui.rsyntaxtextarea.RSyntaxTextArea> TextEditor1;
-    private ArrayList<org.fife.ui.rtextarea.RTextScrollPane> TextScroll1;
-    private ArrayList<javax.swing.GroupLayout> FileLayeredPaneLayout1;
-    private ArrayList<CompletionProvider> providers;
     private ArrayList<AutoCompletion> autoCompletions;
     private ArrayList<File> openedfiles = new ArrayList<>();
 
@@ -3222,8 +2903,8 @@ public class EspIDE extends javax.swing.JFrame {
     int FileCount = 0;
     String workDir = "";
     JFileChooser chooser;
-    static final FileNameExtensionFilter FILTER_LUA = new FileNameExtensionFilter("LUA files (*.lua, *.lc)", new String[]{"lua", "lc"});
-    static final FileNameExtensionFilter FILTER_PYTHON = new FileNameExtensionFilter("Python files (*.py, *.pyc)", new String[]{"py", "pyc"});
+    static final FileNameExtensionFilter FILTER_LUA = new FileNameExtensionFilter("LUA files (*.lua, *.lc)", "lua", "lc");
+    static final FileNameExtensionFilter FILTER_PYTHON = new FileNameExtensionFilter("Python files (*.py, *.pyc)", "py", "pyc");
     FileInputStream fis = null;
     FileOutputStream fos = null;
     InputStreamReader isr = null;
@@ -3397,21 +3078,11 @@ public class EspIDE extends javax.swing.JFrame {
 
 
     private void FinalInit() {
-        final Image im = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/ESP8266-64x64.png"));
-        setIconImage(im);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/ESP8266-64x64.png")));
         setLocationRelativeTo(null); // window centered
 
-        LED_GREY = new javax.swing.ImageIcon(getClass().getResource("/resources/led_grey.png"));
-        LED_GREEN = new javax.swing.ImageIcon(getClass().getResource("/resources/led_green.png"));
-        LED_RED = new javax.swing.ImageIcon(getClass().getResource("/resources/led_red.png"));
-        LED_BLUE = new javax.swing.ImageIcon(getClass().getResource("/resources/led_blue.png"));
-
-
-        FileLayeredPane1 = new ArrayList<>();
-        TextScroll1 = new ArrayList<>();
+        FilePaneList = new ArrayList<>();
         TextEditor1 = new ArrayList<>();
-        FileLayeredPaneLayout1 = new ArrayList<>();
-        providers = new ArrayList<>();
         autoCompletions = new ArrayList<>();
 
         FileChanged = new ArrayList<>();
@@ -3427,7 +3098,7 @@ public class EspIDE extends javax.swing.JFrame {
 
         FileRenamePanel.setVisible(false);
 
-        AddTab("");
+        AddTab(NewFile, "");
 
         updateTheme(true);
     }
@@ -3607,10 +3278,7 @@ public class EspIDE extends javax.swing.JFrame {
         FilePopupMenuItem.get(y).setText("Remove " + FileName);
         FilePopupMenuItem.get(y).setToolTipText("Execute command file.remove(\"" + FileName + "\") and delete file from NodeMCU filesystem");
         FilePopupMenuItem.get(y).setActionCommand(FileName);
-        FilePopupMenuItem.get(y).addActionListener(evt -> {
-            FileRemoveESP(evt.getActionCommand());
-            // FileListReload not needed
-        });
+        FilePopupMenuItem.get(y).addActionListener(evt -> removeFileFromESP(evt.getActionCommand()));
         FilePopupMenu.get(x).add(FilePopupMenuItem.get(y));
     }
 
@@ -3638,40 +3306,26 @@ public class EspIDE extends javax.swing.JFrame {
         FilePopupMenu.get(x).add(FilePopupMenuItem.get(y));
     }
 
-    private void AddTab(String s) {
+    private void AddTab(String title, String content) {
         int i = FilesTabbedPane.getTabCount();
 
-        FileLayeredPane1.add(new javax.swing.JLayeredPane());
-        TextScroll1.add(new org.fife.ui.rtextarea.RTextScrollPane());
-        TextEditor1.add(new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea());
+        FilePaneList.add(new JLayeredPane());
+
+
+        RSyntaxTextArea textArea = Context.create1(FirmwareType.current);
+
+        TextEditor1.add(textArea);
+
         openedfiles.add(new File(""));
         FileChanged.add(false);
-        providers.add(CompletionProviderCreator.create(FirmwareType.current));
-        autoCompletions.add(new AutoCompletion(providers.get(i)));
-        autoCompletions.get(i).install(TextEditor1.get(i));
 
-        FileLayeredPaneLayout1.add(new javax.swing.GroupLayout(FileLayeredPane1.get(i)));
+        autoCompletions.add(new AutoCompletion(Context.create2(FirmwareType.current)));
+        autoCompletions.get(i).install(textArea);
 
-        if (FirmwareType.current.eq(FirmwareType.NodeMCU)) {
-            TextEditor1.get(i).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
-        } else {
-            TextEditor1.get(i).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
-        }
-        TextEditor1.get(i).setColumns(20);
-        TextEditor1.get(i).setRows(5);
-        TextEditor1.get(i).setDragEnabled(false);
-        TextEditor1.get(i).setFadeCurrentLineHighlight(true);
-        TextEditor1.get(i).setPaintMarkOccurrencesBorder(true);
-        TextEditor1.get(i).setPaintMatchedBracketPair(true);
-        TextEditor1.get(i).setPopupMenu(ContextMenuEditor);
-        TextEditor1.get(i).setCodeFoldingEnabled(false);
-        TextEditor1.get(i).setAntiAliasingEnabled(true);
-        TextEditor1.get(i).setTabsEmulated(true);
-        TextEditor1.get(i).setBracketMatchingEnabled(true);
-        TextEditor1.get(i).setTabSize(4);
-        TextEditor1.get(i).addCaretListener(evt -> TextEditorCaretUpdate(evt));
-        TextEditor1.get(i).addActiveLineRangeListener(evt -> TextEditorActiveLineRangeChanged(evt));
-        TextEditor1.get(i).addInputMethodListener(new java.awt.event.InputMethodListener() {
+        textArea.setPopupMenu(ContextMenuEditor);
+        textArea.addCaretListener(evt -> UpdateEditorButtons());
+        textArea.addActiveLineRangeListener(evt -> UpdateEditorButtons());
+        textArea.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 TextEditorCaretPositionChanged(evt);
             }
@@ -3679,38 +3333,43 @@ public class EspIDE extends javax.swing.JFrame {
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
-        TextEditor1.get(i).addKeyListener(new java.awt.event.KeyAdapter() {
+        textArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TextEditorKeyTyped(evt);
             }
         });
-        TextScroll1.get(i).setViewportView(TextEditor1.get(i));
-        TextScroll1.get(i).setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        TextScroll1.get(i).setIconRowHeaderEnabled(false);
-        TextScroll1.get(i).setLineNumbersEnabled(true);
-        TextScroll1.get(i).setFoldIndicatorEnabled(true);
 
-        FileLayeredPane1.get(i).setLayout(FileLayeredPaneLayout1.get(i));
-        FileLayeredPaneLayout1.get(i).setHorizontalGroup(
-                FileLayeredPaneLayout1.get(i).createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(TextScroll1.get(i), javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
-        );
-        FileLayeredPaneLayout1.get(i).setVerticalGroup(
-                FileLayeredPaneLayout1.get(i).createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(TextScroll1.get(i), javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
-        );
-        FileLayeredPane1.get(i).setLayer(TextScroll1.get(i), javax.swing.JLayeredPane.DEFAULT_LAYER);
+        RTextScrollPane scrollPane = new RTextScrollPane();
+        scrollPane.setViewportView(TextEditor1.get(i));
+        scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setIconRowHeaderEnabled(false);
+        scrollPane.setLineNumbersEnabled(true);
+        scrollPane.setFoldIndicatorEnabled(true);
 
-        FilesTabbedPane.addTab(NewFile, FileLayeredPane1.get(i));
+        GroupLayout layout = new javax.swing.GroupLayout(FilePaneList.get(i));
+        FilePaneList.get(i).setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+        );
+
+        FilePaneList.get(i).setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        FilesTabbedPane.addTab(title, FilePaneList.get(i));
 
         FilesTabbedPane.setSelectedIndex(i);
         iTab = i;
-        updateTheme( false);
+        updateTheme(false);
         FileLabelUpdate();
-        TextEditor1.get(i).setText(s);
+
+        textArea.setText(content);
     }
 
-    public void updateTheme( boolean all) {
+    public void updateTheme(boolean all) {
         int t = Config.ins.getColor_theme();
 
         String res;
@@ -3766,11 +3425,8 @@ public class EspIDE extends javax.swing.JFrame {
             openedfiles.remove(iTab);
             FileChanged.remove(iTab);
             autoCompletions.remove(iTab);
-            providers.remove(iTab);
             TextEditor1.remove(iTab);
-            TextScroll1.remove(iTab);
-            FileLayeredPaneLayout1.remove(iTab);
-            FileLayeredPane1.remove(iTab);
+            FilePaneList.remove(iTab);
             FilesTabbedPane.removeTabAt(iTab);
             FilesTabbedPane.setSelectedIndex(iTab);
             FileLabelUpdate();
@@ -3789,10 +3445,7 @@ public class EspIDE extends javax.swing.JFrame {
         if (TextEditor1.get(iTab).canUndo()) {
             return true;
         }
-        if (TextEditor1.get(iTab).canRedo()) {
-            return true;
-        }
-        return false;
+        return TextEditor1.get(iTab).canRedo();
     }
 
     private int Dialog(String msg, int btn) {
@@ -4338,7 +3991,6 @@ public class EspIDE extends javax.swing.JFrame {
         ProgressBar.setVisible(true);
         FileSendESP.setEnabled(false);
         MenuItemFileSendESP.setEnabled(false);
-        MenuItemFileRemoveESP.setEnabled(false);
 
 
         MenuItemEditSendSelected.setEnabled(false);
