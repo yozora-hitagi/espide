@@ -12,8 +12,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,23 +49,6 @@ public class EspIDE extends javax.swing.JFrame {
         ContextMenuTerminal = new javax.swing.JPopupMenu();
         MenuItemTerminalClear = new javax.swing.JMenuItem();
         MenuItemTerminalCopy = new javax.swing.JMenuItem();
-        TerminalSeparator1 = new javax.swing.JPopupMenu.Separator();
-        MenuItemTerminalFontInc = new javax.swing.JMenuItem();
-        MenuItemTerminalFontDec = new javax.swing.JMenuItem();
-        TerminalSeparator2 = new javax.swing.JPopupMenu.Separator();
-        ContextMenuEditor = new javax.swing.JPopupMenu();
-        MenuItemEditorUndo = new javax.swing.JMenuItem();
-        MenuItemEditorRedo = new javax.swing.JMenuItem();
-        EditorSeparator1 = new javax.swing.JPopupMenu.Separator();
-        MenuItemEditorSendSelected = new javax.swing.JMenuItem();
-        MenuItemEditorSendLine = new javax.swing.JMenuItem();
-        EditorSeparator = new javax.swing.JPopupMenu.Separator();
-        MenuItemEditorCut = new javax.swing.JMenuItem();
-        MenuItemEditorCopy = new javax.swing.JMenuItem();
-        MenuItemEditorPaste = new javax.swing.JMenuItem();
-        EditorSeparator2 = new javax.swing.JPopupMenu.Separator();
-        MenuItemEditorFontInc = new javax.swing.JMenuItem();
-        MenuItemEditorFontDec = new javax.swing.JMenuItem();
 
 
         ContextMenuESPFileLUA = new javax.swing.JPopupMenu();
@@ -133,7 +114,7 @@ public class EspIDE extends javax.swing.JFrame {
 
 
         SendCommand = new javax.swing.JButton();
-        MainMenuBar = new javax.swing.JMenuBar();
+
 
         MenuItemFileNew = new javax.swing.JMenuItem();
         MenuItemFileOpen = new javax.swing.JMenuItem();
@@ -166,15 +147,6 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemViewFileManager = new javax.swing.JCheckBoxMenuItem();
 
 
-        MenuItemViewTermFontInc = new javax.swing.JMenuItem();
-        MenuItemViewTermFontDec = new javax.swing.JMenuItem();
-
-        MenuItemViewEditorFontInc = new javax.swing.JMenuItem();
-        MenuItemViewEditorFontDec = new javax.swing.JMenuItem();
-
-        MenuItemViewFontDefault = new javax.swing.JMenuItem();
-
-
         ContextMenuTerminal.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -201,87 +173,6 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemTerminalCopy.setEnabled(false);
         MenuItemTerminalCopy.addActionListener(evt -> thandler.getRSyntaxTextArea().copy());
         ContextMenuTerminal.add(MenuItemTerminalCopy);
-        ContextMenuTerminal.add(TerminalSeparator1);
-
-        MenuItemTerminalFontInc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemTerminalFontInc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom in.png"))); // NOI18N
-        MenuItemTerminalFontInc.setText("Inc font size");
-        MenuItemTerminalFontInc.addActionListener(evt -> MenuItemViewTermFontInc.doClick());
-        ContextMenuTerminal.add(MenuItemTerminalFontInc);
-
-        MenuItemTerminalFontDec.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemTerminalFontDec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom out.png"))); // NOI18N
-        MenuItemTerminalFontDec.setText("Dec font size");
-        MenuItemTerminalFontDec.addActionListener(evt -> MenuItemViewTermFontDec.doClick());
-        ContextMenuTerminal.add(MenuItemTerminalFontDec);
-        ContextMenuTerminal.add(TerminalSeparator2);
-
-
-        MenuItemEditorUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemEditorUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/undo1.png"))); // NOI18N
-        MenuItemEditorUndo.setText("Undo");
-        MenuItemEditorUndo.setToolTipText("");
-        MenuItemEditorUndo.setEnabled(false);
-        MenuItemEditorUndo.addActionListener(evt -> MenuItemEditUndo.doClick());
-        ContextMenuEditor.add(MenuItemEditorUndo);
-
-        MenuItemEditorRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK));
-        MenuItemEditorRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/redo1.png"))); // NOI18N
-        MenuItemEditorRedo.setText("Redo");
-        MenuItemEditorRedo.setToolTipText("");
-        MenuItemEditorRedo.setEnabled(false);
-        MenuItemEditorRedo.addActionListener(evt -> MenuItemEditRedo.doClick());
-        ContextMenuEditor.add(MenuItemEditorRedo);
-        ContextMenuEditor.add(EditorSeparator1);
-
-        MenuItemEditorSendSelected.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemEditorSendSelected.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/send_selected.png"))); // NOI18N
-        MenuItemEditorSendSelected.setText("Send selected to ESP");
-        MenuItemEditorSendSelected.setToolTipText("Send selected fragment to ESP");
-        MenuItemEditorSendSelected.addActionListener(evt -> MenuItemEditSendSelected.doClick());
-        ContextMenuEditor.add(MenuItemEditorSendSelected);
-
-        MenuItemEditorSendLine.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemEditorSendLine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/run_line.png"))); // NOI18N
-        MenuItemEditorSendLine.setText("Send current line to ESP");
-        MenuItemEditorSendLine.setToolTipText("Send current line to ESP");
-        MenuItemEditorSendLine.addActionListener(evt -> MenuItemEditSendLine.doClick());
-        ContextMenuEditor.add(MenuItemEditorSendLine);
-        ContextMenuEditor.add(EditorSeparator);
-
-        MenuItemEditorCut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemEditorCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cut.png"))); // NOI18N
-        MenuItemEditorCut.setText("Cut");
-        MenuItemEditorCut.setEnabled(false);
-        MenuItemEditorCut.addActionListener(evt -> MenuItemEditCut.doClick());
-        ContextMenuEditor.add(MenuItemEditorCut);
-
-        MenuItemEditorCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemEditorCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/copy.png"))); // NOI18N
-        MenuItemEditorCopy.setText("Copy");
-        MenuItemEditorCopy.setEnabled(false);
-        MenuItemEditorCopy.addActionListener(evt -> MenuItemEditCopy.doClick());
-        ContextMenuEditor.add(MenuItemEditorCopy);
-
-        MenuItemEditorPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemEditorPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/paste.png"))); // NOI18N
-        MenuItemEditorPaste.setText("Paste");
-        MenuItemEditorPaste.setEnabled(false);
-        MenuItemEditorPaste.addActionListener(evt -> MenuItemEditPaste.doClick());
-        ContextMenuEditor.add(MenuItemEditorPaste);
-        ContextMenuEditor.add(EditorSeparator2);
-
-        MenuItemEditorFontInc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemEditorFontInc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom in.png"))); // NOI18N
-        MenuItemEditorFontInc.setText("Inc font size");
-        MenuItemEditorFontInc.addActionListener(evt -> MenuItemViewEditorFontInc.doClick());
-        ContextMenuEditor.add(MenuItemEditorFontInc);
-
-        MenuItemEditorFontDec.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemEditorFontDec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom out.png"))); // NOI18N
-        MenuItemEditorFontDec.setText("Dec font size");
-        MenuItemEditorFontDec.addActionListener(evt -> MenuItemViewEditorFontDec.doClick());
-        ContextMenuEditor.add(MenuItemEditorFontDec);
 
 
         MenuItemESPFileDo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/play.png"))); // NOI18N
@@ -420,8 +311,6 @@ public class EspIDE extends javax.swing.JFrame {
         FilesToolBar.add(new JSeparator());
 
         ButtonSendSelected = new EditButton("Block", "/resources/send_selected.png", "Send selected block to ESP");
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemEditorSendSelected, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonSendSelected, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
         ButtonSendSelected.addActionListener(evt -> MenuItemEditSendSelected.doClick());
         FilesToolBar.add(ButtonSendSelected);
 
@@ -447,7 +336,6 @@ public class EspIDE extends javax.swing.JFrame {
         TextEditor.setFadeCurrentLineHighlight(true);
         TextEditor.setPaintMarkOccurrencesBorder(true);
         TextEditor.setPaintMatchedBracketPair(true);
-        TextEditor.setPopupMenu(ContextMenuEditor);
         TextEditor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
         TextEditor.addCaretListener(evt -> TextEditorCaretUpdate(evt));
 
@@ -458,7 +346,6 @@ public class EspIDE extends javax.swing.JFrame {
             }
 
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-
             }
         });
         TextEditor.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1060,9 +947,7 @@ public class EspIDE extends javax.swing.JFrame {
 
         HorizontSplit.setRightComponent(RightBasePane);
 
-        MainMenuBar.setAlignmentX(0.0F);
-        MainMenuBar.setName("MainMenu"); // NOI18N
-        MainMenuBar.setPreferredSize(new java.awt.Dimension(300, 22));
+        JMenuBar menu= new JMenuBar();
 
         JMenu MenuFile = Context.createM1("ÎÄ¼þ");
 
@@ -1133,7 +1018,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemFileExit.addActionListener(evt -> AppClose());
         MenuFile.add(MenuItemFileExit);
 
-        MainMenuBar.add(MenuFile);
+        menu.add(MenuFile);
 
         JMenu MenuEdit = Context.createM1("±à¼­");
 
@@ -1180,8 +1065,6 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemEditSendSelected.setText("<html>Send selected <u>B</u>lock to ESP");
         MenuItemEditSendSelected.setToolTipText("Send selected block to ESP");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemEditorSendSelected, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), MenuItemEditSendSelected, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
 
         MenuItemEditSendSelected.addActionListener(evt -> MenuItemEditSendSelectedActionPerformed(evt));
         MenuEdit.add(MenuItemEditSendSelected);
@@ -1193,7 +1076,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemEditSendLine.addActionListener(evt -> MenuItemEditSendLineActionPerformed(evt));
         MenuEdit.add(MenuItemEditSendLine);
 
-        MainMenuBar.add(MenuEdit);
+        menu.add(MenuEdit);
 
 
         JMenu MenuView = Context.createM1("ÊÓÍ¼");
@@ -1242,45 +1125,10 @@ public class EspIDE extends javax.swing.JFrame {
         MenuView.add(MenuItemViewFileManager);
 
 
-        MenuView.add(new JPopupMenu.Separator());
-
-        MenuItemViewTermFontInc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemViewTermFontInc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom in.png"))); // NOI18N
-        MenuItemViewTermFontInc.setText("terminalArea font size inc");
-        MenuItemViewTermFontInc.addActionListener(evt -> MenuItemViewTermFontIncActionPerformed(evt));
-        MenuView.add(MenuItemViewTermFontInc);
-
-        MenuItemViewTermFontDec.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemViewTermFontDec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom out.png"))); // NOI18N
-        MenuItemViewTermFontDec.setText("terminalArea font size dec");
-        MenuItemViewTermFontDec.addActionListener(evt -> MenuItemViewTermFontDecActionPerformed(evt));
-        MenuView.add(MenuItemViewTermFontDec);
-        MenuView.add(new JPopupMenu.Separator());
-
-        MenuItemViewEditorFontInc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemViewEditorFontInc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom in.png"))); // NOI18N
-        MenuItemViewEditorFontInc.setText("Editor font size inc");
-        MenuItemViewEditorFontInc.addActionListener(evt -> MenuItemViewEditorFontIncActionPerformed(evt));
-        MenuView.add(MenuItemViewEditorFontInc);
-
-        MenuItemViewEditorFontDec.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemViewEditorFontDec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/zoom out.png"))); // NOI18N
-        MenuItemViewEditorFontDec.setText("Editor font size dec");
-        MenuItemViewEditorFontDec.addActionListener(evt -> MenuItemViewEditorFontDecActionPerformed(evt));
-        MenuView.add(MenuItemViewEditorFontDec);
-
-        MenuView.add(new JPopupMenu.Separator());
+        menu.add(MenuView);
 
 
-        MenuItemViewFontDefault.setText("Reset all font size to default");
-        MenuItemViewFontDefault.addActionListener(evt -> MenuItemViewFontDefaultActionPerformed(evt));
-        MenuView.add(MenuItemViewFontDefault);
-
-
-        MainMenuBar.add(MenuView);
-
-
-        setJMenuBar(MainMenuBar);
+        setJMenuBar(menu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1331,7 +1179,6 @@ public class EspIDE extends javax.swing.JFrame {
             MenuItemFileSendESP.setEnabled(true);
 
 
-            MenuItemEditorSendLine.setEnabled(true);
             MenuItemEditSendLine.setEnabled(true);
             ButtonSendLine.setEnabled(true);
         } else {
@@ -1351,7 +1198,6 @@ public class EspIDE extends javax.swing.JFrame {
             MenuItemFileSendESP.setEnabled(false);
 
 
-            MenuItemEditorSendLine.setEnabled(false);
             MenuItemEditSendLine.setEnabled(false);
             ButtonSendLine.setEnabled(false);
         }
@@ -1452,20 +1298,6 @@ public class EspIDE extends javax.swing.JFrame {
         } catch (Exception e) {
             MenuItemTerminalCopy.setEnabled(false);
         }
-        int size = thandler.getRSyntaxTextArea().getFont().getSize();
-        String inc, dec;
-        if (size < TERMINAL_FONT_SIZE_MAX) {
-            inc = "Change font size from " + Integer.toString(size) + " to " + Integer.toString(size + 1);
-        } else {
-            inc = "Set font size to " + Float.toString(TERMINAL_FONT_SIZE_MIN);
-        }
-        MenuItemTerminalFontInc.setText(inc);
-        if (size > TERMINAL_FONT_SIZE_MIN) {
-            dec = "Change font size from " + Integer.toString(size) + " to " + Integer.toString(size - 1);
-        } else {
-            dec = "Set font size to " + Float.toString(TERMINAL_FONT_SIZE_MAX);
-        }
-        MenuItemTerminalFontDec.setText(dec);
     }
 
 
@@ -1525,7 +1357,7 @@ public class EspIDE extends javax.swing.JFrame {
             fos = new FileOutputStream(openedfiles.get(iTab));
             osw = new OutputStreamWriter(fos, "UTF-8");
             bw = new BufferedWriter(osw);
-            bw.write(TextEditor1.get(iTab).getText());
+            bw.write(TextEditorList.get(iTab).getText());
             bw.flush();
             osw.flush();
             fos.flush();
@@ -1554,7 +1386,7 @@ public class EspIDE extends javax.swing.JFrame {
             LOGGER.info(ex.toString());
 //            log(ex.getStackTrace().toString());
         }
-        TextEditor1.get(iTab).discardAllEdits();
+        TextEditorList.get(iTab).discardAllEdits();
         FileChanged.set(iTab, false);
         UpdateEditorButtons();
         return success;
@@ -1570,16 +1402,16 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void MenuItemEditCutActionPerformed(java.awt.event.ActionEvent evt) {
-        TextEditor1.get(iTab).cut();
+        TextEditorList.get(iTab).cut();
         FileChanged.set(iTab, true);
     }
 
     private void MenuItemEditCopyActionPerformed(java.awt.event.ActionEvent evt) {
-        TextEditor1.get(iTab).copy();
+        TextEditorList.get(iTab).copy();
     }
 
     private void MenuItemEditPasteActionPerformed(java.awt.event.ActionEvent evt) {
-        TextEditor1.get(iTab).paste();
+        TextEditorList.get(iTab).paste();
         FileChanged.set(iTab, true);
     }
 
@@ -1661,7 +1493,7 @@ public class EspIDE extends javax.swing.JFrame {
             while ((line = br.readLine()) != null) {
                 sb.append(line).append('\n');
             }
-            TextEditor1.get(iTab).setText(sb.toString());
+            TextEditorList.get(iTab).setText(sb.toString());
             success = true;
         } catch (Exception ex) {
             LOGGER.info(ex.toString());
@@ -1687,9 +1519,9 @@ public class EspIDE extends javax.swing.JFrame {
             LOGGER.info("Internal error 103: can't close stream.");
         }
         if (success) {
-            TextEditor1.get(iTab).setCaretPosition(0);
+            TextEditorList.get(iTab).setCaretPosition(0);
             FileChanged.set(iTab, false);
-            TextEditor1.get(iTab).discardAllEdits();
+            TextEditorList.get(iTab).discardAllEdits();
             UpdateEditorButtons();
             FileLabelUpdate();
             LOGGER.info("Loading " + filename + ": Success.");
@@ -1699,34 +1531,26 @@ public class EspIDE extends javax.swing.JFrame {
 
 
     private void CheckSelected() {
-        if (TextEditor1.get(iTab).getSelectedText() == null) {
-            MenuItemEditorCut.setEnabled(false);
+        if (TextEditorList.get(iTab).getSelectedText() == null) {
             MenuItemEditCut.setEnabled(false);
-            MenuItemEditorCopy.setEnabled(false);
             MenuItemEditCopy.setEnabled(false);
             ButtonCut.setEnabled(false);
             ButtonCopy.setEnabled(false);
             MenuItemEditSendSelected.setEnabled(false);
-            MenuItemEditorSendSelected.setEnabled(false);
             ButtonSendSelected.setEnabled(false);
         } else {
-            MenuItemEditorCut.setEnabled(true);
             MenuItemEditCut.setEnabled(true);
-            MenuItemEditorCopy.setEnabled(true);
             MenuItemEditCopy.setEnabled(true);
             ButtonCut.setEnabled(true);
             ButtonCopy.setEnabled(true);
             MenuItemEditSendSelected.setEnabled(Open.isSelected());
-            MenuItemEditorSendSelected.setEnabled(Open.isSelected());
             ButtonSendSelected.setEnabled(Open.isSelected());
         }
         try {
             if (Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null) == null) { // clipboard empty
-                MenuItemEditorPaste.setEnabled(false);
                 MenuItemEditPaste.setEnabled(false);
                 ButtonPaste.setEnabled(false);
             } else {
-                MenuItemEditorPaste.setEnabled(true);
                 MenuItemEditPaste.setEnabled(true);
                 ButtonPaste.setEnabled(true);
             }
@@ -1769,29 +1593,25 @@ public class EspIDE extends javax.swing.JFrame {
         }
         // CanUndo
         try {
-            if (TextEditor1.isEmpty()) {
+            if (TextEditorList.isEmpty()) {
                 return;
             }
         } catch (Exception e) {
             return;
         }
-        if (TextEditor1.get(iTab).canUndo()) {
+        if (TextEditorList.get(iTab).canUndo()) {
             MenuItemEditUndo.setEnabled(true);
-            MenuItemEditorUndo.setEnabled(true);
             ButtonUndo.setEnabled(true);
         } else {
             MenuItemEditUndo.setEnabled(false);
-            MenuItemEditorUndo.setEnabled(false);
             ButtonUndo.setEnabled(false);
         }
         // CanRedo
-        if (TextEditor1.get(iTab).canRedo()) {
+        if (TextEditorList.get(iTab).canRedo()) {
             MenuItemEditRedo.setEnabled(true);
-            MenuItemEditorRedo.setEnabled(true);
             ButtonRedo.setEnabled(true);
         } else {
             MenuItemEditRedo.setEnabled(false);
-            MenuItemEditorRedo.setEnabled(false);
             ButtonRedo.setEnabled(false);
         }
         CheckSelected();
@@ -1820,14 +1640,14 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void MenuItemEditUndoActionPerformed(java.awt.event.ActionEvent evt) {
-        if (TextEditor1.get(iTab).canUndo()) {
-            TextEditor1.get(iTab).undoLastAction();
+        if (TextEditorList.get(iTab).canUndo()) {
+            TextEditorList.get(iTab).undoLastAction();
         }
     }
 
     private void MenuItemEditRedoActionPerformed(java.awt.event.ActionEvent evt) {
-        if (TextEditor1.get(iTab).canRedo()) {
-            TextEditor1.get(iTab).redoLastAction();
+        if (TextEditorList.get(iTab).canRedo()) {
+            TextEditorList.get(iTab).redoLastAction();
         }
     }
 
@@ -2390,13 +2210,13 @@ public class EspIDE extends javax.swing.JFrame {
         int l = 0;
 
         try {
-            l = TextEditor1.get(iTab).getSelectedText().length();
+            l = TextEditorList.get(iTab).getSelectedText().length();
         } catch (Exception e) {
             LOGGER.info("Can't send: nothing selected.");
             return;
         }
         if (l > 0) {
-            SendToESP(TextEditor1.get(iTab).getSelectedText());
+            SendToESP(TextEditorList.get(iTab).getSelectedText());
         }
 
     }
@@ -2429,62 +2249,11 @@ public class EspIDE extends javax.swing.JFrame {
     private void MenuItemEditSendLineActionPerformed(java.awt.event.ActionEvent evt) {
         int nLine;
 
-        nLine = TextEditor1.get(iTab).getCaretLineNumber();
-        String cmd = TextEditor1.get(iTab).getText().split("\r?\n")[nLine];
+        nLine = TextEditorList.get(iTab).getCaretLineNumber();
+        String cmd = TextEditorList.get(iTab).getText().split("\r?\n")[nLine];
         btnSend(cmd);
 
 
-    }
-
-
-    private void MenuItemViewTermFontIncActionPerformed(java.awt.event.ActionEvent evt) {
-        int size = thandler.getRSyntaxTextArea().getFont().getSize();
-        if (size < TERMINAL_FONT_SIZE_MAX) {
-            thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(thandler.getRSyntaxTextArea().getFont().getSize() + 1f));
-        } else {
-            thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(TERMINAL_FONT_SIZE_MAX));
-        }
-        Regedit.setFloat(TERMINAL_FONT_SIZE, thandler.getRSyntaxTextArea().getFont().getSize());
-    }
-
-    private void MenuItemViewTermFontDecActionPerformed(java.awt.event.ActionEvent evt) {
-        int size = thandler.getRSyntaxTextArea().getFont().getSize();
-        if (size > TERMINAL_FONT_SIZE_MIN) {
-            thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(thandler.getRSyntaxTextArea().getFont().getSize() - 1f));
-        } else {
-            thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(TERMINAL_FONT_SIZE_MIN));
-        }
-        Regedit.setFloat(TERMINAL_FONT_SIZE, thandler.getRSyntaxTextArea().getFont().getSize());
-    }
-
-    private void MenuItemViewEditorFontIncActionPerformed(java.awt.event.ActionEvent evt) {
-        int size = TextEditor1.get(iTab).getFont().getSize();
-        if (size < EDITOR_FONT_SIZE_MAX) {
-            TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(TextEditor1.get(iTab).getFont().getSize() + 1f));
-        } else {
-            TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(EDITOR_FONT_SIZE_MAX));
-        }
-        Regedit.setFloat(EDITOR_FONT_SIZE, TextEditor1.get(iTab).getFont().getSize());
-        updateTheme(true); // for all
-    }
-
-    private void MenuItemViewEditorFontDecActionPerformed(java.awt.event.ActionEvent evt) {
-        int size = TextEditor1.get(iTab).getFont().getSize();
-        if (size > EDITOR_FONT_SIZE_MIN) {
-            TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(TextEditor1.get(iTab).getFont().getSize() - 1f));
-        } else {
-            TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(EDITOR_FONT_SIZE_MIN));
-        }
-        Regedit.setFloat(EDITOR_FONT_SIZE, TextEditor1.get(iTab).getFont().getSize());
-        updateTheme(true); // for all
-    }
-
-    private void MenuItemViewFontDefaultActionPerformed(java.awt.event.ActionEvent evt) {
-        Regedit.setFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT);
-        Regedit.setFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT);
-        Regedit.setFloat(LOG_FONT_SIZE, LOG_FONT_SIZE_DEFAULT);
-        updateTheme(true); // for all
-        thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(TERMINAL_FONT_SIZE_DEFAULT));
     }
 
 
@@ -2655,12 +2424,12 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void FileSendESPActionPerformed(java.awt.event.ActionEvent evt) {
         if (FileSendESP.isSelected()) {
-            if (TextEditor1.get(iTab).getText().length() == 0) {
+            if (TextEditorList.get(iTab).getText().length() == 0) {
                 JOptionPane.showMessageDialog(null, "File empty.");
                 FileSendESP.setSelected(false);
                 return;
             }
-            SendToESP(TextEditor1.get(iTab).getText());
+            SendToESP(TextEditorList.get(iTab).getText());
         } else {
             StopSend();
         }
@@ -2671,7 +2440,7 @@ public class EspIDE extends javax.swing.JFrame {
             StopSend();
             return;
         }
-        if (TextEditor1.get(iTab).getText().length() == 0) {
+        if (TextEditorList.get(iTab).getText().length() == 0) {
             FileSaveESP.setSelected(false);
             JOptionPane.showMessageDialog(null, "File empty.");
             return;
@@ -2765,15 +2534,11 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JComboBox Command;
 
     private javax.swing.JPopupMenu ContextMenuESPFileLUA;
-    private javax.swing.JPopupMenu ContextMenuEditor;
     private javax.swing.JPopupMenu ContextMenuFileManager;
     private javax.swing.JPopupMenu ContextMenuTerminal;
 
 
     private javax.swing.JCheckBox EOL;
-    private javax.swing.JPopupMenu.Separator EditorSeparator;
-    private javax.swing.JPopupMenu.Separator EditorSeparator1;
-    private javax.swing.JPopupMenu.Separator EditorSeparator2;
 
 
     private javax.swing.JButton FileFormat;
@@ -2799,7 +2564,7 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JCheckBox LF;
     private javax.swing.JLayeredPane LeftBasePane;
     private javax.swing.JLayeredPane LeftMainButtons;
-    private javax.swing.JMenuBar MainMenuBar;
+
 
 
     private javax.swing.JMenuItem MenuItemESPFileDelete;
@@ -2811,15 +2576,6 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuItemEditSendLine;
     private javax.swing.JMenuItem MenuItemEditSendSelected;
     private javax.swing.JMenuItem MenuItemEditUndo;
-    private javax.swing.JMenuItem MenuItemEditorCopy;
-    private javax.swing.JMenuItem MenuItemEditorCut;
-    private javax.swing.JMenuItem MenuItemEditorFontDec;
-    private javax.swing.JMenuItem MenuItemEditorFontInc;
-    private javax.swing.JMenuItem MenuItemEditorPaste;
-    private javax.swing.JMenuItem MenuItemEditorRedo;
-    private javax.swing.JMenuItem MenuItemEditorSendLine;
-    private javax.swing.JMenuItem MenuItemEditorSendSelected;
-    private javax.swing.JMenuItem MenuItemEditorUndo;
     private javax.swing.JMenuItem MenuItemFileClose;
     private javax.swing.JMenuItem MenuItemFileNew;
     private javax.swing.JMenuItem MenuItemFileOpen;
@@ -2830,17 +2586,11 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuItemFileSendESP;
     private javax.swing.JMenuItem MenuItemTerminalClear;
     private javax.swing.JMenuItem MenuItemTerminalCopy;
-    private javax.swing.JMenuItem MenuItemTerminalFontDec;
-    private javax.swing.JMenuItem MenuItemTerminalFontInc;
     private javax.swing.JMenuItem MenuItemViewClearTerminal;
-    private javax.swing.JMenuItem MenuItemViewEditorFontDec;
-    private javax.swing.JMenuItem MenuItemViewEditorFontInc;
     private javax.swing.JCheckBoxMenuItem MenuItemViewEditorOnly;
     private javax.swing.JCheckBoxMenuItem MenuItemViewFileManager;
-    private javax.swing.JMenuItem MenuItemViewFontDefault;
 
-    private javax.swing.JMenuItem MenuItemViewTermFontDec;
-    private javax.swing.JMenuItem MenuItemViewTermFontInc;
+
     private javax.swing.JCheckBoxMenuItem MenuItemViewTerminalOnly;
     private javax.swing.JCheckBoxMenuItem MenuItemViewToolbar;
 
@@ -2871,8 +2621,6 @@ public class EspIDE extends javax.swing.JFrame {
 
 
     private org.fife.ui.rtextarea.RTextScrollPane TerminalPane;
-    private javax.swing.JPopupMenu.Separator TerminalSeparator1;
-    private javax.swing.JPopupMenu.Separator TerminalSeparator2;
     private javax.swing.JPopupMenu.Separator TerminalSeparator3;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea TextEditor;
     private org.fife.ui.rtextarea.RTextScrollPane TextScroll;
@@ -2881,7 +2629,7 @@ public class EspIDE extends javax.swing.JFrame {
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
 
     private ArrayList<javax.swing.JLayeredPane> FilePaneList;
-    private ArrayList<org.fife.ui.rsyntaxtextarea.RSyntaxTextArea> TextEditor1;
+    private ArrayList<org.fife.ui.rsyntaxtextarea.RSyntaxTextArea> TextEditorList;
     private ArrayList<AutoCompletion> autoCompletions;
     private ArrayList<File> openedfiles = new ArrayList<>();
 
@@ -2943,13 +2691,6 @@ public class EspIDE extends javax.swing.JFrame {
 
 
     private long startTime = System.currentTimeMillis();
-    private static final float TERMINAL_FONT_SIZE_DEFAULT = 16f;
-    private static final float TERMINAL_FONT_SIZE_MAX = 40f;
-    private static final float TERMINAL_FONT_SIZE_MIN = 5f;
-    private static final float EDITOR_FONT_SIZE_DEFAULT = 13f;
-    private static final float EDITOR_FONT_SIZE_MAX = 40f;
-    private static final float EDITOR_FONT_SIZE_MIN = 8f;
-    private static final float LOG_FONT_SIZE_DEFAULT = 10f;
 
     private static final int portMask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS;
     private static javax.swing.ImageIcon LED_GREY;
@@ -3082,7 +2823,7 @@ public class EspIDE extends javax.swing.JFrame {
         setLocationRelativeTo(null); // window centered
 
         FilePaneList = new ArrayList<>();
-        TextEditor1 = new ArrayList<>();
+        TextEditorList = new ArrayList<>();
         autoCompletions = new ArrayList<>();
 
         FileChanged = new ArrayList<>();
@@ -3110,11 +2851,6 @@ public class EspIDE extends javax.swing.JFrame {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setMultiSelectionEnabled(false);
         chooser.setCurrentDirectory(new File(workDir));
-
-
-        // Font size
-        thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(Regedit.getFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT)));
-
 
         AutoScroll.setSelected(Regedit.getBoolean(AUTO_SCROLL, true));
 
@@ -3311,10 +3047,8 @@ public class EspIDE extends javax.swing.JFrame {
 
         FilePaneList.add(new JLayeredPane());
 
-
         RSyntaxTextArea textArea = Context.create1(FirmwareType.current);
-
-        TextEditor1.add(textArea);
+        TextEditorList.add(textArea);
 
         openedfiles.add(new File(""));
         FileChanged.add(false);
@@ -3322,7 +3056,6 @@ public class EspIDE extends javax.swing.JFrame {
         autoCompletions.add(new AutoCompletion(Context.create2(FirmwareType.current)));
         autoCompletions.get(i).install(textArea);
 
-        textArea.setPopupMenu(ContextMenuEditor);
         textArea.addCaretListener(evt -> UpdateEditorButtons());
         textArea.addActiveLineRangeListener(evt -> UpdateEditorButtons());
         textArea.addInputMethodListener(new java.awt.event.InputMethodListener() {
@@ -3340,7 +3073,7 @@ public class EspIDE extends javax.swing.JFrame {
         });
 
         RTextScrollPane scrollPane = new RTextScrollPane();
-        scrollPane.setViewportView(TextEditor1.get(i));
+        scrollPane.setViewportView(TextEditorList.get(i));
         scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setIconRowHeaderEnabled(false);
         scrollPane.setLineNumbersEnabled(true);
@@ -3390,19 +3123,19 @@ public class EspIDE extends javax.swing.JFrame {
             Theme theme = Theme.load(getClass().getResourceAsStream(res));
             if (all) {
                 for (int i = 0; i < FilesTabbedPane.getTabCount(); i++) {
-                    theme.apply(TextEditor1.get(i));
-                    TextEditor1.get(i).setFont(TextEditor1.get(i).getFont().deriveFont(Regedit.getFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT)));
+                    theme.apply(TextEditorList.get(i));
+                    TextEditorList.get(i).setFont(TextEditorList.get(i).getFont().deriveFont(Config.ins.getEditor_font_size()));
                 }
 
 
                 theme.apply(thandler.getRSyntaxTextArea());
-                thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(Regedit.getFloat(TERMINAL_FONT_SIZE, TERMINAL_FONT_SIZE_DEFAULT)));
+                thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(Config.ins.getTerminal_font_size()));
                 themeTextBackground = thandler.getRSyntaxTextArea().getBackground();
                 //SnippetText.setBackground(SnippetTopPane.getBackground());
                 LOGGER.info("Set new color theme: Success.");
             } else {
-                theme.apply(TextEditor1.get(iTab));
-                TextEditor1.get(iTab).setFont(TextEditor1.get(iTab).getFont().deriveFont(Regedit.getFloat(EDITOR_FONT_SIZE, EDITOR_FONT_SIZE_DEFAULT)));
+                theme.apply(TextEditorList.get(iTab));
+                TextEditorList.get(iTab).setFont(TextEditorList.get(iTab).getFont().deriveFont(Config.ins.getEditor_font_size()));
             }
         } catch (IOException e) {
             LOGGER.info(e.toString());
@@ -3413,8 +3146,8 @@ public class EspIDE extends javax.swing.JFrame {
     private void RemoveTab() {
         if (FilesTabbedPane.getTabCount() <= 1) {
             iTab = 0;
-            TextEditor1.get(iTab).setText("");
-            TextEditor1.get(iTab).discardAllEdits();
+            TextEditorList.get(iTab).setText("");
+            TextEditorList.get(iTab).discardAllEdits();
             FilesTabbedPane.setTitleAt(iTab, NewFile);
             openedfiles.set(iTab, new File(""));
             FileLabelUpdate();
@@ -3425,7 +3158,7 @@ public class EspIDE extends javax.swing.JFrame {
             openedfiles.remove(iTab);
             FileChanged.remove(iTab);
             autoCompletions.remove(iTab);
-            TextEditor1.remove(iTab);
+            TextEditorList.remove(iTab);
             FilePaneList.remove(iTab);
             FilesTabbedPane.removeTabAt(iTab);
             FilesTabbedPane.setSelectedIndex(iTab);
@@ -3442,10 +3175,10 @@ public class EspIDE extends javax.swing.JFrame {
         } catch (Exception e) {
             return false;
         }
-        if (TextEditor1.get(iTab).canUndo()) {
+        if (TextEditorList.get(iTab).canUndo()) {
             return true;
         }
-        return TextEditor1.get(iTab).canRedo();
+        return TextEditorList.get(iTab).canRedo();
     }
 
     private int Dialog(String msg, int btn) {
@@ -3751,7 +3484,7 @@ public class EspIDE extends javax.swing.JFrame {
         sendBuf.add("file.remove(\"" + ft + "\");");
         sendBuf.add("file.open(\"" + ft + "\",\"w+\");");
         sendBuf.add("w = file.writeline\r\n");
-        s = TextEditor1.get(iTab).getText().split("\r?\n");
+        s = TextEditorList.get(iTab).getText().split("\r?\n");
         for (String subs : s) {
             sendBuf.add("w([==[" + subs + "]==]);");
         }
@@ -3774,14 +3507,14 @@ public class EspIDE extends javax.swing.JFrame {
         int pos1 = 0;
         int pos2 = 0;
         int size = 254;
-        int l = TextEditor1.get(iTab).getText().length();
+        int l = TextEditorList.get(iTab).getText().length();
         String fragment;
         while (pos1 <= l) {
             pos2 = pos1 + size;
             if (pos2 > l) {
                 pos2 = l;
             }
-            fragment = TextEditor1.get(iTab).getText().substring(pos1, pos2);
+            fragment = TextEditorList.get(iTab).getText().substring(pos1, pos2);
             sendBuf.add(fragment);
             pos1 += size;
         }
@@ -3994,10 +3727,8 @@ public class EspIDE extends javax.swing.JFrame {
 
 
         MenuItemEditSendSelected.setEnabled(false);
-        MenuItemEditorSendSelected.setEnabled(false);
         ButtonSendSelected.setEnabled(false);
         MenuItemEditSendLine.setEnabled(false);
-        MenuItemEditorSendLine.setEnabled(false);
         ButtonSendLine.setEnabled(false);
 
 
@@ -4487,7 +4218,7 @@ public class EspIDE extends javax.swing.JFrame {
 
     private boolean pySaveFileESP(String ft) {
         LOGGER.info("pyFileSaveESP: Starting...");
-        String[] content = TextEditor1.get(iTab).getText().split("\r?\n");
+        String[] content = TextEditorList.get(iTab).getText().split("\r?\n");
         if (pyFiler.Put(ft, content)) {
             pasteMode(false);
             return SendTimerStart();

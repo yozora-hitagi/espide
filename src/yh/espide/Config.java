@@ -27,6 +27,10 @@ public class Config {
     private int line_delay_for_dumb=200;
     private int answer_timeout=   3;
 
+
+    private int terminal_font_size=16;
+    private int editor_font_size = 13;
+
     private Config() {
         command_echo = getBoolean(COMMAND_ECHO, command_echo);
         termnal_max_text_size=getInt(TERMINAL_MAX_SIZE,termnal_max_text_size);
@@ -43,6 +47,26 @@ public class Config {
         line_delay_for_dumb=getInt(LINE_DELAY,line_delay_for_dumb);
         answer_timeout=getInt(TIMEOUT,answer_timeout);
 
+        terminal_font_size = getInt(TERMINAL_FONT_SIZE,terminal_font_size);
+        editor_font_size=getInt(EDITOR_FONT_SIZE,editor_font_size);
+    }
+
+    public int getTerminal_font_size() {
+        return terminal_font_size;
+    }
+
+    public void setTerminal_font_size(int terminal_font_size) {
+        setInt(TERMINAL_FONT_SIZE,terminal_font_size);
+        this.terminal_font_size = terminal_font_size;
+    }
+
+    public int getEditor_font_size() {
+        return editor_font_size;
+    }
+
+    public void setEditor_font_size(int editor_font_size) {
+        setInt(EDITOR_FONT_SIZE,editor_font_size);
+        this.editor_font_size = editor_font_size;
     }
 
     public int getAnswer_timeout() {

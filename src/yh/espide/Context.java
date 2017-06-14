@@ -42,6 +42,8 @@ public class Context {
         textArea.setBracketMatchingEnabled(true);
         textArea.setTabSize(4);
 
+        textArea.setPopupMenu(null);
+
         return textArea;
     }
 
@@ -49,11 +51,10 @@ public class Context {
         DefaultCompletionProvider provider = new DefaultCompletionProvider();
         try {
             String name = null;
-
-            if (FirmwareType.NodeMCU.eq(type)) {
-                name = "/resources/nodemcu.autocomplete";
-            } else if (FirmwareType.MicroPython.eq(type)) {
+            if (FirmwareType.MicroPython.eq(type)) {
                 name = "/resources/python.autocomplete";
+            } else {
+                name = "/resources/nodemcu.autocomplete";
             }
 
             List<String> list = new ArrayList();
@@ -69,7 +70,7 @@ public class Context {
                 is.close();
             }
 
-            list.forEach(s->provider.addCompletion(new BasicCompletion(provider, s)));
+            list.forEach(s -> provider.addCompletion(new BasicCompletion(provider, s)));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,8 +85,8 @@ public class Context {
 
     }
 
-    public static JMenu createM1(String text){
-        JMenu item  = new JMenu(text);
+    public static JMenu createM1(String text) {
+        JMenu item = new JMenu(text);
         item.setFont(new Font("ºÚÌå", Font.PLAIN, 12));
         return item;
     }

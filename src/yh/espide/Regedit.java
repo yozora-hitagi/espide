@@ -7,6 +7,9 @@ import java.util.prefs.Preferences;
  * Created by yozora on 2017/1/12.
  */
 public abstract class Regedit {
+
+
+
     private static Preferences prefs = Preferences.userRoot().node("/yh/espide/config");
 
     public static final String TERMINAL_MAX_SIZE = "terminal_text_max_size";
