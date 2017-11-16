@@ -33,12 +33,6 @@ public class EspIDE extends javax.swing.JFrame {
 
     public EspIDE() {
         setTitle(Version.title());
-
-        LED_GREY = new javax.swing.ImageIcon(getClass().getResource("/resources/led_grey.png"));
-        LED_GREEN = new javax.swing.ImageIcon(getClass().getResource("/resources/led_green.png"));
-        LED_RED = new javax.swing.ImageIcon(getClass().getResource("/resources/led_red.png"));
-        LED_BLUE = new javax.swing.ImageIcon(getClass().getResource("/resources/led_blue.png"));
-
         initComponents();
         FinalInit();
     }
@@ -56,8 +50,7 @@ public class EspIDE extends javax.swing.JFrame {
         TerminalSeparator3 = new javax.swing.JPopupMenu.Separator();
         MenuItemESPFileDelete = new javax.swing.JMenuItem();
 
-        ContextMenuFileManager = new javax.swing.JPopupMenu();
-        ShowFileManager = new javax.swing.JCheckBoxMenuItem();
+
         HorizontSplit = new javax.swing.JSplitPane();
         LeftBasePane = new javax.swing.JLayeredPane();
 
@@ -102,14 +95,14 @@ public class EspIDE extends javax.swing.JFrame {
         FileManagerScrollPane = new javax.swing.JScrollPane();
         FileManagersLayer = new javax.swing.JLayeredPane();
         firmware_type_label = new JButton(FirmwareType.current.toString());
-        NodeFileManagerPane = new javax.swing.JLayeredPane();
+        NodeFileMgrPane = new javax.swing.JLayeredPane();
         FileFormat = new javax.swing.JButton();
         FileSystemInfo = new javax.swing.JButton();
         FileListReload = new javax.swing.JButton();
         FileRenamePanel = new javax.swing.JLayeredPane();
         FileRenameLabel = new javax.swing.JLabel();
         FileRename = new javax.swing.JTextField();
-        PyFileManagerPane = new javax.swing.JLayeredPane();
+        PyFileMgrPane = new javax.swing.JLayeredPane();
         PyListDir = new javax.swing.JButton();
 
 
@@ -186,11 +179,6 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemESPFileDelete.setToolTipText("");
         ContextMenuESPFileLUA.add(MenuItemESPFileDelete);
 
-        ShowFileManager.setSelected(true);
-        ShowFileManager.setText("Show/Hide FileManager panel");
-        ShowFileManager.setToolTipText("Look at View for enabling");
-        ShowFileManager.addItemListener(evt -> MenuItemViewFileManager.setSelected(ShowFileManager.isSelected()));
-        ContextMenuFileManager.add(ShowFileManager);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -374,7 +362,7 @@ public class EspIDE extends javax.swing.JFrame {
         Busy.setBackground(new java.awt.Color(0, 153, 0));
         Busy.setForeground(new java.awt.Color(255, 255, 255));
         Busy.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Busy.setIcon(LED_GREY); // NOI18N
+        Busy.setIcon(LED.GREY); // NOI18N
         Busy.setText("IDLE");
         Busy.setOpaque(true);
 
@@ -504,7 +492,7 @@ public class EspIDE extends javax.swing.JFrame {
         LEDPanel.setOpaque(true);
 
         PortOpenLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        PortOpenLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/led_grey.png"))); // NOI18N
+        PortOpenLabel.setIcon(LED.GREY); // NOI18N
         PortOpenLabel.setText("Open");
         PortOpenLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PortOpenLabel.setMaximumSize(new java.awt.Dimension(50, 25));
@@ -513,7 +501,7 @@ public class EspIDE extends javax.swing.JFrame {
         PortOpenLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         PortCTS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        PortCTS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/led_grey.png"))); // NOI18N
+        PortCTS.setIcon(LED.GREY); // NOI18N
         PortCTS.setText("CTS");
         PortCTS.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PortCTS.setMaximumSize(new java.awt.Dimension(50, 25));
@@ -521,17 +509,15 @@ public class EspIDE extends javax.swing.JFrame {
         PortCTS.setPreferredSize(new java.awt.Dimension(50, 25));
         PortCTS.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        PortDTR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/led_grey.png"))); // NOI18N
+        PortDTR.setIcon(LED.GREY); // NOI18N
         PortDTR.setText("DTR");
-        PortDTR.setToolTipText("");
         PortDTR.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PortDTR.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         PortDTR.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         PortDTR.addActionListener(evt -> PortDTRActionPerformed(evt));
 
-        PortRTS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/led_grey.png"))); // NOI18N
+        PortRTS.setIcon(LED.GREY); // NOI18N
         PortRTS.setText("RTS");
-        PortRTS.setToolTipText("");
         PortRTS.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PortRTS.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         PortRTS.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -556,7 +542,6 @@ public class EspIDE extends javax.swing.JFrame {
         Speed.setPreferredSize(new java.awt.Dimension(80, 25));
 
         ReScan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh3.png"))); // NOI18N
-        ReScan.setToolTipText("Scan system for available serial port");
         ReScan.setMaximumSize(new java.awt.Dimension(25, 25));
         ReScan.setMinimumSize(new java.awt.Dimension(25, 25));
         ReScan.setPreferredSize(new java.awt.Dimension(25, 25));
@@ -768,13 +753,13 @@ public class EspIDE extends javax.swing.JFrame {
             SetFirmwareType(type);
         });
 
-        NodeFileManagerPane.setComponentPopupMenu(ContextMenuFileManager);
-        NodeFileManagerPane.setMaximumSize(new java.awt.Dimension(145, 145));
-        NodeFileManagerPane.setName(""); // NOI18N
-        NodeFileManagerPane.setPreferredSize(new java.awt.Dimension(145, 145));
+
+        NodeFileMgrPane.setMaximumSize(new java.awt.Dimension(145, 145));
+        NodeFileMgrPane.setName(""); // NOI18N
+        NodeFileMgrPane.setPreferredSize(new java.awt.Dimension(145, 145));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 2, 2);
         flowLayout1.setAlignOnBaseline(true);
-        NodeFileManagerPane.setLayout(flowLayout1);
+        NodeFileMgrPane.setLayout(flowLayout1);
 
         FileFormat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/file manager (delete).png"))); // NOI18N
         FileFormat.setText("Format");
@@ -785,7 +770,7 @@ public class EspIDE extends javax.swing.JFrame {
         FileFormat.setMinimumSize(new java.awt.Dimension(130, 25));
         FileFormat.setPreferredSize(new java.awt.Dimension(130, 25));
         FileFormat.addActionListener(evt -> MenuItemESPFormatActionPerformed(evt));
-        NodeFileManagerPane.add(FileFormat);
+        NodeFileMgrPane.add(FileFormat);
 
         FileSystemInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/file manager.png"))); // NOI18N
         FileSystemInfo.setText("FS Info");
@@ -796,7 +781,7 @@ public class EspIDE extends javax.swing.JFrame {
         FileSystemInfo.setMaximumSize(new java.awt.Dimension(130, 25));
         FileSystemInfo.setPreferredSize(new java.awt.Dimension(130, 25));
         FileSystemInfo.addActionListener(evt -> NodeFileSystemInfo());
-        NodeFileManagerPane.add(FileSystemInfo);
+        NodeFileMgrPane.add(FileSystemInfo);
 
         FileListReload.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         FileListReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh3.png"))); // NOI18N
@@ -807,7 +792,7 @@ public class EspIDE extends javax.swing.JFrame {
         FileListReload.setMaximumSize(new java.awt.Dimension(130, 25));
         FileListReload.setPreferredSize(new java.awt.Dimension(130, 25));
         FileListReload.addActionListener(evt -> FileListReloadActionPerformed(evt));
-        NodeFileManagerPane.add(FileListReload);
+        NodeFileMgrPane.add(FileListReload);
 
         FileRenamePanel.setMaximumSize(new java.awt.Dimension(130, 45));
         FileRenamePanel.setMinimumSize(new java.awt.Dimension(130, 45));
@@ -848,12 +833,12 @@ public class EspIDE extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        NodeFileManagerPane.add(FileRenamePanel);
+        NodeFileMgrPane.add(FileRenamePanel);
 
-        PyFileManagerPane.setMaximumSize(new java.awt.Dimension(500, 155));
-        PyFileManagerPane.setMinimumSize(new java.awt.Dimension(55, 55));
-        PyFileManagerPane.setPreferredSize(new java.awt.Dimension(155, 155));
-        PyFileManagerPane.setLayout(new java.awt.FlowLayout());
+        PyFileMgrPane.setMaximumSize(new java.awt.Dimension(500, 155));
+        PyFileMgrPane.setMinimumSize(new java.awt.Dimension(55, 55));
+        PyFileMgrPane.setPreferredSize(new java.awt.Dimension(155, 155));
+        PyFileMgrPane.setLayout(new java.awt.FlowLayout());
 
         PyListDir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh3.png"))); // NOI18N
         PyListDir.setText("ListDir /");
@@ -864,12 +849,12 @@ public class EspIDE extends javax.swing.JFrame {
         PyListDir.setMaximumSize(new java.awt.Dimension(130, 25));
         PyListDir.setPreferredSize(new java.awt.Dimension(130, 25));
         PyListDir.addActionListener(evt -> PyListDirActionPerformed(evt));
-        PyFileManagerPane.add(PyListDir);
+        PyFileMgrPane.add(PyListDir);
 
 
         FileManagersLayer.setLayer(firmware_type_label, JLayeredPane.DEFAULT_LAYER);
-        FileManagersLayer.setLayer(NodeFileManagerPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        FileManagersLayer.setLayer(PyFileManagerPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        FileManagersLayer.setLayer(NodeFileMgrPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        FileManagersLayer.setLayer(PyFileMgrPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout FileManagersLayerLayout = new javax.swing.GroupLayout(FileManagersLayer);
         FileManagersLayer.setLayout(FileManagersLayerLayout);
@@ -878,8 +863,8 @@ public class EspIDE extends javax.swing.JFrame {
                         .addGroup(FileManagersLayerLayout.createSequentialGroup()
                                 .addGroup(FileManagersLayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(firmware_type_label, javax.swing.GroupLayout.DEFAULT_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(PyFileManagerPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(NodeFileManagerPane, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(PyFileMgrPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(NodeFileMgrPane, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 433, Short.MAX_VALUE))
         );
         FileManagersLayerLayout.setVerticalGroup(
@@ -887,15 +872,14 @@ public class EspIDE extends javax.swing.JFrame {
                         .addGroup(FileManagersLayerLayout.createSequentialGroup()
                                 .addComponent(firmware_type_label, 30, 30, 30)
                                 .addGap(6, 6, 6)
-                                .addComponent(NodeFileManagerPane, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                                .addComponent(NodeFileMgrPane, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                                 .addGap(6, 6, 6)
-                                .addComponent(PyFileManagerPane, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
+                                .addComponent(PyFileMgrPane, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
         );
 
         FileManagerScrollPane.setViewportView(FileManagersLayer);
 
         RightFilesSplitPane.setRightComponent(FileManagerScrollPane);
-
 
         SendCommand.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         SendCommand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/left.png"))); // NOI18N
@@ -1705,14 +1689,14 @@ public class EspIDE extends javax.swing.JFrame {
         if (!MenuItemViewFileManager.isSelected()) {
             return;
         }
-        NodeFileManagerPane.removeAll();
-        NodeFileManagerPane.add(FileFormat);
-        NodeFileManagerPane.add(FileSystemInfo);
-        NodeFileManagerPane.add(FileListReload);
-        NodeFileManagerPane.add(FileRenamePanel);
+        NodeFileMgrPane.removeAll();
+        NodeFileMgrPane.add(FileFormat);
+        NodeFileMgrPane.add(FileSystemInfo);
+        NodeFileMgrPane.add(FileListReload);
+        NodeFileMgrPane.add(FileRenamePanel);
         FileRenamePanel.setVisible(false);
         FileRenamePanel.setEnabled(false);
-        NodeFileManagerPane.repaint();
+        NodeFileMgrPane.repaint();
         FileAsButton = new ArrayList<>();
     }
 
@@ -1786,10 +1770,10 @@ public class EspIDE extends javax.swing.JFrame {
                                 thandler.echo("Total file(s)   : " + Integer.toString(s.length), false);
                                 thandler.echo("Total size      : " + Integer.toString(usedSpace) + " bytes", true);
                             }
-                            NodeFileManagerPane.invalidate();
-                            NodeFileManagerPane.doLayout();
-                            NodeFileManagerPane.repaint();
-                            NodeFileManagerPane.requestFocusInWindow();
+                            NodeFileMgrPane.invalidate();
+                            NodeFileMgrPane.doLayout();
+                            NodeFileMgrPane.repaint();
+                            NodeFileMgrPane.requestFocusInWindow();
                             LOGGER.info("FileManager: File list parsing done, found " + FileAsButton.size() + " file(s).");
                         } catch (Exception e) {
                             LOGGER.info(e.toString());
@@ -2196,9 +2180,9 @@ public class EspIDE extends javax.swing.JFrame {
     private void UpdateLedCTS() {
         try {
             if (serialPort.isCTS()) {
-                PortCTS.setIcon(LED_GREEN);
+                PortCTS.setIcon(LED.GREEN);
             } else {
-                PortCTS.setIcon(LED_GREY);
+                PortCTS.setIcon(LED.GREY);
             }
         } catch (Exception e) {
             LOGGER.info(e.toString());
@@ -2357,7 +2341,6 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void MenuItemViewFileManagerItemStateChanged(java.awt.event.ItemEvent evt) {
         Regedit.setBoolean(SHOW_FM_RIGHT, MenuItemViewFileManager.isSelected());
-        ShowFileManager.setSelected(MenuItemViewFileManager.isSelected());
         isFileManagerShow();
     }
 
@@ -2534,7 +2517,6 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JComboBox Command;
 
     private javax.swing.JPopupMenu ContextMenuESPFileLUA;
-    private javax.swing.JPopupMenu ContextMenuFileManager;
     private javax.swing.JPopupMenu ContextMenuTerminal;
 
 
@@ -2595,7 +2577,7 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem MenuItemViewToolbar;
 
 
-    private javax.swing.JLayeredPane NodeFileManagerPane;
+    private javax.swing.JLayeredPane NodeFileMgrPane;
     private javax.swing.JPanel NodeMCU;
 
     private javax.swing.JToggleButton Open;
@@ -2607,14 +2589,13 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JLabel PortOpenLabel;
     private javax.swing.JToggleButton PortRTS;
     private javax.swing.JProgressBar ProgressBar;
-    private javax.swing.JLayeredPane PyFileManagerPane;
+    private javax.swing.JLayeredPane PyFileMgrPane;
     private javax.swing.JButton PyListDir;
     private javax.swing.JButton ReScan;
     private javax.swing.JLayeredPane RightBasePane;
     private javax.swing.JLayeredPane RightBottomPane;
     private javax.swing.JSplitPane RightFilesSplitPane;
     private javax.swing.JButton SendCommand;
-    private javax.swing.JCheckBoxMenuItem ShowFileManager;
 
     private javax.swing.JComboBox Speed;
     private javax.swing.JLayeredPane SriptsTab;
@@ -2693,10 +2674,6 @@ public class EspIDE extends javax.swing.JFrame {
     private long startTime = System.currentTimeMillis();
 
     private static final int portMask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS;
-    private static javax.swing.ImageIcon LED_GREY;
-    private static javax.swing.ImageIcon LED_GREEN;
-    private static javax.swing.ImageIcon LED_RED;
-    private static javax.swing.ImageIcon LED_BLUE;
 
 
     public void inc_j() {
@@ -2920,7 +2897,7 @@ public class EspIDE extends javax.swing.JFrame {
         }
 
         FileAsButton.get(i).setComponentPopupMenu(FilePopupMenu.get(x));
-        NodeFileManagerPane.add(FileAsButton.get(i));
+        NodeFileMgrPane.add(FileAsButton.get(i));
     }
 
     private void AddMenuItemSeparator(int x) {
@@ -3668,10 +3645,10 @@ public class EspIDE extends javax.swing.JFrame {
             return;
         }
         if (busyIcon) {
-            Busy.setIcon(LED_BLUE);
+            Busy.setIcon(LED.BLUE);
 
         } else {
-            Busy.setIcon(LED_RED);
+            Busy.setIcon(LED.RED);
 
         }
         busyIcon = !busyIcon;
@@ -3688,7 +3665,7 @@ public class EspIDE extends javax.swing.JFrame {
             }
         }
         if (simple) {
-            Busy.setIcon(LED_GREY);
+            Busy.setIcon(LED.GREY);
 
         }
     }
@@ -3744,7 +3721,7 @@ public class EspIDE extends javax.swing.JFrame {
     public void Idle() {
         Busy.setText("IDLE");
         Busy.setBackground(new java.awt.Color(0, 153, 0)); // GREEN
-        Busy.setIcon(LED_GREY);
+        Busy.setIcon(LED.GREY);
 
 
         ProgressBar.setVisible(false);
@@ -3755,29 +3732,29 @@ public class EspIDE extends javax.swing.JFrame {
 
     public void UpdateLED() {
         if (!Open.isSelected()) {
-            PortDTR.setIcon(LED_GREY);
-            PortRTS.setIcon(LED_GREY);
-            PortCTS.setIcon(LED_GREY);
+            PortDTR.setIcon(LED.GREY);
+            PortRTS.setIcon(LED.GREY);
+            PortCTS.setIcon(LED.GREY);
             Open.setText("Open");
             Open.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/connect1.png")));
-            PortOpenLabel.setIcon(LED_GREY);
+            PortOpenLabel.setIcon(LED.GREY);
         } else {
             Open.setText("Close");
             Open.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/disconnect1.png")));
-            PortOpenLabel.setIcon(LED_GREEN);
+            PortOpenLabel.setIcon(LED.GREEN);
             UpdateLedCTS();
             if (PortDTR.isSelected()) {
-                PortDTR.setIcon(LED_GREEN);
+                PortDTR.setIcon(LED.GREEN);
             } else {
-                PortDTR.setIcon(LED_GREY);
+                PortDTR.setIcon(LED.GREY);
             }
             if (PortRTS.isSelected()) {
-                PortRTS.setIcon(LED_GREEN);
+                PortRTS.setIcon(LED.GREEN);
             } else {
-                PortRTS.setIcon(LED_GREY);
+                PortRTS.setIcon(LED.GREY);
             }
             if (portJustOpen) {
-                PortOpenLabel.setIcon(LED_RED);
+                PortOpenLabel.setIcon(LED.RED);
             }
         }
     }
@@ -4036,10 +4013,10 @@ public class EspIDE extends javax.swing.JFrame {
             return;
         }
         if (busyIcon) {
-            Busy.setIcon(LED_BLUE);
+            Busy.setIcon(LED.BLUE);
 
         } else {
-            Busy.setIcon(LED_RED);
+            Busy.setIcon(LED.RED);
 
         }
         busyIcon = !busyIcon;
@@ -4195,19 +4172,19 @@ public class EspIDE extends javax.swing.JFrame {
         switch (ftype) {
             case MicroPython:
                 chooser.setFileFilter(FILTER_PYTHON);
-                NodeFileManagerPane.setVisible(false);
-                PyFileManagerPane.setVisible(true);
+                NodeFileMgrPane.setVisible(false);
+                PyFileMgrPane.setVisible(true);
                 thandler.getRSyntaxTextArea().setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
                 break;
             case NodeMCU:
                 chooser.setFileFilter(FILTER_LUA);
-                NodeFileManagerPane.setVisible(true);
-                PyFileManagerPane.setVisible(false);
+                NodeFileMgrPane.setVisible(true);
+                PyFileMgrPane.setVisible(false);
                 thandler.getRSyntaxTextArea().setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
                 break;
             case AT:
-                NodeFileManagerPane.setVisible(false);
-                PyFileManagerPane.setVisible(false);
+                NodeFileMgrPane.setVisible(false);
+                PyFileMgrPane.setVisible(false);
                 break;
         }
 
@@ -4235,7 +4212,7 @@ public class EspIDE extends javax.swing.JFrame {
         f.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         PyFileAsButton.add(f);
 
-        PyFileManagerPane.add(f);
+        PyFileMgrPane.add(f);
 
     } // AddPyFileButton
 
@@ -4243,9 +4220,9 @@ public class EspIDE extends javax.swing.JFrame {
         if (!MenuItemViewFileManager.isSelected()) {
             return;
         }
-        PyFileManagerPane.removeAll();
-        PyFileManagerPane.add(PyListDir);
-        PyFileManagerPane.repaint();
+        PyFileMgrPane.removeAll();
+        PyFileMgrPane.add(PyListDir);
+        PyFileMgrPane.repaint();
         PyFileAsButton = new ArrayList<>();
     } // ClearPyFileManager
 
@@ -4341,10 +4318,10 @@ public class EspIDE extends javax.swing.JFrame {
                             thandler.echo("No files found.", false);
                         }
                         thandler.echo("----------------------------", true);
-                        PyFileManagerPane.invalidate();
-                        PyFileManagerPane.doLayout();
-                        PyFileManagerPane.repaint();
-                        PyFileManagerPane.requestFocusInWindow();
+                        PyFileMgrPane.invalidate();
+                        PyFileMgrPane.doLayout();
+                        PyFileMgrPane.repaint();
+                        PyFileMgrPane.requestFocusInWindow();
                         LOGGER.info("pyFileManager: File list parsing done, found " + PyFileAsButton.size() + " file(s).");
                     } catch (Exception e) {
                         LOGGER.info(e.toString());
