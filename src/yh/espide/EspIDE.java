@@ -517,7 +517,7 @@ public class EspIDE extends javax.swing.JFrame {
         FilesUpload.setMaximumSize(new java.awt.Dimension(127, 30));
         FilesUpload.setMinimumSize(new java.awt.Dimension(127, 30));
         FilesUpload.setPreferredSize(new java.awt.Dimension(127, 30));
-        FilesUpload.addActionListener(evt -> FilesUploadActionPerformed(evt));
+        FilesUpload.addActionListener(evt -> UploadFiles());
         LeftMainButtons.add(FilesUpload);
 
         SriptsTab.setLayer(FilesToolBar, javax.swing.JLayeredPane.PALETTE_LAYER);
@@ -2228,11 +2228,6 @@ public class EspIDE extends javax.swing.JFrame {
     private void NodeMCUComponentShown(java.awt.event.ComponentEvent evt) {
         UpdateEditorButtons();
         UpdateButtons();
-    }
-
-    private void FilesUploadActionPerformed(java.awt.event.ActionEvent evt) {
-        //log(evt.paramString());
-        UploadFiles();
     }
 
     private void FileSendESPActionPerformed(java.awt.event.ActionEvent evt) {

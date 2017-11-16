@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JSlider;
 import java.awt.Frame;
+import java.awt.GridLayout;
 
 
 /**
@@ -22,7 +23,6 @@ public class SettingsFrame extends JDialog {
         setTitle("ÉèÖÃ");
         setIconImage(new ImageIcon(getClass().getResource("/resources/settings2.png")).getImage());
 
-        setSize(300, 400);
 
         JLayeredPane NodeMCUSettings = new JLayeredPane();
         NodeMCUSettings.setAutoscrolls(true);
@@ -57,6 +57,7 @@ public class SettingsFrame extends JDialog {
 
 
         add(NodeMCUSettings);
+        setSize(300, 500);
 
         setLocation(owner.getLocation());
     }
@@ -160,7 +161,6 @@ public class SettingsFrame extends JDialog {
 
         DumbMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         DumbMode.setText("\"Dumb Mode\", never check answers");
-        DumbMode.setToolTipText("");
         DumbMode.addItemListener(evt -> DumbModeItemStateChanged(evt));
 
         LineDelayLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -185,65 +185,23 @@ public class SettingsFrame extends JDialog {
 
         TurboMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         TurboMode.setText("\"Turbo Mode\"");
-        TurboMode.setToolTipText("");
         TurboMode.addActionListener(evt -> TurboModeActionPerformed(evt));
 
 
         JLayeredPane OptionsFileSendMode = new JLayeredPane();
+
+        OptionsFileSendMode.setLayout(new GridLayout(8,1));
+
         OptionsFileSendMode.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Send", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10))); // NOI18N
         OptionsFileSendMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        OptionsFileSendMode.setLayer(DelayLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(Delay, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(AnswerDelayLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(AnswerDelay, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(DumbMode, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(LineDelayLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(LineDelay, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsFileSendMode.setLayer(TurboMode, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout OptionsFileSendModeLayout = new javax.swing.GroupLayout(OptionsFileSendMode);
-        OptionsFileSendMode.setLayout(OptionsFileSendModeLayout);
-        OptionsFileSendModeLayout.setHorizontalGroup(
-                OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(OptionsFileSendModeLayout.createSequentialGroup()
-                                .addGroup(OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(OptionsFileSendModeLayout.createSequentialGroup()
-                                                .addGroup(OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(TurboMode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(DelayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
-                                                .addGap(0, 0, Short.MAX_VALUE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OptionsFileSendModeLayout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                .addGroup(OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(DumbMode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(Delay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(AnswerDelayLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(AnswerDelay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(LineDelayLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addComponent(LineDelay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
-        );
-        OptionsFileSendModeLayout.setVerticalGroup(
-                OptionsFileSendModeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(OptionsFileSendModeLayout.createSequentialGroup()
-                                .addComponent(TurboMode)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DelayLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Delay, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AnswerDelayLabel)
-                                .addGap(1, 1, 1)
-                                .addComponent(AnswerDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DumbMode)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(LineDelayLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(LineDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
+        OptionsFileSendMode.add(TurboMode);
+        OptionsFileSendMode.add(DelayLabel);
+        OptionsFileSendMode.add(Delay);
+        OptionsFileSendMode.add(AnswerDelayLabel);
+        OptionsFileSendMode.add(AnswerDelay);
+        OptionsFileSendMode.add(DumbMode);
+        OptionsFileSendMode.add(LineDelayLabel);
+        OptionsFileSendMode.add(LineDelay);
 
         return OptionsFileSendMode;
     }
