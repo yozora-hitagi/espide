@@ -96,14 +96,6 @@ public class Config {
         this.delay_after_answer = delay_after_answer;
     }
 
-    public boolean isFile_auto_save_disk() {
-        return file_auto_save_disk;
-    }
-
-    public void setFile_auto_save_disk(boolean file_auto_save_disk) {
-        setBoolean(FILE_AUTO_SAVE_DISK,file_auto_save_disk);
-        this.file_auto_save_disk = file_auto_save_disk;
-    }
 
     public boolean isCommand_echo() {
         return command_echo;
@@ -132,23 +124,9 @@ public class Config {
         this.dumb_mode = dumb_mode;
     }
 
-    public boolean isFile_auto_save_esp() {
-        return file_auto_save_esp;
-    }
 
-    public void setFile_auto_save_esp(boolean file_auto_save_esp) {
-        setBoolean(FILE_AUTO_SAVE_ESP,file_auto_save_esp);
-        this.file_auto_save_esp = file_auto_save_esp;
-    }
 
-    public boolean isFile_auto_run() {
-        return file_auto_run;
-    }
 
-    public void setFile_auto_run(boolean file_auto_run) {
-        setBoolean(FILE_AUTO_RUN,file_auto_run);
-        this.file_auto_run = file_auto_run;
-    }
 
     public boolean isTurbo_mode() {
         return turbo_mode;

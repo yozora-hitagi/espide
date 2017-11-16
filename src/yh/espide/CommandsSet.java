@@ -11,22 +11,6 @@ public class CommandsSet {
         Set set = new HashSet();
         switch (type) {
             case NodeMCU:
-                set.add("=node.heap()");
-                set.add("=node.chipid()");
-                set.add("file.close()");
-                set.add("file.remove(\"\")");
-                set.add("dofile(\"\")");
-                set.add("wifi.setmode(wifi.STATION)");
-                set.add("wifi.setmode(wifi.SOFTAP)");
-                set.add("wifi.setmode(wifi.STATIONAP)");
-                set.add("=wifi.getmode()");
-                set.add("wifi.sta.config(\"myssid\",\"mypassword\")");
-                set.add("=wifi.sta.getip()");
-                set.add("=wifi.ap.getip()");
-                set.add("=wifi.sta.getmac()");
-                set.add("=wifi.ap.getmac()");
-                set.add("=wifi.sta.status()");
-                set.add("=tmr.now()");
                 break;
 
             case MicroPython:

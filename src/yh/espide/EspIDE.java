@@ -1,35 +1,200 @@
-
 package yh.espide;
 
-import jssc.*;
-import org.fife.ui.autocomplete.AutoCompletion;
+import jssc.SerialPort;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
+import jssc.SerialPortException;
+import jssc.SerialPortList;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
-import static yh.espide.Regedit.*;
+import static yh.espide.Regedit.AUTO_SCROLL;
+import static yh.espide.Regedit.PATH;
+import static yh.espide.Regedit.PORT_DTR;
+import static yh.espide.Regedit.PORT_RTS;
+import static yh.espide.Regedit.SHOW_EOL;
+import static yh.espide.Regedit.SHOW_FM_RIGHT;
+import static yh.espide.Regedit.SHOW_TOOLBAR;
+import static yh.espide.Regedit.WIN_H;
+import static yh.espide.Regedit.WIN_W;
+import static yh.espide.Regedit.WIN_X;
+import static yh.espide.Regedit.WIN_Y;
 
 public class EspIDE extends javax.swing.JFrame {
 
+    public static final Logger LOGGER = Logger.getLogger(EspIDE.class.getName());
+    static final FileNameExtensionFilter FILTER_LUA = new FileNameExtensionFilter("LUA files (*.lua, *.lc)", "lua", "lc");
+    static final FileNameExtensionFilter FILTER_PYTHON = new FileNameExtensionFilter("Python files (*.py, *.pyc)", "py", "pyc");
+    private static final int portMask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS;
     public static SerialPort serialPort;
     public static ArrayList<String> sendBuf;
     public static boolean pasteMode = true; // for MicroPython only
-
-    boolean portJustOpen;
-
+    public static int j = 0;
+    public static int pyLevel = 0;
+    public static boolean sendPending = false;
+    public static String s[];
+    public static String rcvBuf = "";
+    public static String rx_data = "";
+    public static String tx_data = "";
+    public static byte[] rx_byte;
+    public static byte[] tx_byte;
+    public static String DownloadCommand;
+    public static boolean busyIcon = false;
     private static pyFiler pyFiler = new pyFiler();
-
+    public final int SendPacketSize = 250;
+    public ActionListener taskPerformer;
+    public ActionListener watchDog;
+    public Timer timer;
+    public Timer timeout;
+    public Color color;
+    public Color themeTextBackground;
+    // downloader
+    public int packets = 0;
+    public String rcvFile = "";
+    public ArrayList<String> rcvPackets;
+    public ArrayList<byte[]> sendPackets;
+    public ArrayList<Boolean> sendPacketsCRC;
+    public ArrayList<String> PacketsData;
+    public ArrayList<Integer> PacketsSize;
+    public ArrayList<Integer> PacketsCRC;
+    public ArrayList<Integer> PacketsNum;
+    public byte[] PacketsByte;
+    boolean portJustOpen;
+    JButton firmware_type_label;
+    String DownloadedFileName = "";
+    String NewFile = "New";
+    int FileCount = 0;
+    String workDir = "";
+    JFileChooser chooser;
     private TerminalHandler thandler = new TerminalHandler();
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem AlwaysOnTop;
+    private javax.swing.JCheckBox AutoScroll;
+    private javax.swing.JLabel Busy;
+    private javax.swing.JButton ButtonCopy;
+    private javax.swing.JButton ButtonCut;
+    private javax.swing.JButton ButtonFileClose;
+    private javax.swing.JButton ButtonFileNew;
+    private javax.swing.JButton ButtonFileOpen;
+    private javax.swing.JButton ButtonFileReload;
+    private javax.swing.JButton ButtonFileSave;
+    private javax.swing.JButton ButtonPaste;
+    private javax.swing.JButton ButtonRedo;
+    private javax.swing.JButton ButtonSendLine;
+    private javax.swing.JButton ButtonSendSelected;
+    private javax.swing.JButton ButtonUndo;
+    private javax.swing.JCheckBox CR;
+    private javax.swing.JComboBox Command;
+    private javax.swing.JPopupMenu ContextMenuESPFileLUA;
+    private javax.swing.JPopupMenu ContextMenuTerminal;
+    private javax.swing.JCheckBox EOL;
+    private javax.swing.JButton FileFormat;
+
+    private javax.swing.JButton FileListReload;
+    private javax.swing.JScrollPane FileManagerScrollPane;
+    private javax.swing.JLayeredPane FileManagersLayer;
+    private javax.swing.JLabel FilePathLabel;
+    private javax.swing.JTextField FileRename;
+    private javax.swing.JLabel FileRenameLabel;
+    private javax.swing.JLayeredPane FileRenamePanel;
+    private javax.swing.JToggleButton FileSaveESP;
+    private javax.swing.JToggleButton FileSendESP;
+    private javax.swing.JButton FileSystemInfo;
+    private javax.swing.JTabbedPane FilesTabbedPane;
+    private javax.swing.JToolBar FilesToolBar;
+    private javax.swing.JButton FilesUpload;
+    private javax.swing.JSplitPane HorizontSplit;
+    private javax.swing.JLayeredPane LEDPanel;
+    private javax.swing.JCheckBox LF;
+    private javax.swing.JLayeredPane LeftBasePane;
+    private javax.swing.JLayeredPane LeftMainButtons;
+    private javax.swing.JMenuItem MenuItemESPFileDelete;
+    private javax.swing.JMenuItem MenuItemESPFileDo;
+    private javax.swing.JMenuItem MenuItemEditCopy;
+    private javax.swing.JMenuItem MenuItemEditCut;
+    private javax.swing.JMenuItem MenuItemEditPaste;
+    private javax.swing.JMenuItem MenuItemEditRedo;
+    private javax.swing.JMenuItem MenuItemEditSendLine;
+    private javax.swing.JMenuItem MenuItemEditSendSelected;
+    private javax.swing.JMenuItem MenuItemEditUndo;
+    private javax.swing.JMenuItem MenuItemFileClose;
+    private javax.swing.JMenuItem MenuItemFileNew;
+    private javax.swing.JMenuItem MenuItemFileOpen;
+    private javax.swing.JMenuItem MenuItemFileReload;
+    private javax.swing.JMenuItem MenuItemFileSave;
+    private javax.swing.JMenuItem MenuItemFileSaveESP;
+    private javax.swing.JMenuItem MenuItemFileSendESP;
+    private javax.swing.JMenuItem MenuItemTerminalClear;
+    private javax.swing.JMenuItem MenuItemTerminalCopy;
+    private javax.swing.JMenuItem MenuItemViewClearTerminal;
+    private javax.swing.JCheckBoxMenuItem MenuItemViewEditorOnly;
+    private javax.swing.JCheckBoxMenuItem MenuItemViewFileManager;
+    private javax.swing.JCheckBoxMenuItem MenuItemViewTerminalOnly;
+    private javax.swing.JCheckBoxMenuItem MenuItemViewToolbar;
+    private javax.swing.JLayeredPane NodeFileMgrPane;
+    private javax.swing.JPanel NodeMCU;
+    private javax.swing.JToggleButton Open;
+    private javax.swing.JComboBox Port;
+    private javax.swing.JLabel PortCTS;
+    private javax.swing.JToggleButton PortDTR;
+    private javax.swing.JLabel PortOpenLabel;
+    private javax.swing.JToggleButton PortRTS;
+    private javax.swing.JProgressBar ProgressBar;
+    private javax.swing.JLayeredPane PyFileMgrPane;
+    private javax.swing.JButton PyListDir;
+    private javax.swing.JButton ReScan;
+    private javax.swing.JLayeredPane RightBasePane;
+    private javax.swing.JLayeredPane RightBottomPane;
+    private javax.swing.JSplitPane RightFilesSplitPane;
+    private javax.swing.JButton SendCommand;
+    private javax.swing.JComboBox Speed;
+    private javax.swing.JLayeredPane SriptsTab;
+    private org.fife.ui.rtextarea.RTextScrollPane TerminalPane;
+    private javax.swing.JPopupMenu.Separator TerminalSeparator3;
+
+
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
+
+    private ArrayList<File> mFile; // for multifile op
+    private ArrayList<javax.swing.JButton> FileAsButton;
+    private ArrayList<javax.swing.JButton> PyFileAsButton;
+    private ArrayList<javax.swing.JPopupMenu> FilePopupMenu;
+    private ArrayList<javax.swing.JMenuItem> FilePopupMenuItem;
+    private int iTab = 0; // tab index
+    private int mFileIndex = -1; // multifile index
+    private String UploadFileName = "";
+    private long startTime = System.currentTimeMillis();
+
 
     public EspIDE() {
         setTitle(Version.title());
@@ -59,9 +224,7 @@ public class EspIDE extends javax.swing.JFrame {
         SriptsTab = new javax.swing.JLayeredPane();
         FilesToolBar = new javax.swing.JToolBar();
         FilesTabbedPane = new javax.swing.JTabbedPane();
-        FileLayeredPane = new javax.swing.JLayeredPane();
-        TextScroll = new org.fife.ui.rtextarea.RTextScrollPane();
-        TextEditor = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+
 
         Busy = new javax.swing.JLabel();
         FilePathLabel = new javax.swing.JLabel();
@@ -155,7 +318,6 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemTerminalClear.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemTerminalClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal_clear.png"))); // NOI18N
         MenuItemTerminalClear.setText("Clear");
-        MenuItemTerminalClear.setToolTipText("");
         MenuItemTerminalClear.addActionListener(evt -> thandler.getRSyntaxTextArea().setText(""));
         ContextMenuTerminal.add(MenuItemTerminalClear);
 
@@ -170,13 +332,11 @@ public class EspIDE extends javax.swing.JFrame {
 
         MenuItemESPFileDo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/play.png"))); // NOI18N
         MenuItemESPFileDo.setText("Do file");
-        MenuItemESPFileDo.setToolTipText("");
         ContextMenuESPFileLUA.add(MenuItemESPFileDo);
         ContextMenuESPFileLUA.add(TerminalSeparator3);
 
         MenuItemESPFileDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/file_remove.png"))); // NOI18N
         MenuItemESPFileDelete.setText("Delete file");
-        MenuItemESPFileDelete.setToolTipText("");
         ContextMenuESPFileLUA.add(MenuItemESPFileDelete);
 
 
@@ -230,7 +390,6 @@ public class EspIDE extends javax.swing.JFrame {
         });
 
 
-        SriptsTab.setToolTipText("");
         SriptsTab.setMinimumSize(new java.awt.Dimension(460, 350));
         SriptsTab.setOpaque(true);
 
@@ -310,54 +469,6 @@ public class EspIDE extends javax.swing.JFrame {
         FilesTabbedPane.setOpaque(true);
         FilesTabbedPane.addChangeListener(evt -> FileLabelUpdate());
 
-        TextScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        TextScroll.setViewportBorder(javax.swing.BorderFactory.createEtchedBorder());
-        TextScroll.setFoldIndicatorEnabled(true);
-        TextScroll.setLineNumbersEnabled(true);
-        TextScroll.setViewportView(TextEditor);
-
-        TextEditor.setColumns(20);
-        TextEditor.setRows(5);
-        TextEditor.setTabSize(4);
-        TextEditor.setCodeFoldingEnabled(true);
-        TextEditor.setDragEnabled(false);
-        TextEditor.setFadeCurrentLineHighlight(true);
-        TextEditor.setPaintMarkOccurrencesBorder(true);
-        TextEditor.setPaintMatchedBracketPair(true);
-        TextEditor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
-        TextEditor.addCaretListener(evt -> TextEditorCaretUpdate(evt));
-
-        TextEditor.addActiveLineRangeListener(evt -> UpdateEditorButtons());
-        TextEditor.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-                TextEditorCaretPositionChanged(evt);
-            }
-
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        TextEditor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                TextEditorKeyTyped(evt);
-            }
-        });
-        TextScroll.setViewportView(TextEditor);
-
-        FileLayeredPane.setLayer(TextScroll, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout FileLayeredPaneLayout = new javax.swing.GroupLayout(FileLayeredPane);
-        FileLayeredPane.setLayout(FileLayeredPaneLayout);
-        FileLayeredPaneLayout.setHorizontalGroup(
-                FileLayeredPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(TextScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
-        );
-        FileLayeredPaneLayout.setVerticalGroup(
-                FileLayeredPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(TextScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
-        );
-
-        FilesTabbedPane.addTab("NewFile", FileLayeredPane);
-
 
         Busy.setBackground(new java.awt.Color(0, 153, 0));
         Busy.setForeground(new java.awt.Color(255, 255, 255));
@@ -366,7 +477,6 @@ public class EspIDE extends javax.swing.JFrame {
         Busy.setText("IDLE");
         Busy.setOpaque(true);
 
-        ProgressBar.setToolTipText("");
         ProgressBar.setOpaque(true);
         ProgressBar.setStringPainted(true);
 
@@ -848,7 +958,7 @@ public class EspIDE extends javax.swing.JFrame {
         PyListDir.setMargin(new java.awt.Insets(2, 2, 2, 2));
         PyListDir.setMaximumSize(new java.awt.Dimension(130, 25));
         PyListDir.setPreferredSize(new java.awt.Dimension(130, 25));
-        PyListDir.addActionListener(evt -> PyListDirActionPerformed(evt));
+        PyListDir.addActionListener(evt -> PyListFiles());
         PyFileMgrPane.add(PyListDir);
 
 
@@ -883,7 +993,6 @@ public class EspIDE extends javax.swing.JFrame {
 
         SendCommand.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         SendCommand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/left.png"))); // NOI18N
-        SendCommand.setToolTipText("");
         SendCommand.setAlignmentY(0.0F);
         SendCommand.setEnabled(false);
         SendCommand.setText("Send");
@@ -931,7 +1040,7 @@ public class EspIDE extends javax.swing.JFrame {
 
         HorizontSplit.setRightComponent(RightBasePane);
 
-        JMenuBar menu= new JMenuBar();
+        JMenuBar menu = new JMenuBar();
 
         JMenu MenuFile = Context.createM1("文件");
 
@@ -966,7 +1075,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemFileSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemFileSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/save.png"))); // NOI18N
         MenuItemFileSave.setText("<html><u>S</u>ave to disk");
-        MenuItemFileSave.addActionListener(evt -> MenuItemFileSaveActionPerformed(evt));
+        MenuItemFileSave.addActionListener(evt ->SaveFile());
         MenuFile.add(MenuItemFileSave);
 
 
@@ -1038,7 +1147,6 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemEditPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemEditPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/paste.png"))); // NOI18N
         MenuItemEditPaste.setText("Paste");
-        MenuItemEditPaste.setToolTipText("");
         MenuItemEditPaste.setEnabled(false);
         MenuItemEditPaste.addActionListener(evt -> MenuItemEditPasteActionPerformed(evt));
         MenuEdit.add(MenuItemEditPaste);
@@ -1066,7 +1174,6 @@ public class EspIDE extends javax.swing.JFrame {
         JMenu MenuView = Context.createM1("视图");
 
         AlwaysOnTop.setText("Always On Top");
-        AlwaysOnTop.setToolTipText("");
         AlwaysOnTop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/AlwaysOnTop.png"))); // NOI18N
         AlwaysOnTop.addItemListener(evt -> AlwaysOnTopItemStateChanged(evt));
         MenuView.add(AlwaysOnTop);
@@ -1131,7 +1238,6 @@ public class EspIDE extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     private void OpenActionPerformed(java.awt.event.ActionEvent evt) {
         if (Open.isSelected()) {
@@ -1204,7 +1310,6 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-
     private void SetWindowSize() {
         int x, y, h, w;
         x = Regedit.getInt(WIN_X, 0);
@@ -1217,7 +1322,6 @@ public class EspIDE extends javax.swing.JFrame {
     private void isToolbarShow() {
         FilesToolBar.setVisible(MenuItemViewToolbar.isSelected());
     }
-
 
     private void isFileManagerShow() {
         int div;
@@ -1236,7 +1340,6 @@ public class EspIDE extends javax.swing.JFrame {
             RightFilesSplitPane.setDividerLocation(RightFilesSplitPane.getWidth() - RightFilesSplitPane.getDividerSize());
         }
     }
-
 
     private void SendCommandActionPerformed(java.awt.event.ActionEvent evt) {
         if (Config.ins.isCommand_echo()) {
@@ -1275,7 +1378,6 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-
     private void ContextMenuTerminalPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
         try {
             MenuItemTerminalCopy.setEnabled(thandler.getRSyntaxTextArea().getSelectedText().length() > 0);
@@ -1284,13 +1386,6 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-
-    private void MenuItemFileSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        SaveFile();
-        if (Config.ins.isFile_auto_save_esp() && !FileSaveESP.isSelected()) {
-            FileSaveESP.doClick();
-        }
-    }
 
     boolean isFileNew() {
         try {
@@ -1314,9 +1409,9 @@ public class EspIDE extends javax.swing.JFrame {
             } else { // MicroPython
                 fileExt = ".py";
             }
-            openedfiles.set(iTab, new File("script" + Integer.toString(FileCount) + fileExt));
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).file = new File("script" + Integer.toString(FileCount) + fileExt);
             chooser.rescanCurrentDirectory();
-            chooser.setSelectedFile(openedfiles.get(iTab));
+            chooser.setSelectedFile(TextEditArea.TEXT_EDIT_AREAS.get(iTab).file);
             int returnVal = chooser.showSaveDialog(null);
             if (returnVal != JFileChooser.APPROVE_OPTION) {
                 LOGGER.info("Saving abort by user.");
@@ -1324,34 +1419,32 @@ public class EspIDE extends javax.swing.JFrame {
                 return false;
             }
             SavePath();
-            openedfiles.set(iTab, chooser.getSelectedFile());
-            if (openedfiles.get(iTab).exists()) {
-                LOGGER.info("File " + openedfiles.get(iTab).getName() + " already exist, waiting user choice");
-                int shouldWrite = Dialog("File " + openedfiles.get(iTab).getName() + " already exist. Overwrite?", JOptionPane.YES_NO_OPTION);
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).file = chooser.getSelectedFile();
+            if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.exists()) {
+                LOGGER.info("File " + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName() + " already exist, waiting user choice");
+                int shouldWrite = Dialog("File " + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName() + " already exist. Overwrite?", JOptionPane.YES_NO_OPTION);
                 if (shouldWrite != JOptionPane.YES_OPTION) {
                     UpdateEditorButtons();
                     return false;
                 }
             }
         } else { // we saving file, when open
-            LOGGER.info("We save known file " + openedfiles.get(iTab).getName());
+            LOGGER.info("We save known file " + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName());
         }
+
+        BufferedWriter bw = null;
         try {
-            LOGGER.info("Try to saving file " + openedfiles.get(iTab).getName() + " ...");
-            fos = new FileOutputStream(openedfiles.get(iTab));
-            osw = new OutputStreamWriter(fos, "UTF-8");
-            bw = new BufferedWriter(osw);
-            bw.write(TextEditorList.get(iTab).getText());
+            LOGGER.info("Try to saving file " + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName() + " ...");
+            bw = new BufferedWriter(new OutputStreamWriter( new FileOutputStream(TextEditArea.TEXT_EDIT_AREAS.get(iTab).file), "UTF-8"));
+            bw.write(TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText());
             bw.flush();
-            osw.flush();
-            fos.flush();
-            String filename = openedfiles.get(iTab).getName();
+            String filename = TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName();
             LOGGER.info("Save file " + filename + ": Success.");
             FilesTabbedPane.setTitleAt(iTab, filename);
             UpdateEditorButtons();
             success = true;
         } catch (IOException ex) {
-            LOGGER.info("Save file " + openedfiles.get(iTab).getName() + ": FAIL.");
+            LOGGER.info("Save file " + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName() + ": FAIL.");
             LOGGER.info(ex.toString());
 //            log(ex.getStackTrace().toString());
             JOptionPane.showMessageDialog(null, "Error, file not saved!");
@@ -1360,18 +1453,12 @@ public class EspIDE extends javax.swing.JFrame {
             if (bw != null) {
                 bw.close();
             }
-            if (osw != null) {
-                osw.close();
-            }
-            if (fos != null) {
-                fos.close();
-            }
         } catch (IOException ex) {
             LOGGER.info(ex.toString());
 //            log(ex.getStackTrace().toString());
         }
-        TextEditorList.get(iTab).discardAllEdits();
-        FileChanged.set(iTab, false);
+        TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.discardAllEdits();
+        TextEditArea.TEXT_EDIT_AREAS.get(iTab).filechanged = false;
         UpdateEditorButtons();
         return success;
     }
@@ -1386,17 +1473,17 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void MenuItemEditCutActionPerformed(java.awt.event.ActionEvent evt) {
-        TextEditorList.get(iTab).cut();
-        FileChanged.set(iTab, true);
+        TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.cut();
+        TextEditArea.TEXT_EDIT_AREAS.get(iTab).filechanged = true;
     }
 
     private void MenuItemEditCopyActionPerformed(java.awt.event.ActionEvent evt) {
-        TextEditorList.get(iTab).copy();
+        TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.copy();
     }
 
     private void MenuItemEditPasteActionPerformed(java.awt.event.ActionEvent evt) {
-        TextEditorList.get(iTab).paste();
-        FileChanged.set(iTab, true);
+        TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.paste();
+        TextEditArea.TEXT_EDIT_AREAS.get(iTab).filechanged = true;
     }
 
     private void SavePath() {
@@ -1410,8 +1497,8 @@ public class EspIDE extends javax.swing.JFrame {
         if (success == JFileChooser.APPROVE_OPTION) {
             SavePath();
             int isOpen = -1;
-            for (int i = 0; i < openedfiles.size(); i++) {
-                if (chooser.getSelectedFile().getPath().equals(openedfiles.get(i).getPath())) {
+            for (int i = 0; i < TextEditArea.TEXT_EDIT_AREAS.size(); i++) {
+                if (chooser.getSelectedFile().getPath().equals(TextEditArea.TEXT_EDIT_AREAS.get(i).file.getPath())) {
                     iTab = i;
                     isOpen = i;
                     break;
@@ -1430,16 +1517,16 @@ public class EspIDE extends javax.swing.JFrame {
             }
             LOGGER.info("Try to open file " + chooser.getSelectedFile().getName());
             try {
-                openedfiles.set(iTab, chooser.getSelectedFile());
-                String filename = openedfiles.get(iTab).getName();
-                LOGGER.info("File name: " + openedfiles.get(iTab).getPath());
-                if (openedfiles.get(iTab).length() > 1024 * 1024) { // 1M
+                TextEditArea.TEXT_EDIT_AREAS.get(iTab).file = chooser.getSelectedFile();
+                String filename = TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName();
+                LOGGER.info("File name: " + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getPath());
+                if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.length() > 1024 * 1024) { // 1M
                     JOptionPane.showMessageDialog(null, "File " + filename + " too large.");
-                    LOGGER.info("File too large. Size: " + Long.toString(openedfiles.get(iTab).length() / 1024 / 1024) + " Mb, file: " + openedfiles.get(iTab).getPath());
+                    LOGGER.info("File too large. Size: " + Long.toString(TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.length() / 1024 / 1024) + " Mb, file: " + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getPath());
                     UpdateEditorButtons();
                     return;
                 }
-                FilesTabbedPane.setTitleAt(iTab, openedfiles.get(iTab).getName());
+                FilesTabbedPane.setTitleAt(iTab, TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName());
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error, file is not open!");
                 LOGGER.info(ex.toString());
@@ -1447,7 +1534,7 @@ public class EspIDE extends javax.swing.JFrame {
 //                log(ex.getStackTrace().toString());
             }
             if (LoadFile()) {
-                LOGGER.info("Open \"" + openedfiles.get(iTab).getName() + "\": Success.");
+                LOGGER.info("Open \"" + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName() + "\": Success.");
             }
         }
         UpdateEditorButtons();
@@ -1462,22 +1549,21 @@ public class EspIDE extends javax.swing.JFrame {
         }
         String filename = "";
         try {
-            filename = openedfiles.get(iTab).getName();
+            filename = TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName();
             LOGGER.info("Try to load file " + filename);
         } catch (Exception e) {
             LOGGER.info("Internal error 102: no current file descriptor.");
             return false;
         }
+        BufferedReader br = null;
         try {
-            fis = new FileInputStream(openedfiles.get(iTab));
-            isr = new InputStreamReader(fis, "UTF-8");
-            br = new BufferedReader(isr);
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(TextEditArea.TEXT_EDIT_AREAS.get(iTab).file), "UTF-8"));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line).append('\n');
             }
-            TextEditorList.get(iTab).setText(sb.toString());
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.setText(sb.toString());
             success = true;
         } catch (Exception ex) {
             LOGGER.info(ex.toString());
@@ -1491,21 +1577,15 @@ public class EspIDE extends javax.swing.JFrame {
             if (br != null) {
                 br.close();
             }
-            if (isr != null) {
-                isr.close();
-            }
-            if (fis != null) {
-                fis.close();
-            }
         } catch (Exception ex) {
             LOGGER.info(ex.toString());
 //                log(ex.getStackTrace().toString());
             LOGGER.info("Internal error 103: can't close stream.");
         }
         if (success) {
-            TextEditorList.get(iTab).setCaretPosition(0);
-            FileChanged.set(iTab, false);
-            TextEditorList.get(iTab).discardAllEdits();
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.setCaretPosition(0);
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).filechanged = false;
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.discardAllEdits();
             UpdateEditorButtons();
             FileLabelUpdate();
             LOGGER.info("Loading " + filename + ": Success.");
@@ -1513,9 +1593,8 @@ public class EspIDE extends javax.swing.JFrame {
         return success;
     }
 
-
     private void CheckSelected() {
-        if (TextEditorList.get(iTab).getSelectedText() == null) {
+        if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getSelectedText() == null) {
             MenuItemEditCut.setEnabled(false);
             MenuItemEditCopy.setEnabled(false);
             ButtonCut.setEnabled(false);
@@ -1577,13 +1656,13 @@ public class EspIDE extends javax.swing.JFrame {
         }
         // CanUndo
         try {
-            if (TextEditorList.isEmpty()) {
+            if (TextEditArea.TEXT_EDIT_AREAS.isEmpty()) {
                 return;
             }
         } catch (Exception e) {
             return;
         }
-        if (TextEditorList.get(iTab).canUndo()) {
+        if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.canUndo()) {
             MenuItemEditUndo.setEnabled(true);
             ButtonUndo.setEnabled(true);
         } else {
@@ -1591,7 +1670,7 @@ public class EspIDE extends javax.swing.JFrame {
             ButtonUndo.setEnabled(false);
         }
         // CanRedo
-        if (TextEditorList.get(iTab).canRedo()) {
+        if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.canRedo()) {
             MenuItemEditRedo.setEnabled(true);
             ButtonRedo.setEnabled(true);
         } else {
@@ -1614,24 +1693,20 @@ public class EspIDE extends javax.swing.JFrame {
         CloseFile();
     }
 
-    private void MenuItemViewClearTerminalActionPerformed(java.awt.event.ActionEvent evt) {
-        MenuItemTerminalClear.doClick();
-    }
-
 
     private void AlwaysOnTopItemStateChanged(java.awt.event.ItemEvent evt) {
         this.setAlwaysOnTop(AlwaysOnTop.isSelected());
     }
 
     private void MenuItemEditUndoActionPerformed(java.awt.event.ActionEvent evt) {
-        if (TextEditorList.get(iTab).canUndo()) {
-            TextEditorList.get(iTab).undoLastAction();
+        if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.canUndo()) {
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.undoLastAction();
         }
     }
 
     private void MenuItemEditRedoActionPerformed(java.awt.event.ActionEvent evt) {
-        if (TextEditorList.get(iTab).canRedo()) {
-            TextEditorList.get(iTab).redoLastAction();
+        if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.canRedo()) {
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.redoLastAction();
         }
     }
 
@@ -1698,102 +1773,6 @@ public class EspIDE extends javax.swing.JFrame {
         FileRenamePanel.setEnabled(false);
         NodeFileMgrPane.repaint();
         FileAsButton = new ArrayList<>();
-    }
-
-    private class PortNodeFilesReader implements SerialPortEventListener {
-
-        public void serialEvent(SerialPortEvent event) {
-            String data;
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                try {
-                    data = serialPort.readString(event.getEventValue());
-                    rcvBuf = rcvBuf + data;
-                    rx_data = rx_data + data;
-                } catch (Exception e) {
-                    data = "";
-                    LOGGER.info(e.toString());
-                }
-                if (rcvBuf.contains("> ")) {
-                    try {
-                        timeout.restart();
-                    } catch (Exception e) {
-                        LOGGER.info(e.toString());
-                    }
-                    rcvBuf = "";
-                    if (j < sendBuf.size() - 1) {
-                        if (timer.isRunning() || sendPending) {
-                            //
-                        } else {
-                            inc_j();
-                            sendPending = true;
-                            timer.start();
-                        }
-                    } else { // send done
-                        try {
-                            timer.stop();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-                try {
-                    if (rx_data.contains("~~~File list END~~~")) {
-                        try {
-                            timeout.stop();
-                        } catch (Exception e) {
-                            LOGGER.info(e.toString());
-                        }
-                        ProgressBar.setValue(100);
-                        LOGGER.info("FileManager: File list found! Do parsing...");
-                        try {
-                            // parsing answer
-                            int start = rx_data.indexOf("~~~File list START~~~");
-                            rx_data = rx_data.substring(start + 23, rx_data.indexOf("~~~File list END~~~"));
-                            //log(rx_data.replaceAll("\r?\n", "<CR+LF>\r\n"));
-                            s = rx_data.split("\r?\n");
-                            Arrays.sort(s);
-//                            TerminalAdd("\r\n" + rx_data + "\r\n> ");
-                            int usedSpace = 0;
-                            thandler.echo("----------------------------", false);
-                            for (String subs : s) {
-                                thandler.echo(subs, false);
-                                String[] parts = subs.split(":");
-                                if (parts[0].trim().length() > 0) {
-                                    int size = Integer.parseInt(parts[1].trim().split(" ")[0]);
-                                    AddNodeFileButton(parts[0].trim(), size);
-                                    usedSpace += size;
-                                    LOGGER.info("FileManager found file " + parts[0].trim());
-                                }
-                            }
-                            if (FileAsButton.size() == 0) {
-                                thandler.echo("No files found.", true);
-                            } else {
-                                thandler.echo("Total file(s)   : " + Integer.toString(s.length), false);
-                                thandler.echo("Total size      : " + Integer.toString(usedSpace) + " bytes", true);
-                            }
-                            NodeFileMgrPane.invalidate();
-                            NodeFileMgrPane.doLayout();
-                            NodeFileMgrPane.repaint();
-                            NodeFileMgrPane.requestFocusInWindow();
-                            LOGGER.info("FileManager: File list parsing done, found " + FileAsButton.size() + " file(s).");
-                        } catch (Exception e) {
-                            LOGGER.info(e.toString());
-                        }
-                        try {
-                            serialPort.removeEventListener();
-                        } catch (Exception e) {
-                        }
-                        serialPort.addEventListener(new PortReader(), portMask);
-                        SendUnLock();
-                    }
-                } catch (SerialPortException ex) {
-                    LOGGER.info(ex.toString());
-                }
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("FileManager: Unknown serial port error received.");
-            }
-        }
     }
 
     private void FileDownload(String param) {
@@ -1919,139 +1898,6 @@ public class EspIDE extends javax.swing.JFrame {
         System.arraycopy(a, 0, r, 0, a.length);
         System.arraycopy(b, 0, r, a.length, b.length);
         return r;
-    }
-
-    private class PortFileDownloader implements SerialPortEventListener {
-
-        public void serialEvent(SerialPortEvent event) {
-            String data;
-            byte[] b;
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                try {
-                    b = serialPort.readBytes();
-                    rx_byte = concatArray(rx_byte, b);
-                    data = new String(b);
-                    rcvBuf = rcvBuf + data;
-                    rx_data = rx_data + data;
-                    //TerminalAdd(data);
-                } catch (SerialPortException e) {
-                    data = "";
-                    LOGGER.info(e.toString());
-                }
-                if (rcvBuf.contains("> ")) {
-                    try {
-                        timeout.restart();
-                    } catch (Exception e) {
-                        LOGGER.info(e.toString());
-                    }
-                    rcvBuf = "";
-                    if (j < sendBuf.size() - 1) {
-                        if (timer.isRunning() || sendPending) {
-                            //
-                        } else {
-                            inc_j();
-                            sendPending = true;
-                            timer.start();
-                        }
-                    } else { // send done
-                        try {
-                            timer.stop();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-                /*
-                String l = data.replace("\r", "<CR>");
-                l = l.replace("\n", "<LF>");
-                l = l.replace("`", "<OK>");
-                log("recv:" + l);
-                 */
-                if ((rx_data.lastIndexOf("~~~DATA-END") >= 0) && (rx_data.lastIndexOf("~~~DATA-START") >= 0)) {
-                    // we got full packet
-                    rcvPackets.add(rx_data.split("~~~DATA-END")[0]); // store RAW data
-                    rx_data = rx_data.substring(rx_data.indexOf("~~~DATA-END") + 11); // and remove it from buf
-                    if (packets > 0) { // exclude div by zero
-                        ProgressBar.setValue(rcvPackets.size() * 100 / packets);
-                    }
-                    //  ~~~DATA-START~~~buf~~~DATA-LENGTH~~~string.len(buf)~~~DATA-N~~~i~~~DATA-CRC~~~CheckSum~~~DATA-END
-                    //0        1                  2                               3            4                     5
-                    // split packet & check crc
-                    int i = rcvPackets.size() - 1;
-                    String[] part = rcvPackets.get(i).split("~~~DATA-CRC~~~");
-                    PacketsCRC.add(Integer.parseInt(part[1]));
-                    String left = part[0];
-                    part = left.split("~~~DATA-N~~~");
-                    PacketsNum.add(Integer.parseInt(part[1]));
-                    left = part[0];
-                    part = left.split("~~~DATA-LENGTH~~~");
-                    PacketsSize.add(Integer.parseInt(part[1]));
-                    left = part[0];
-                    part = left.split("~~~DATA-START~~~");
-                    PacketsData.add(part[1]);
-                    int startData = FindPacketID(i + 1);
-                    byte[] x;
-                    if ((startData > 0) && (rx_byte.length >= (startData + PacketsSize.get(i)))) {
-                        x = copyPartArray(rx_byte, startData, PacketsSize.get(i));
-                        //log("Downloader: data from packet #" + Integer.toString(i+1) + " found in raw data");
-                    } else {
-                        x = new byte[0];
-                        //log("Downloader: data packet #" + Integer.toString(i+1) + " not found in raw data.");
-                        //log("raw date length " + rx_byte.length +
-                        //    "\r\nstartData " + Integer.toString(startData) );
-                    }
-                    //rx_byte = new byte[0];
-                    if (PacketsCRC.get(i) == CRC(x)) {
-                        try {
-                            timeout.restart();
-                        } catch (Exception e) {
-                            LOGGER.info(e.toString());
-                        }
-                        rcvFile = rcvFile + PacketsData.get(i);
-                        PacketsByte = concatArray(PacketsByte, x);
-                        LOGGER.info("Downloader: Receive packet: " + Integer.toString(PacketsNum.get(i)) + "/" + Integer.toString(packets)
-                                + ", size:" + Integer.toString(PacketsSize.get(i))
-                                + ", CRC check: Success");
-                    } else {
-                        try {
-                            timeout.stop();
-                        } catch (Exception e) {
-                            LOGGER.info(e.toString());
-                        }
-                        LOGGER.info("Downloader: Receive packets: " + Integer.toString(PacketsNum.get(i)) + "/" + Integer.toString(packets)
-                                + ", size expected:" + Integer.toString(PacketsSize.get(i))
-                                + ", size received:" + Integer.toString(PacketsByte.length)
-                                + "\r\n, CRC expected :" + Integer.toString(PacketsCRC.get(i))
-                                + "  CRC received :" + Integer.toString(CRC(x)));
-                        LOGGER.info("Downloader: FAIL.");
-                        PacketsCRC.clear();
-                        PacketsNum.clear();
-                        PacketsSize.clear();
-                        PacketsData.clear();
-                        rcvPackets.clear();
-                        rcvFile = "";
-                        PacketsByte = new byte[0];
-                        FileDownloadFinisher(false);
-                    }
-                } else if ((rx_data.lastIndexOf("~~~DATA-TOTAL-END~~~") >= 0) && (PacketsNum.size() == packets)) {
-                    try {
-                        timeout.stop();
-                    } catch (Exception e) {
-                        LOGGER.info(e.toString());
-                    }
-                    ProgressBar.setValue(100);
-                    LOGGER.info("Downloader: Receive final sequense. File download: Success");
-                    //log(rx_data);
-                    FileDownloadFinisher(true);
-                } else {
-                    //log("rxbyte - " + Integer.toString( rx_byte.length ));
-                }
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("Downloader: Unknown serial port error received.");
-                FileDownloadFinisher(false);
-            }
-        }
     }
 
     private byte[] copyPartArray(byte[] a, int start, int len) {
@@ -2189,24 +2035,23 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-
     private void MenuItemEditSendSelectedActionPerformed(java.awt.event.ActionEvent evt) {
         int l = 0;
 
         try {
-            l = TextEditorList.get(iTab).getSelectedText().length();
+            l = TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getSelectedText().length();
         } catch (Exception e) {
             LOGGER.info("Can't send: nothing selected.");
             return;
         }
         if (l > 0) {
-            SendToESP(TextEditorList.get(iTab).getSelectedText());
+            SendToESP(TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getSelectedText());
         }
 
     }
 
     private void MenuItemFileRemoveESPActionPerformed(java.awt.event.ActionEvent evt) {
-        String ft = openedfiles.get(iTab).getName();
+        String ft = TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName();
         if (ft.length() == 0) {
             LOGGER.info("removeFileFromESP: FAIL. Can't remove file from ESP without name.");
             JOptionPane.showMessageDialog(null, "Can't remove file from ESP without name.");
@@ -2229,17 +2074,15 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-
     private void MenuItemEditSendLineActionPerformed(java.awt.event.ActionEvent evt) {
         int nLine;
 
-        nLine = TextEditorList.get(iTab).getCaretLineNumber();
-        String cmd = TextEditorList.get(iTab).getText().split("\r?\n")[nLine];
+        nLine = TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getCaretLineNumber();
+        String cmd = TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText().split("\r?\n")[nLine];
         btnSend(cmd);
 
 
     }
-
 
     private void MenuItemESPFormatActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -2250,13 +2093,11 @@ public class EspIDE extends javax.swing.JFrame {
 
     }
 
-
     private void RightFilesSplitPanePropertyChange(java.beans.PropertyChangeEvent evt) {
         if ("dividerLocation".equals(evt.getPropertyName()) && MenuItemViewFileManager.isSelected()) {
             Regedit.setInt(Regedit.FM_DIV, RightFilesSplitPane.getDividerLocation());
         }
     }
-
 
     private void formPropertyChange(java.beans.PropertyChangeEvent evt) {
         //log(evt.getPropertyName());
@@ -2282,18 +2123,15 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-
     private void MenuItemViewFileManagerActionPerformed(java.awt.event.ActionEvent evt) {
         Regedit.setBoolean(SHOW_FM_RIGHT, MenuItemViewFileManager.isSelected());
         isFileManagerShow();
     }
 
-
     private void MenuItemViewToolbarActionPerformed(java.awt.event.ActionEvent evt) {
         Regedit.setBoolean(SHOW_TOOLBAR, MenuItemViewToolbar.isSelected());
         isToolbarShow();
     }
-
 
     private void AutoScrollActionPerformed(java.awt.event.ActionEvent evt) {
         Regedit.setBoolean(AUTO_SCROLL, AutoScroll.isSelected());
@@ -2338,12 +2176,10 @@ public class EspIDE extends javax.swing.JFrame {
         isToolbarShow();
     }
 
-
     private void MenuItemViewFileManagerItemStateChanged(java.awt.event.ItemEvent evt) {
         Regedit.setBoolean(SHOW_FM_RIGHT, MenuItemViewFileManager.isSelected());
         isFileManagerShow();
     }
-
 
     private void FileRenameActionPerformed(java.awt.event.ActionEvent evt) {
         btnSend("file.rename(\"" + FileRenameLabel.getText() + "\",\"" + FileRename.getText().trim() + "\")");
@@ -2353,7 +2189,6 @@ public class EspIDE extends javax.swing.JFrame {
         }
         FileListReload.doClick();
     }
-
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {
         AppClose();
@@ -2377,11 +2212,9 @@ public class EspIDE extends javax.swing.JFrame {
         System.exit(0);
     }
 
-
     private void EOLItemStateChanged(java.awt.event.ItemEvent evt) {
         thandler.getRSyntaxTextArea().setEOLMarkersVisible(EOL.isSelected());
     }
-
 
     private void MenuItemViewTerminalOnlyItemStateChanged(java.awt.event.ItemEvent evt) {
         if (MenuItemViewTerminalOnly.isSelected()) {
@@ -2392,27 +2225,24 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-
     private void NodeMCUComponentShown(java.awt.event.ComponentEvent evt) {
         UpdateEditorButtons();
         UpdateButtons();
     }
-
 
     private void FilesUploadActionPerformed(java.awt.event.ActionEvent evt) {
         //log(evt.paramString());
         UploadFiles();
     }
 
-
     private void FileSendESPActionPerformed(java.awt.event.ActionEvent evt) {
         if (FileSendESP.isSelected()) {
-            if (TextEditorList.get(iTab).getText().length() == 0) {
+            if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText().length() == 0) {
                 JOptionPane.showMessageDialog(null, "File empty.");
                 FileSendESP.setSelected(false);
                 return;
             }
-            SendToESP(TextEditorList.get(iTab).getText());
+            SendToESP(TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText());
         } else {
             StopSend();
         }
@@ -2423,24 +2253,18 @@ public class EspIDE extends javax.swing.JFrame {
             StopSend();
             return;
         }
-        if (TextEditorList.get(iTab).getText().length() == 0) {
+        if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText().length() == 0) {
             FileSaveESP.setSelected(false);
             JOptionPane.showMessageDialog(null, "File empty.");
             return;
         }
-        String fName = openedfiles.get(iTab).getName();
+        String fName = TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName();
         if (fName.length() == 0) {
             FileSaveESP.setSelected(false);
             String msg = " Can't save file to ESP without name.";
             LOGGER.info("FileSaveESP: FAIL. " + msg);
             JOptionPane.showMessageDialog(null, msg);
             return;
-        }
-        if (Config.ins.isFile_auto_save_disk()) {
-            if (!SaveFile()) { // first save file
-                FileSaveESP.setSelected(false);
-                return;
-            }
         }
         if (!Open.isSelected() || portJustOpen) {
             LOGGER.info("FileSaveESP: Serial port not open. Operation canceled.");
@@ -2456,24 +2280,20 @@ public class EspIDE extends javax.swing.JFrame {
         }
     }
 
-
     private void TextEditorKeyTyped(java.awt.event.KeyEvent evt) {
         if (!isChanged()) {
-            FileChanged.set(iTab, true);
+            TextEditArea.TEXT_EDIT_AREAS.get(iTab).filechanged = true;
             UpdateEditorButtons();
         }
     }
-
 
     private void TextEditorCaretPositionChanged(java.awt.event.InputMethodEvent evt) {
         UpdateEditorButtons();
     }
 
-
     private void TextEditorCaretUpdate(javax.swing.event.CaretEvent evt) {
         UpdateEditorButtons();
     }
-
 
     private void MenuItemViewEditorOnlyItemStateChanged(java.awt.event.ItemEvent evt) {
         if (MenuItemViewEditorOnly.isSelected()) {
@@ -2485,196 +2305,10 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
 
-    private void PyListDirActionPerformed(java.awt.event.ActionEvent evt) {
-        PyListFiles();
-    }
-
-
     private void NodeFileSystemInfo() {
         String cmd = "r,u,t=file.fsinfo() print(\"Total : \"..t..\" bytes\\r\\nUsed  : \"..u..\" bytes\\r\\nRemain: \"..r..\" bytes\\r\\n\") r=nil u=nil t=nil";
         send(addCRLF(cmd), true);
     }
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBoxMenuItem AlwaysOnTop;
-    private javax.swing.JCheckBox AutoScroll;
-    private javax.swing.JLabel Busy;
-    private javax.swing.JButton ButtonCopy;
-    private javax.swing.JButton ButtonCut;
-    private javax.swing.JButton ButtonFileClose;
-    private javax.swing.JButton ButtonFileNew;
-    private javax.swing.JButton ButtonFileOpen;
-    private javax.swing.JButton ButtonFileReload;
-    private javax.swing.JButton ButtonFileSave;
-    private javax.swing.JButton ButtonPaste;
-    private javax.swing.JButton ButtonRedo;
-    private javax.swing.JButton ButtonSendLine;
-    private javax.swing.JButton ButtonSendSelected;
-
-    private javax.swing.JButton ButtonUndo;
-    private javax.swing.JCheckBox CR;
-    private javax.swing.JComboBox Command;
-
-    private javax.swing.JPopupMenu ContextMenuESPFileLUA;
-    private javax.swing.JPopupMenu ContextMenuTerminal;
-
-
-    private javax.swing.JCheckBox EOL;
-
-
-    private javax.swing.JButton FileFormat;
-    private javax.swing.JLayeredPane FileLayeredPane;
-    private javax.swing.JButton FileListReload;
-    private javax.swing.JScrollPane FileManagerScrollPane;
-    private javax.swing.JLayeredPane FileManagersLayer;
-
-    JButton firmware_type_label;
-
-    private javax.swing.JLabel FilePathLabel;
-    private javax.swing.JTextField FileRename;
-    private javax.swing.JLabel FileRenameLabel;
-    private javax.swing.JLayeredPane FileRenamePanel;
-    private javax.swing.JToggleButton FileSaveESP;
-    private javax.swing.JToggleButton FileSendESP;
-    private javax.swing.JButton FileSystemInfo;
-    private javax.swing.JTabbedPane FilesTabbedPane;
-    private javax.swing.JToolBar FilesToolBar;
-    private javax.swing.JButton FilesUpload;
-    private javax.swing.JSplitPane HorizontSplit;
-    private javax.swing.JLayeredPane LEDPanel;
-    private javax.swing.JCheckBox LF;
-    private javax.swing.JLayeredPane LeftBasePane;
-    private javax.swing.JLayeredPane LeftMainButtons;
-
-
-
-    private javax.swing.JMenuItem MenuItemESPFileDelete;
-    private javax.swing.JMenuItem MenuItemESPFileDo;
-    private javax.swing.JMenuItem MenuItemEditCopy;
-    private javax.swing.JMenuItem MenuItemEditCut;
-    private javax.swing.JMenuItem MenuItemEditPaste;
-    private javax.swing.JMenuItem MenuItemEditRedo;
-    private javax.swing.JMenuItem MenuItemEditSendLine;
-    private javax.swing.JMenuItem MenuItemEditSendSelected;
-    private javax.swing.JMenuItem MenuItemEditUndo;
-    private javax.swing.JMenuItem MenuItemFileClose;
-    private javax.swing.JMenuItem MenuItemFileNew;
-    private javax.swing.JMenuItem MenuItemFileOpen;
-    private javax.swing.JMenuItem MenuItemFileReload;
-
-    private javax.swing.JMenuItem MenuItemFileSave;
-    private javax.swing.JMenuItem MenuItemFileSaveESP;
-    private javax.swing.JMenuItem MenuItemFileSendESP;
-    private javax.swing.JMenuItem MenuItemTerminalClear;
-    private javax.swing.JMenuItem MenuItemTerminalCopy;
-    private javax.swing.JMenuItem MenuItemViewClearTerminal;
-    private javax.swing.JCheckBoxMenuItem MenuItemViewEditorOnly;
-    private javax.swing.JCheckBoxMenuItem MenuItemViewFileManager;
-
-
-    private javax.swing.JCheckBoxMenuItem MenuItemViewTerminalOnly;
-    private javax.swing.JCheckBoxMenuItem MenuItemViewToolbar;
-
-
-    private javax.swing.JLayeredPane NodeFileMgrPane;
-    private javax.swing.JPanel NodeMCU;
-
-    private javax.swing.JToggleButton Open;
-
-
-    private javax.swing.JComboBox Port;
-    private javax.swing.JLabel PortCTS;
-    private javax.swing.JToggleButton PortDTR;
-    private javax.swing.JLabel PortOpenLabel;
-    private javax.swing.JToggleButton PortRTS;
-    private javax.swing.JProgressBar ProgressBar;
-    private javax.swing.JLayeredPane PyFileMgrPane;
-    private javax.swing.JButton PyListDir;
-    private javax.swing.JButton ReScan;
-    private javax.swing.JLayeredPane RightBasePane;
-    private javax.swing.JLayeredPane RightBottomPane;
-    private javax.swing.JSplitPane RightFilesSplitPane;
-    private javax.swing.JButton SendCommand;
-
-    private javax.swing.JComboBox Speed;
-    private javax.swing.JLayeredPane SriptsTab;
-
-
-    private org.fife.ui.rtextarea.RTextScrollPane TerminalPane;
-    private javax.swing.JPopupMenu.Separator TerminalSeparator3;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea TextEditor;
-    private org.fife.ui.rtextarea.RTextScrollPane TextScroll;
-
-
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
-
-    private ArrayList<javax.swing.JLayeredPane> FilePaneList;
-    private ArrayList<org.fife.ui.rsyntaxtextarea.RSyntaxTextArea> TextEditorList;
-    private ArrayList<AutoCompletion> autoCompletions;
-    private ArrayList<File> openedfiles = new ArrayList<>();
-
-    private ArrayList<File> mFile; // for multifile op
-    private ArrayList<Boolean> FileChanged;
-    private ArrayList<javax.swing.JButton> FileAsButton;
-    private ArrayList<javax.swing.JButton> PyFileAsButton;
-    private ArrayList<javax.swing.JPopupMenu> FilePopupMenu;
-    private ArrayList<javax.swing.JMenuItem> FilePopupMenuItem;
-    private int iTab = 0; // tab index
-    private int mFileIndex = -1; // multifile index
-    private String UploadFileName = "";
-
-
-    public static final Logger LOGGER = Logger.getLogger(EspIDE.class.getName());
-
-    String DownloadedFileName = "";
-    String NewFile = "New";
-    int FileCount = 0;
-    String workDir = "";
-    JFileChooser chooser;
-    static final FileNameExtensionFilter FILTER_LUA = new FileNameExtensionFilter("LUA files (*.lua, *.lc)", "lua", "lc");
-    static final FileNameExtensionFilter FILTER_PYTHON = new FileNameExtensionFilter("Python files (*.py, *.pyc)", "py", "pyc");
-    FileInputStream fis = null;
-    FileOutputStream fos = null;
-    InputStreamReader isr = null;
-    OutputStreamWriter osw = null;
-    BufferedReader br = null;
-    BufferedWriter bw = null;
-    public static int j = 0;
-    public static int pyLevel = 0;
-    public static boolean sendPending = false;
-    public static String s[];
-    public ActionListener taskPerformer;
-    public ActionListener watchDog;
-    public Timer timer;
-    public Timer timeout;
-    public Color color;
-    public Color themeTextBackground;
-    public static String rcvBuf = "";
-    public static String rx_data = "";
-    public static String tx_data = "";
-    public static byte[] rx_byte;
-    public static byte[] tx_byte;
-    // downloader
-    public int packets = 0;
-    public String rcvFile = "";
-    public ArrayList<String> rcvPackets;
-    public ArrayList<byte[]> sendPackets;
-    public ArrayList<Boolean> sendPacketsCRC;
-    public ArrayList<String> PacketsData;
-    public ArrayList<Integer> PacketsSize;
-    public ArrayList<Integer> PacketsCRC;
-    public ArrayList<Integer> PacketsNum;
-    public byte[] PacketsByte;
-    public final int SendPacketSize = 250;
-    public static String DownloadCommand;
-    public static boolean busyIcon = false;
-
-
-    private long startTime = System.currentTimeMillis();
-
-    private static final int portMask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS;
-
 
     public void inc_j() {
         ++j;
@@ -2695,7 +2329,6 @@ public class EspIDE extends javax.swing.JFrame {
         String lastPort = Regedit.getString(Regedit.SERIAL_PORT, null);
         Port.setSelectedItem(lastPort != null ? lastPort : portNames[0]);
     }
-
 
     public String GetSerialPortName() {
         return Port.getSelectedItem().toString();
@@ -2757,7 +2390,6 @@ public class EspIDE extends javax.swing.JFrame {
 
     }
 
-
     public void portClose() {
         try {
             if (serialPort.closePort()) {
@@ -2772,7 +2404,6 @@ public class EspIDE extends javax.swing.JFrame {
         UpdateLED();
         ClearNodeFileManager();
     }
-
 
     public String addCRLF(String cmd) {
         if (CR.isSelected()) {
@@ -2794,16 +2425,10 @@ public class EspIDE extends javax.swing.JFrame {
         send(addCRLF(s), true);
     }
 
-
     private void FinalInit() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/ESP8266-64x64.png")));
         setLocationRelativeTo(null); // window centered
 
-        FilePaneList = new ArrayList<>();
-        TextEditorList = new ArrayList<>();
-        autoCompletions = new ArrayList<>();
-
-        FileChanged = new ArrayList<>();
 
         FileAsButton = new ArrayList<>();
         PyFileAsButton = new ArrayList<>();
@@ -3022,61 +2647,32 @@ public class EspIDE extends javax.swing.JFrame {
     private void AddTab(String title, String content) {
         int i = FilesTabbedPane.getTabCount();
 
-        FilePaneList.add(new JLayeredPane());
+        TextEditArea.TEXT_EDIT_AREAS.add(new TextEditArea(FirmwareType.current));
 
-        RSyntaxTextArea textArea = Context.create1(FirmwareType.current);
-        TextEditorList.add(textArea);
-
-        openedfiles.add(new File(""));
-        FileChanged.add(false);
-
-        autoCompletions.add(new AutoCompletion(Context.create2(FirmwareType.current)));
-        autoCompletions.get(i).install(textArea);
-
-        textArea.addCaretListener(evt -> UpdateEditorButtons());
-        textArea.addActiveLineRangeListener(evt -> UpdateEditorButtons());
-        textArea.addInputMethodListener(new java.awt.event.InputMethodListener() {
+        TextEditArea.TEXT_EDIT_AREAS.get(i).rSyntaxTextArea.addCaretListener(evt -> UpdateEditorButtons());
+        TextEditArea.TEXT_EDIT_AREAS.get(i).rSyntaxTextArea.addActiveLineRangeListener(evt -> UpdateEditorButtons());
+        TextEditArea.TEXT_EDIT_AREAS.get(i).rSyntaxTextArea.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 TextEditorCaretPositionChanged(evt);
             }
-
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
-        textArea.addKeyListener(new java.awt.event.KeyAdapter() {
+        TextEditArea.TEXT_EDIT_AREAS.get(i).rSyntaxTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TextEditorKeyTyped(evt);
             }
         });
 
-        RTextScrollPane scrollPane = new RTextScrollPane();
-        scrollPane.setViewportView(TextEditorList.get(i));
-        scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setIconRowHeaderEnabled(false);
-        scrollPane.setLineNumbersEnabled(true);
-        scrollPane.setFoldIndicatorEnabled(true);
 
-        GroupLayout layout = new javax.swing.GroupLayout(FilePaneList.get(i));
-        FilePaneList.get(i).setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
-        );
-
-        FilePaneList.get(i).setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        FilesTabbedPane.addTab(title, FilePaneList.get(i));
+        FilesTabbedPane.addTab(title, TextEditArea.TEXT_EDIT_AREAS.get(i).pane);
 
         FilesTabbedPane.setSelectedIndex(i);
         iTab = i;
         updateTheme(false);
         FileLabelUpdate();
 
-        textArea.setText(content);
+        TextEditArea.TEXT_EDIT_AREAS.get(i).rSyntaxTextArea.setText(content);
     }
 
     public void updateTheme(boolean all) {
@@ -3100,8 +2696,9 @@ public class EspIDE extends javax.swing.JFrame {
             Theme theme = Theme.load(getClass().getResourceAsStream(res));
             if (all) {
                 for (int i = 0; i < FilesTabbedPane.getTabCount(); i++) {
-                    theme.apply(TextEditorList.get(i));
-                    TextEditorList.get(i).setFont(TextEditorList.get(i).getFont().deriveFont(Config.ins.getEditor_font_size()));
+                    RSyntaxTextArea area = TextEditArea.TEXT_EDIT_AREAS.get(i).rSyntaxTextArea;
+                    theme.apply(area);
+                    area.setFont(area.getFont().deriveFont(Config.ins.getEditor_font_size()));
                 }
 
 
@@ -3111,8 +2708,9 @@ public class EspIDE extends javax.swing.JFrame {
                 //SnippetText.setBackground(SnippetTopPane.getBackground());
                 LOGGER.info("Set new color theme: Success.");
             } else {
-                theme.apply(TextEditorList.get(iTab));
-                TextEditorList.get(iTab).setFont(TextEditorList.get(iTab).getFont().deriveFont(Config.ins.getEditor_font_size()));
+                RSyntaxTextArea area = TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea;
+                theme.apply(area);
+                area.setFont(area.getFont().deriveFont(Config.ins.getEditor_font_size()));
             }
         } catch (IOException e) {
             LOGGER.info(e.toString());
@@ -3121,41 +2719,47 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void RemoveTab() {
-        if (FilesTabbedPane.getTabCount() <= 1) {
-            iTab = 0;
-            TextEditorList.get(iTab).setText("");
-            TextEditorList.get(iTab).discardAllEdits();
-            FilesTabbedPane.setTitleAt(iTab, NewFile);
-            openedfiles.set(iTab, new File(""));
-            FileLabelUpdate();
-            FileChanged.set(iTab, false);
-            UpdateEditorButtons();
-            LOGGER.info("FileTab cleared: Success.");
-        } else {
-            openedfiles.remove(iTab);
-            FileChanged.remove(iTab);
-            autoCompletions.remove(iTab);
-            TextEditorList.remove(iTab);
-            FilePaneList.remove(iTab);
-            FilesTabbedPane.removeTabAt(iTab);
-            FilesTabbedPane.setSelectedIndex(iTab);
-            FileLabelUpdate();
-            LOGGER.info("FileTab removed: Success.");
+//        if (FilesTabbedPane.getTabCount() <= 1) {
+//            iTab = 0;
+//            TextEditorList.get(iTab).setText("");
+//            TextEditorList.get(iTab).discardAllEdits();
+//            FilesTabbedPane.setTitleAt(iTab, NewFile);
+//            openedfiles.set(iTab, new File(""));
+//            FileLabelUpdate();
+//            FileChanged.set(iTab, false);
+//            UpdateEditorButtons();
+//            LOGGER.info("FileTab cleared: Success.");
+//        } else {
+//            openedfiles.remove(iTab);
+//            FileChanged.remove(iTab);
+//            autoCompletions.remove(iTab);
+//            TextEditorList.remove(iTab);
+//            FilePaneList.remove(iTab);
+//            FilesTabbedPane.removeTabAt(iTab);
+//            FilesTabbedPane.setSelectedIndex(iTab);
+//            FileLabelUpdate();
+//            LOGGER.info("FileTab removed: Success.");
+//        }
+        TextEditArea.TEXT_EDIT_AREAS.remove(iTab);
+        FilesTabbedPane.removeTabAt(iTab);
+        if (FilesTabbedPane.getTabCount() == 0) {
+            AddTab(NewFile, "");
         }
+
     }
 
     private boolean isChanged() {
         try {
-            if (FileChanged.get(iTab)) {
+            if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).filechanged) {
                 return true;
             }
         } catch (Exception e) {
             return false;
         }
-        if (TextEditorList.get(iTab).canUndo()) {
+        if (TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.canUndo()) {
             return true;
         }
-        return TextEditorList.get(iTab).canRedo();
+        return TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.canRedo();
     }
 
     private int Dialog(String msg, int btn) {
@@ -3166,14 +2770,13 @@ public class EspIDE extends javax.swing.JFrame {
         return returnVal;
     }
 
-
     private void FileLabelUpdate() {
         iTab = FilesTabbedPane.getSelectedIndex();
-        if (isFileNew() || iTab < 0 || openedfiles.isEmpty()) {
+        if (isFileNew() || iTab < 0) {
             FilePathLabel.setText("");
         } else {
 
-            FilePathLabel.setText(openedfiles.get(iTab).getPath());
+            FilePathLabel.setText(TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getPath());
         }
         UpdateEditorButtons();
     }
@@ -3216,164 +2819,6 @@ public class EspIDE extends javax.swing.JFrame {
         if (LoadFile()) {
             LOGGER.info("File reload: Success.");
 
-        }
-    }
-
-    private class PortReader implements SerialPortEventListener {
-
-        public void serialEvent(SerialPortEvent event) {
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                String data = null;
-                try {
-                    data = serialPort.readString(event.getEventValue());
-                } catch (SerialPortException ex) {
-                    LOGGER.info(ex.toString());
-                }
-                if (null != data) {
-                    thandler.add(data);
-                    if (portJustOpen) {
-                        if (!data.trim().isEmpty()) {
-                            if (data.contains("\r\n>>>")) {
-                                thandler.echo("MicroPython firmware detected.", true);
-                                btnSend("import sys; print(\"MicroPython ver:\",sys.version_info)");
-                                SetFirmwareType(yh.espide.FirmwareType.MicroPython);
-                            } else if (data.contains("\r\n>")) {
-                                thandler.echo("NodeMCU firmware detected.", true);
-                                btnSend("=node.info()");
-                                SetFirmwareType(yh.espide.FirmwareType.NodeMCU);
-                            } else if (data.contains("\r\nERR")) {
-                                thandler.echo("AT-based firmware detected.", true);
-                                btnSend("AT+GMR");
-                                SetFirmwareType(yh.espide.FirmwareType.AT);
-                            } else {
-                                thandler.echo("未成功识别固件，重新打开串口或手动切换固件类型。", true);
-                            }
-
-                            portJustOpen = false;
-                            UpdateButtons();
-                        }
-                    }
-                }
-
-
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("FileManager: Unknown serial port error received.");
-            }
-        }
-    }
-
-    private class PortExtraReader implements SerialPortEventListener {
-
-        public void serialEvent(SerialPortEvent event) {
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                String data = "";
-                try {
-                    data = serialPort.readString(event.getEventValue());
-                } catch (SerialPortException ex) {
-                    LOGGER.info(ex.toString());
-                }
-                data = data.replace(">> ", "");
-                data = data.replace(">>", "");
-                data = data.replace("\r\n> ", "");
-                data = data.replace("\r\n\r\n", "\r\n");
-
-                rcvBuf = rcvBuf + data;
-                LOGGER.info("recv:" + data.replace("\r\n", "<CR><LF>"));
-                thandler.add(data);
-                if (rcvBuf.contains(sendBuf.get(j).trim())) {
-                    // first, reset watchdog timer
-                    try {
-                        timeout.stop();
-                    } catch (Exception e) {
-                    }
-                    /*
-                    if (rcvBuf.contains("stdin:")) {
-                        String msg[] = {"Interpreter error detected!", rcvBuf, "Click OK to continue."};
-                        JOptionPane.showMessageDialog(null, msg);
-                    }
-                     */
-                    rcvBuf = "";
-                    if (j < sendBuf.size() - 1) {
-                        if (timer.isRunning() || sendPending) {
-                            // waiting
-                        } else {
-                            inc_j();
-                            sendPending = true;
-                            int div = sendBuf.size() - 1;
-                            if (div == 0) {
-                                div = 1;
-                            }
-                            ProgressBar.setValue((j * 100) / div);
-                            timer.start();
-                        }
-                    } else {  // send done
-                        StopSend();
-                    }
-                }
-                if (rcvBuf.contains("powered by Lua 5.")) {
-                    StopSend();
-                    String msg[] = {"ESP module reboot detected!", "Event: internal NodeMCU exception or power fail.", "Please, try again."};
-                    JOptionPane.showMessageDialog(null, msg);
-                }
-                if (rcvBuf.contains("Type \"help()")) {
-                    StopSend();
-                    String msg[] = {"ESP module reboot detected!", "Event: internal MicroPython exception or power fail.", "Please, try again."};
-                    JOptionPane.showMessageDialog(null, msg);
-                }
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("FileManager: Unknown serial port error received.");
-            }
-        }
-    }
-
-    private class PortTurboReader implements SerialPortEventListener {
-
-        public void serialEvent(SerialPortEvent event) {
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                String data = "";
-                try {
-                    data = serialPort.readString(event.getEventValue());
-                } catch (SerialPortException ex) {
-                    LOGGER.info(ex.toString());
-                }
-                rcvBuf = rcvBuf + data;
-                String l = data.replace("\r", "<CR>");
-                l = l.replace("\n", "<LF>");
-                l = l.replace("`", "<OK>");
-                LOGGER.info("recv:" + l);
-                thandler.add(data);
-                if (rcvBuf.contains("> ")) {
-                    try {
-                        timeout.stop(); // first, reset watchdog timer
-                    } catch (Exception e) {
-                    }
-                    rcvBuf = "";
-                    if (j < sendBuf.size() - 1) {
-                        if (timer.isRunning() || sendPending) {
-                            // waiting
-                        } else {
-                            inc_j();
-                            sendPending = true;
-                            int div = sendBuf.size() - 1;
-                            if (div == 0) {
-                                div = 1;
-                            }
-                            ProgressBar.setValue((j * 100) / div);
-                            timer.start();
-                        }
-                    } else { // send done
-                        StopSend();
-                    }
-                }
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("FileManager: Unknown serial port error received.");
-            }
         }
     }
 
@@ -3461,14 +2906,11 @@ public class EspIDE extends javax.swing.JFrame {
         sendBuf.add("file.remove(\"" + ft + "\");");
         sendBuf.add("file.open(\"" + ft + "\",\"w+\");");
         sendBuf.add("w = file.writeline\r\n");
-        s = TextEditorList.get(iTab).getText().split("\r?\n");
+        s = TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText().split("\r?\n");
         for (String subs : s) {
             sendBuf.add("w([==[" + subs + "]==]);");
         }
         sendBuf.add("file.close();");
-        if (Config.ins.isFile_auto_run()) {
-            sendBuf.add("dofile(\"" + ft + "\");");
-        }
         // data ready
         success = SendTimerStart();
         LOGGER.info("FileSaveESP: Starting...");
@@ -3484,22 +2926,20 @@ public class EspIDE extends javax.swing.JFrame {
         int pos1 = 0;
         int pos2 = 0;
         int size = 254;
-        int l = TextEditorList.get(iTab).getText().length();
+        int l = TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText().length();
         String fragment;
         while (pos1 <= l) {
             pos2 = pos1 + size;
             if (pos2 > l) {
                 pos2 = l;
             }
-            fragment = TextEditorList.get(iTab).getText().substring(pos1, pos2);
+            fragment = TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText().substring(pos1, pos2);
             sendBuf.add(fragment);
             pos1 += size;
         }
         sendBuf.add("ESP_cmd_close");
         sendBuf.add("\r\n");
-        if (Config.ins.isFile_auto_run()) {
-            sendBuf.add("dofile(\"" + ft + "\")");
-        }
+
         success = SendTurboTimerStart();
         LOGGER.info("FileSaveESP-Turbo: Starting...");
         return success;
@@ -3539,7 +2979,6 @@ public class EspIDE extends javax.swing.JFrame {
         timer.start();
         return true;
     }
-
 
     public boolean pasteMode() {
         return pasteMode;
@@ -3767,7 +3206,6 @@ public class EspIDE extends javax.swing.JFrame {
         FileSendESP.setSelected(false);
     }
 
-
     boolean SaveDownloadedFile() {
         boolean success = false;
         LOGGER.info("Saving downloaded file...");
@@ -3798,6 +3236,7 @@ public class EspIDE extends javax.swing.JFrame {
         } else { // we saving file, when open
             LOGGER.info("We saving new file " + DownloadedFileName);
         }
+        FileOutputStream fos = null;
         try {
             LOGGER.info("Try to saving file " + DownloadedFileName + " ...");
             fos = new FileOutputStream(f);
@@ -3954,12 +3393,11 @@ public class EspIDE extends javax.swing.JFrame {
         boolean success = false;
         try {
             LOGGER.info("BinaryFileLoader: Try to load file " + f.getName() + " ...");
-            fis = new FileInputStream(f);
-            DataInputStream dis = new DataInputStream(fis);
+
+            DataInputStream dis = new DataInputStream(new FileInputStream(f));
             tx_byte = new byte[dis.available()];
             int size = dis.read(tx_byte);
             dis.close();
-            fis.close();
             if (size == f.length()) {
                 LOGGER.info("BinaryFileLoader: Load file " + f.getName() + ": Success, size:" + Long.toString(f.length()));
                 success = true;
@@ -4026,6 +3464,528 @@ public class EspIDE extends javax.swing.JFrame {
         } catch (SerialPortException ex) {
             LOGGER.info("BytesSender send FAIL:" + b.toString().replace("\r\n", "<CR><LF>"));
 
+        }
+    }
+
+    private void ViewFile(String fn) {
+        String cmd = "_view=function()\n"
+                + "local _line\n"
+                + "if file.open(\"" + fn + "\",\"r\") then \n"
+                + "    print(\"--FileView start\")\n"
+                + "    repeat _line = file.readline() \n"
+                + "        if (_line~=nil) then \n"
+                + "            print(string.sub(_line,1,-2)) \n"
+                + "        end \n"
+                + "    until _line==nil\n"
+                + "    file.close() \n"
+                + "    print(\"--FileView done.\") \n"
+                + "else\n"
+                + "  print(\"\\r--FileView error: can't open file\")\n"
+                + "end\n"
+                + "end\n"
+                + "_view()\n"
+                + "_view=nil\n";
+        SendToESP(cmdPrep(cmd));
+    }
+
+    private void SetFirmwareType(FirmwareType ftype) {
+        FirmwareType.current = ftype;
+        firmware_type_label.setText(ftype.toString());
+        chooser.resetChoosableFileFilters();
+        switch (ftype) {
+            case MicroPython:
+                chooser.setFileFilter(FILTER_PYTHON);
+                NodeFileMgrPane.setVisible(false);
+                PyFileMgrPane.setVisible(true);
+                thandler.getRSyntaxTextArea().setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
+                break;
+            case NodeMCU:
+                chooser.setFileFilter(FILTER_LUA);
+                NodeFileMgrPane.setVisible(true);
+                PyFileMgrPane.setVisible(false);
+                thandler.getRSyntaxTextArea().setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
+                break;
+            case AT:
+                NodeFileMgrPane.setVisible(false);
+                PyFileMgrPane.setVisible(false);
+                break;
+        }
+
+
+        updateCommandsSet();
+    }
+
+    private boolean pySaveFileESP(String ft) {
+        LOGGER.info("pyFileSaveESP: Starting...");
+        String[] content = TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText().split("\r?\n");
+        if (pyFiler.Put(ft, content)) {
+            pasteMode(false);
+            return SendTimerStart();
+        }
+        return false;
+    }
+
+    private void AddPyFileButton(String FileName) {
+        JButton f = new JButton(FileName);
+        f.setAlignmentX(0.5F);
+        f.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        f.setMaximumSize(new java.awt.Dimension(130, 25));
+        f.setPreferredSize(new java.awt.Dimension(130, 25));
+        f.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        PyFileAsButton.add(f);
+
+        PyFileMgrPane.add(f);
+
+    } // AddPyFileButton
+
+    private void ClearPyFileManager() {
+        if (!MenuItemViewFileManager.isSelected()) {
+            return;
+        }
+        PyFileMgrPane.removeAll();
+        PyFileMgrPane.add(PyListDir);
+        PyFileMgrPane.repaint();
+        PyFileAsButton = new ArrayList<>();
+    } // ClearPyFileManager
+
+    private void PyListFiles() {
+        if (portJustOpen) {
+            LOGGER.info("ERROR: Communication with MCU not yet established.");
+            return;
+        }
+        try {
+            serialPort.removeEventListener();
+        } catch (Exception e) {
+            LOGGER.info(e.toString());
+            return;
+        }
+        try {
+            serialPort.addEventListener(new PortPyFilesReader(), portMask);
+            LOGGER.info("pyFileManager: Add EventListener: Success.");
+        } catch (SerialPortException e) {
+            LOGGER.info("pyFileManager: Add EventListener Error. Canceled.");
+            return;
+        }
+        ClearPyFileManager();
+        rx_data = "";
+        rcvBuf = "";
+        LOGGER.info("pyFileManager: Starting...");
+        String cmd = "import os;os.listdir('" + pyFiler.pwd() + "')";
+        btnSend(cmd);
+        WatchDogPyListDir();
+    } // PyListFiles
+
+    private void WatchDogPyListDir() {
+        watchDog = evt -> {
+            //StopSend();
+            Toolkit.getDefaultToolkit().beep();
+            thandler.echo("Waiting answer from ESP - Timeout reached. Command aborted.", true);
+            LOGGER.info("Waiting answer from ESP - Timeout reached. Command aborted.");
+            try {
+                serialPort.removeEventListener();
+                serialPort.addEventListener(new PortReader(), portMask);
+            } catch (Exception e) {
+                LOGGER.info(e.toString());
+            }
+            SendUnLock();
+        };
+        int delay = Config.ins.getAnswer_timeout() * 1000;
+        if (delay == 0) {
+            delay = 300;
+        }
+
+        delay = 3000;
+
+        timeout = new Timer(delay, watchDog);
+        timeout.setRepeats(false);
+        timeout.setInitialDelay(delay);
+        timeout.start();
+    } // WatchDogPyListDir
+
+    private class PortNodeFilesReader implements SerialPortEventListener {
+
+        public void serialEvent(SerialPortEvent event) {
+            String data;
+            if (event.isRXCHAR() && event.getEventValue() > 0) {
+                try {
+                    data = serialPort.readString(event.getEventValue());
+                    rcvBuf = rcvBuf + data;
+                    rx_data = rx_data + data;
+                } catch (Exception e) {
+                    data = "";
+                    LOGGER.info(e.toString());
+                }
+                if (rcvBuf.contains("> ")) {
+                    try {
+                        timeout.restart();
+                    } catch (Exception e) {
+                        LOGGER.info(e.toString());
+                    }
+                    rcvBuf = "";
+                    if (j < sendBuf.size() - 1) {
+                        if (timer.isRunning() || sendPending) {
+                            //
+                        } else {
+                            inc_j();
+                            sendPending = true;
+                            timer.start();
+                        }
+                    } else { // send done
+                        try {
+                            timer.stop();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+                try {
+                    if (rx_data.contains("~~~File list END~~~")) {
+                        try {
+                            timeout.stop();
+                        } catch (Exception e) {
+                            LOGGER.info(e.toString());
+                        }
+                        ProgressBar.setValue(100);
+                        LOGGER.info("FileManager: File list found! Do parsing...");
+                        try {
+                            // parsing answer
+                            int start = rx_data.indexOf("~~~File list START~~~");
+                            rx_data = rx_data.substring(start + 23, rx_data.indexOf("~~~File list END~~~"));
+                            //log(rx_data.replaceAll("\r?\n", "<CR+LF>\r\n"));
+                            s = rx_data.split("\r?\n");
+                            Arrays.sort(s);
+//                            TerminalAdd("\r\n" + rx_data + "\r\n> ");
+                            int usedSpace = 0;
+                            thandler.echo("----------------------------", false);
+                            for (String subs : s) {
+                                thandler.echo(subs, false);
+                                String[] parts = subs.split(":");
+                                if (parts[0].trim().length() > 0) {
+                                    int size = Integer.parseInt(parts[1].trim().split(" ")[0]);
+                                    AddNodeFileButton(parts[0].trim(), size);
+                                    usedSpace += size;
+                                    LOGGER.info("FileManager found file " + parts[0].trim());
+                                }
+                            }
+                            if (FileAsButton.size() == 0) {
+                                thandler.echo("No files found.", true);
+                            } else {
+                                thandler.echo("Total file(s)   : " + Integer.toString(s.length), false);
+                                thandler.echo("Total size      : " + Integer.toString(usedSpace) + " bytes", true);
+                            }
+                            NodeFileMgrPane.invalidate();
+                            NodeFileMgrPane.doLayout();
+                            NodeFileMgrPane.repaint();
+                            NodeFileMgrPane.requestFocusInWindow();
+                            LOGGER.info("FileManager: File list parsing done, found " + FileAsButton.size() + " file(s).");
+                        } catch (Exception e) {
+                            LOGGER.info(e.toString());
+                        }
+                        try {
+                            serialPort.removeEventListener();
+                        } catch (Exception e) {
+                        }
+                        serialPort.addEventListener(new PortReader(), portMask);
+                        SendUnLock();
+                    }
+                } catch (SerialPortException ex) {
+                    LOGGER.info(ex.toString());
+                }
+            } else if (event.isCTS()) {
+                UpdateLedCTS();
+            } else if (event.isERR()) {
+                LOGGER.info("FileManager: Unknown serial port error received.");
+            }
+        }
+    }
+
+    private class PortFileDownloader implements SerialPortEventListener {
+
+        public void serialEvent(SerialPortEvent event) {
+            String data;
+            byte[] b;
+            if (event.isRXCHAR() && event.getEventValue() > 0) {
+                try {
+                    b = serialPort.readBytes();
+                    rx_byte = concatArray(rx_byte, b);
+                    data = new String(b);
+                    rcvBuf = rcvBuf + data;
+                    rx_data = rx_data + data;
+                    //TerminalAdd(data);
+                } catch (SerialPortException e) {
+                    data = "";
+                    LOGGER.info(e.toString());
+                }
+                if (rcvBuf.contains("> ")) {
+                    try {
+                        timeout.restart();
+                    } catch (Exception e) {
+                        LOGGER.info(e.toString());
+                    }
+                    rcvBuf = "";
+                    if (j < sendBuf.size() - 1) {
+                        if (timer.isRunning() || sendPending) {
+                            //
+                        } else {
+                            inc_j();
+                            sendPending = true;
+                            timer.start();
+                        }
+                    } else { // send done
+                        try {
+                            timer.stop();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+                /*
+                String l = data.replace("\r", "<CR>");
+                l = l.replace("\n", "<LF>");
+                l = l.replace("`", "<OK>");
+                log("recv:" + l);
+                 */
+                if ((rx_data.lastIndexOf("~~~DATA-END") >= 0) && (rx_data.lastIndexOf("~~~DATA-START") >= 0)) {
+                    // we got full packet
+                    rcvPackets.add(rx_data.split("~~~DATA-END")[0]); // store RAW data
+                    rx_data = rx_data.substring(rx_data.indexOf("~~~DATA-END") + 11); // and remove it from buf
+                    if (packets > 0) { // exclude div by zero
+                        ProgressBar.setValue(rcvPackets.size() * 100 / packets);
+                    }
+                    //  ~~~DATA-START~~~buf~~~DATA-LENGTH~~~string.len(buf)~~~DATA-N~~~i~~~DATA-CRC~~~CheckSum~~~DATA-END
+                    //0        1                  2                               3            4                     5
+                    // split packet & check crc
+                    int i = rcvPackets.size() - 1;
+                    String[] part = rcvPackets.get(i).split("~~~DATA-CRC~~~");
+                    PacketsCRC.add(Integer.parseInt(part[1]));
+                    String left = part[0];
+                    part = left.split("~~~DATA-N~~~");
+                    PacketsNum.add(Integer.parseInt(part[1]));
+                    left = part[0];
+                    part = left.split("~~~DATA-LENGTH~~~");
+                    PacketsSize.add(Integer.parseInt(part[1]));
+                    left = part[0];
+                    part = left.split("~~~DATA-START~~~");
+                    PacketsData.add(part[1]);
+                    int startData = FindPacketID(i + 1);
+                    byte[] x;
+                    if ((startData > 0) && (rx_byte.length >= (startData + PacketsSize.get(i)))) {
+                        x = copyPartArray(rx_byte, startData, PacketsSize.get(i));
+                        //log("Downloader: data from packet #" + Integer.toString(i+1) + " found in raw data");
+                    } else {
+                        x = new byte[0];
+                        //log("Downloader: data packet #" + Integer.toString(i+1) + " not found in raw data.");
+                        //log("raw date length " + rx_byte.length +
+                        //    "\r\nstartData " + Integer.toString(startData) );
+                    }
+                    //rx_byte = new byte[0];
+                    if (PacketsCRC.get(i) == CRC(x)) {
+                        try {
+                            timeout.restart();
+                        } catch (Exception e) {
+                            LOGGER.info(e.toString());
+                        }
+                        rcvFile = rcvFile + PacketsData.get(i);
+                        PacketsByte = concatArray(PacketsByte, x);
+                        LOGGER.info("Downloader: Receive packet: " + Integer.toString(PacketsNum.get(i)) + "/" + Integer.toString(packets)
+                                + ", size:" + Integer.toString(PacketsSize.get(i))
+                                + ", CRC check: Success");
+                    } else {
+                        try {
+                            timeout.stop();
+                        } catch (Exception e) {
+                            LOGGER.info(e.toString());
+                        }
+                        LOGGER.info("Downloader: Receive packets: " + Integer.toString(PacketsNum.get(i)) + "/" + Integer.toString(packets)
+                                + ", size expected:" + Integer.toString(PacketsSize.get(i))
+                                + ", size received:" + Integer.toString(PacketsByte.length)
+                                + "\r\n, CRC expected :" + Integer.toString(PacketsCRC.get(i))
+                                + "  CRC received :" + Integer.toString(CRC(x)));
+                        LOGGER.info("Downloader: FAIL.");
+                        PacketsCRC.clear();
+                        PacketsNum.clear();
+                        PacketsSize.clear();
+                        PacketsData.clear();
+                        rcvPackets.clear();
+                        rcvFile = "";
+                        PacketsByte = new byte[0];
+                        FileDownloadFinisher(false);
+                    }
+                } else if ((rx_data.lastIndexOf("~~~DATA-TOTAL-END~~~") >= 0) && (PacketsNum.size() == packets)) {
+                    try {
+                        timeout.stop();
+                    } catch (Exception e) {
+                        LOGGER.info(e.toString());
+                    }
+                    ProgressBar.setValue(100);
+                    LOGGER.info("Downloader: Receive final sequense. File download: Success");
+                    //log(rx_data);
+                    FileDownloadFinisher(true);
+                } else {
+                    //log("rxbyte - " + Integer.toString( rx_byte.length ));
+                }
+            } else if (event.isCTS()) {
+                UpdateLedCTS();
+            } else if (event.isERR()) {
+                LOGGER.info("Downloader: Unknown serial port error received.");
+                FileDownloadFinisher(false);
+            }
+        }
+    }
+
+    private class PortReader implements SerialPortEventListener {
+
+        public void serialEvent(SerialPortEvent event) {
+            if (event.isRXCHAR() && event.getEventValue() > 0) {
+                String data = null;
+                try {
+                    data = serialPort.readString(event.getEventValue());
+                } catch (SerialPortException ex) {
+                    LOGGER.info(ex.toString());
+                }
+                if (null != data) {
+                    thandler.add(data);
+                    if (portJustOpen) {
+                        if (!data.trim().isEmpty()) {
+                            if (data.contains("\r\n>>>")) {
+                                thandler.echo("MicroPython firmware detected.", true);
+                                btnSend("import sys; print(\"MicroPython ver:\",sys.version_info)");
+                                SetFirmwareType(yh.espide.FirmwareType.MicroPython);
+                            } else if (data.contains("\r\n>")) {
+                                thandler.echo("NodeMCU firmware detected.", true);
+                                btnSend("=node.info()");
+                                SetFirmwareType(yh.espide.FirmwareType.NodeMCU);
+                            } else if (data.contains("\r\nERR")) {
+                                thandler.echo("AT-based firmware detected.", true);
+                                btnSend("AT+GMR");
+                                SetFirmwareType(yh.espide.FirmwareType.AT);
+                            } else {
+                                thandler.echo("未成功识别固件，重新打开串口或手动切换固件类型。", true);
+                            }
+
+                            portJustOpen = false;
+                            UpdateButtons();
+                        }
+                    }
+                }
+
+
+            } else if (event.isCTS()) {
+                UpdateLedCTS();
+            } else if (event.isERR()) {
+                LOGGER.info("FileManager: Unknown serial port error received.");
+            }
+        }
+    }
+
+    private class PortExtraReader implements SerialPortEventListener {
+
+        public void serialEvent(SerialPortEvent event) {
+            if (event.isRXCHAR() && event.getEventValue() > 0) {
+                String data = "";
+                try {
+                    data = serialPort.readString(event.getEventValue());
+                } catch (SerialPortException ex) {
+                    LOGGER.info(ex.toString());
+                }
+                data = data.replace(">> ", "");
+                data = data.replace(">>", "");
+                data = data.replace("\r\n> ", "");
+                data = data.replace("\r\n\r\n", "\r\n");
+
+                rcvBuf = rcvBuf + data;
+                LOGGER.info("recv:" + data.replace("\r\n", "<CR><LF>"));
+                thandler.add(data);
+                if (rcvBuf.contains(sendBuf.get(j).trim())) {
+                    // first, reset watchdog timer
+                    try {
+                        timeout.stop();
+                    } catch (Exception e) {
+                    }
+                    /*
+                    if (rcvBuf.contains("stdin:")) {
+                        String msg[] = {"Interpreter error detected!", rcvBuf, "Click OK to continue."};
+                        JOptionPane.showMessageDialog(null, msg);
+                    }
+                     */
+                    rcvBuf = "";
+                    if (j < sendBuf.size() - 1) {
+                        if (timer.isRunning() || sendPending) {
+                            // waiting
+                        } else {
+                            inc_j();
+                            sendPending = true;
+                            int div = sendBuf.size() - 1;
+                            if (div == 0) {
+                                div = 1;
+                            }
+                            ProgressBar.setValue((j * 100) / div);
+                            timer.start();
+                        }
+                    } else {  // send done
+                        StopSend();
+                    }
+                }
+                if (rcvBuf.contains("powered by Lua 5.")) {
+                    StopSend();
+                    String msg[] = {"ESP module reboot detected!", "Event: internal NodeMCU exception or power fail.", "Please, try again."};
+                    JOptionPane.showMessageDialog(null, msg);
+                }
+                if (rcvBuf.contains("Type \"help()")) {
+                    StopSend();
+                    String msg[] = {"ESP module reboot detected!", "Event: internal MicroPython exception or power fail.", "Please, try again."};
+                    JOptionPane.showMessageDialog(null, msg);
+                }
+            } else if (event.isCTS()) {
+                UpdateLedCTS();
+            } else if (event.isERR()) {
+                LOGGER.info("FileManager: Unknown serial port error received.");
+            }
+        }
+    }
+
+    private class PortTurboReader implements SerialPortEventListener {
+
+        public void serialEvent(SerialPortEvent event) {
+            if (event.isRXCHAR() && event.getEventValue() > 0) {
+                String data = "";
+                try {
+                    data = serialPort.readString(event.getEventValue());
+                } catch (SerialPortException ex) {
+                    LOGGER.info(ex.toString());
+                }
+                rcvBuf = rcvBuf + data;
+                String l = data.replace("\r", "<CR>");
+                l = l.replace("\n", "<LF>");
+                l = l.replace("`", "<OK>");
+                LOGGER.info("recv:" + l);
+                thandler.add(data);
+                if (rcvBuf.contains("> ")) {
+                    try {
+                        timeout.stop(); // first, reset watchdog timer
+                    } catch (Exception e) {
+                    }
+                    rcvBuf = "";
+                    if (j < sendBuf.size() - 1) {
+                        if (timer.isRunning() || sendPending) {
+                            // waiting
+                        } else {
+                            inc_j();
+                            sendPending = true;
+                            int div = sendBuf.size() - 1;
+                            if (div == 0) {
+                                div = 1;
+                            }
+                            ProgressBar.setValue((j * 100) / div);
+                            timer.start();
+                        }
+                    } else { // send done
+                        StopSend();
+                    }
+                }
+            } else if (event.isCTS()) {
+                UpdateLedCTS();
+            } else if (event.isERR()) {
+                LOGGER.info("FileManager: Unknown serial port error received.");
+            }
         }
     }
 
@@ -4143,142 +4103,6 @@ public class EspIDE extends javax.swing.JFrame {
             }
         }
     }
-
-    private void ViewFile(String fn) {
-        String cmd = "_view=function()\n"
-                + "local _line\n"
-                + "if file.open(\"" + fn + "\",\"r\") then \n"
-                + "    print(\"--FileView start\")\n"
-                + "    repeat _line = file.readline() \n"
-                + "        if (_line~=nil) then \n"
-                + "            print(string.sub(_line,1,-2)) \n"
-                + "        end \n"
-                + "    until _line==nil\n"
-                + "    file.close() \n"
-                + "    print(\"--FileView done.\") \n"
-                + "else\n"
-                + "  print(\"\\r--FileView error: can't open file\")\n"
-                + "end\n"
-                + "end\n"
-                + "_view()\n"
-                + "_view=nil\n";
-        SendToESP(cmdPrep(cmd));
-    }
-
-    private void SetFirmwareType(FirmwareType ftype) {
-        FirmwareType.current = ftype;
-        firmware_type_label.setText(ftype.toString());
-        chooser.resetChoosableFileFilters();
-        switch (ftype) {
-            case MicroPython:
-                chooser.setFileFilter(FILTER_PYTHON);
-                NodeFileMgrPane.setVisible(false);
-                PyFileMgrPane.setVisible(true);
-                thandler.getRSyntaxTextArea().setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
-                break;
-            case NodeMCU:
-                chooser.setFileFilter(FILTER_LUA);
-                NodeFileMgrPane.setVisible(true);
-                PyFileMgrPane.setVisible(false);
-                thandler.getRSyntaxTextArea().setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
-                break;
-            case AT:
-                NodeFileMgrPane.setVisible(false);
-                PyFileMgrPane.setVisible(false);
-                break;
-        }
-
-
-        updateCommandsSet();
-    }
-
-
-    private boolean pySaveFileESP(String ft) {
-        LOGGER.info("pyFileSaveESP: Starting...");
-        String[] content = TextEditorList.get(iTab).getText().split("\r?\n");
-        if (pyFiler.Put(ft, content)) {
-            pasteMode(false);
-            return SendTimerStart();
-        }
-        return false;
-    }
-
-    private void AddPyFileButton(String FileName) {
-        JButton f = new JButton(FileName);
-        f.setAlignmentX(0.5F);
-        f.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        f.setMaximumSize(new java.awt.Dimension(130, 25));
-        f.setPreferredSize(new java.awt.Dimension(130, 25));
-        f.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        PyFileAsButton.add(f);
-
-        PyFileMgrPane.add(f);
-
-    } // AddPyFileButton
-
-    private void ClearPyFileManager() {
-        if (!MenuItemViewFileManager.isSelected()) {
-            return;
-        }
-        PyFileMgrPane.removeAll();
-        PyFileMgrPane.add(PyListDir);
-        PyFileMgrPane.repaint();
-        PyFileAsButton = new ArrayList<>();
-    } // ClearPyFileManager
-
-    private void PyListFiles() {
-        if (portJustOpen) {
-            LOGGER.info("ERROR: Communication with MCU not yet established.");
-            return;
-        }
-        try {
-            serialPort.removeEventListener();
-        } catch (Exception e) {
-            LOGGER.info(e.toString());
-            return;
-        }
-        try {
-            serialPort.addEventListener(new PortPyFilesReader(), portMask);
-            LOGGER.info("pyFileManager: Add EventListener: Success.");
-        } catch (SerialPortException e) {
-            LOGGER.info("pyFileManager: Add EventListener Error. Canceled.");
-            return;
-        }
-        ClearPyFileManager();
-        rx_data = "";
-        rcvBuf = "";
-        LOGGER.info("pyFileManager: Starting...");
-        String cmd = "import os;os.listdir('" + pyFiler.pwd() + "')";
-        btnSend(cmd);
-        WatchDogPyListDir();
-    } // PyListFiles
-
-    private void WatchDogPyListDir() {
-        watchDog = evt -> {
-            //StopSend();
-            Toolkit.getDefaultToolkit().beep();
-            thandler.echo("Waiting answer from ESP - Timeout reached. Command aborted.", true);
-            LOGGER.info("Waiting answer from ESP - Timeout reached. Command aborted.");
-            try {
-                serialPort.removeEventListener();
-                serialPort.addEventListener(new PortReader(), portMask);
-            } catch (Exception e) {
-                LOGGER.info(e.toString());
-            }
-            SendUnLock();
-        };
-        int delay = Config.ins.getAnswer_timeout() * 1000;
-        if (delay == 0) {
-            delay = 300;
-        }
-
-        delay = 3000;
-
-        timeout = new Timer(delay, watchDog);
-        timeout.setRepeats(false);
-        timeout.setInitialDelay(delay);
-        timeout.start();
-    } // WatchDogPyListDir
 
     private class PortPyFilesReader implements SerialPortEventListener {
 

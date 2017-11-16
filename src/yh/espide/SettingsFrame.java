@@ -22,6 +22,7 @@ public class SettingsFrame extends JDialog {
         setTitle("ÉèÖÃ");
         setIconImage(new ImageIcon(getClass().getResource("/resources/settings2.png")).getImage());
 
+        setSize(300, 400);
 
         JLayeredPane NodeMCUSettings = new JLayeredPane();
         NodeMCUSettings.setAutoscrolls(true);
@@ -56,42 +57,18 @@ public class SettingsFrame extends JDialog {
 
 
         add(NodeMCUSettings);
-        setSize(260, 500);
+
         setLocation(owner.getLocation());
     }
 
 
-    JCheckBox FileAutoSaveDisk = new JCheckBox();
-    JCheckBox FileAutoSaveESP = new JCheckBox();
-    JCheckBox FileAutoRun = new JCheckBox();
     JLabel EditorThemeLabel = new JLabel();
     JComboBox EditorTheme = new JComboBox();
 
     private JLayeredPane OptionsOther() {
 
 
-        FileAutoSaveDisk.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        FileAutoSaveDisk.setSelected(true);
-        FileAutoSaveDisk.setText("AutoSave file to disk before save to ESP");
-        FileAutoSaveDisk.setToolTipText("");
-        FileAutoSaveDisk.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        FileAutoSaveDisk.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        FileAutoSaveDisk.addItemListener(evt -> FileAutoSaveDiskItemStateChanged(evt));
 
-        FileAutoSaveESP.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        FileAutoSaveESP.setSelected(true);
-        FileAutoSaveESP.setText("AutoSave file to ESP after save to disk");
-        FileAutoSaveESP.setToolTipText("");
-        FileAutoSaveESP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        FileAutoSaveESP.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        FileAutoSaveESP.addItemListener(evt -> FileAutoSaveESPItemStateChanged(evt));
-
-        FileAutoRun.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        FileAutoRun.setText("AutoRun file after save to ESP");
-        FileAutoRun.setToolTipText("");
-        FileAutoRun.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        FileAutoRun.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        FileAutoRun.addItemListener(evt -> FileAutoRunItemStateChanged(evt));
 
         EditorThemeLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         EditorThemeLabel.setText("Editor color theme");
@@ -106,9 +83,6 @@ public class SettingsFrame extends JDialog {
         OptionsOther.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Other", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10))); // NOI18N
 
 
-        OptionsOther.setLayer(FileAutoSaveDisk, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsOther.setLayer(FileAutoSaveESP, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        OptionsOther.setLayer(FileAutoRun, javax.swing.JLayeredPane.DEFAULT_LAYER);
         OptionsOther.setLayer(EditorThemeLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         OptionsOther.setLayer(EditorTheme, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -116,30 +90,24 @@ public class SettingsFrame extends JDialog {
         OptionsOther.setLayout(OptionsOtherLayout);
         OptionsOtherLayout.setHorizontalGroup(
                 OptionsOtherLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(FileAutoSaveDisk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(FileAutoSaveESP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+
                         .addGroup(OptionsOtherLayout.createSequentialGroup()
                                 .addComponent(EditorThemeLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(EditorTheme, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
 
-                        .addComponent(FileAutoRun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+
         );
         OptionsOtherLayout.setVerticalGroup(
                 OptionsOtherLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(OptionsOtherLayout.createSequentialGroup()
-                                .addComponent(FileAutoSaveDisk, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(1, 1, 1)
-                                .addComponent(FileAutoSaveESP, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
 
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(OptionsOtherLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(EditorThemeLabel)
                                         .addComponent(EditorTheme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FileAutoRun)
-                                .addContainerGap(39, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
         );
 
         return OptionsOther;
@@ -280,17 +248,7 @@ public class SettingsFrame extends JDialog {
         return OptionsFileSendMode;
     }
 
-    private void FileAutoSaveDiskItemStateChanged(java.awt.event.ItemEvent evt) {
-        Config.ins.setFile_auto_save_disk(FileAutoSaveDisk.isSelected());
-    }
 
-    private void FileAutoSaveESPItemStateChanged(java.awt.event.ItemEvent evt) {
-        Config.ins.setFile_auto_save_esp(FileAutoSaveESP.isSelected());
-    }
-
-    private void FileAutoRunItemStateChanged(java.awt.event.ItemEvent evt) {
-        Config.ins.setFile_auto_run(FileAutoRun.isSelected());
-    }
 
     private void EditorThemeActionPerformed(java.awt.event.ActionEvent evt) {
         int n = EditorTheme.getSelectedIndex();
