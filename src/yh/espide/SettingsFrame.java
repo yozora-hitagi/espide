@@ -20,7 +20,7 @@ public class SettingsFrame extends JDialog {
 
     public SettingsFrame(Frame owner) {
         super(owner);
-        setTitle("…Ë÷√");
+        setTitle("Setting");
         setIconImage(new ImageIcon(getClass().getResource("/resources/settings2.png")).getImage());
 
 

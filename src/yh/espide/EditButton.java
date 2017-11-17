@@ -12,7 +12,7 @@ import java.awt.Font;
 public class EditButton extends JButton {
 
     public EditButton(String text, String img, String tip) {
-        setFont(new Font("ÑÅºÚ", 0, 10)); // NOI18N
+        setFont(new Font("é›…é»‘", 0, 10)); // NOI18N
         setIcon(new ImageIcon(getClass().getResource(img))); // NOI18N
         setText(text);
         setToolTipText(tip);

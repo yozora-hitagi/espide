@@ -6,22 +6,10 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLayeredPane;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
@@ -50,7 +38,7 @@ import static yh.espide.Regedit.WIN_W;
 import static yh.espide.Regedit.WIN_X;
 import static yh.espide.Regedit.WIN_Y;
 
-public class EspIDE extends javax.swing.JFrame {
+public class EspIDE extends javax.swing.JFrame implements TerminalHandler.CommandListener {
 
     public static final Logger LOGGER = Logger.getLogger(EspIDE.class.getName());
     static final FileNameExtensionFilter FILTER_LUA = new FileNameExtensionFilter("LUA files (*.lua, *.lc)", "lua", "lc");
@@ -76,8 +64,6 @@ public class EspIDE extends javax.swing.JFrame {
     public ActionListener watchDog;
     public Timer timer;
     public Timer timeout;
-    public Color color;
-    public Color themeTextBackground;
     // downloader
     public int packets = 0;
     public String rcvFile = "";
@@ -96,7 +82,7 @@ public class EspIDE extends javax.swing.JFrame {
     int FileCount = 0;
     String workDir = "";
     JFileChooser chooser;
-    private TerminalHandler thandler = new TerminalHandler();
+    private TerminalHandler thandler = new TerminalHandler(this);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem AlwaysOnTop;
     private javax.swing.JCheckBox AutoScroll;
@@ -179,19 +165,21 @@ public class EspIDE extends javax.swing.JFrame {
     private javax.swing.JButton SendCommand;
     private javax.swing.JComboBox Speed;
     private javax.swing.JLayeredPane SriptsTab;
-    private org.fife.ui.rtextarea.RTextScrollPane TerminalPane;
+
     private javax.swing.JPopupMenu.Separator TerminalSeparator3;
 
 
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
 
-    private ArrayList<File> mFile; // for multifile op
+    private ArrayList<File> upload_file_list;
+    private int upload_file_index = -1;
+
     private ArrayList<javax.swing.JButton> FileAsButton;
     private ArrayList<javax.swing.JButton> PyFileAsButton;
     private ArrayList<javax.swing.JPopupMenu> FilePopupMenu;
     private ArrayList<javax.swing.JMenuItem> FilePopupMenuItem;
     private int iTab = 0; // tab index
-    private int mFileIndex = -1; // multifile index
+
     private String UploadFileName = "";
     private long startTime = System.currentTimeMillis();
 
@@ -254,7 +242,6 @@ public class EspIDE extends javax.swing.JFrame {
         Command = new javax.swing.JComboBox();
         RightFilesSplitPane = new javax.swing.JSplitPane();
 
-        TerminalPane = new org.fife.ui.rtextarea.RTextScrollPane();
         FileManagerScrollPane = new javax.swing.JScrollPane();
         FileManagersLayer = new javax.swing.JLayeredPane();
         firmware_type_label = new JButton(FirmwareType.current.toString());
@@ -318,7 +305,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemTerminalClear.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemTerminalClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal_clear.png"))); // NOI18N
         MenuItemTerminalClear.setText("Clear");
-        MenuItemTerminalClear.addActionListener(evt -> thandler.getRSyntaxTextArea().setText(""));
+        MenuItemTerminalClear.addActionListener(evt -> thandler.clean());
         ContextMenuTerminal.add(MenuItemTerminalClear);
 
         MenuItemTerminalCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
@@ -326,7 +313,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemTerminalCopy.setText("Copy");
         MenuItemTerminalCopy.setToolTipText("Copy selected text to system clipboard");
         MenuItemTerminalCopy.setEnabled(false);
-        MenuItemTerminalCopy.addActionListener(evt -> thandler.getRSyntaxTextArea().copy());
+        MenuItemTerminalCopy.addActionListener(evt -> thandler.copy());
         ContextMenuTerminal.add(MenuItemTerminalCopy);
 
 
@@ -401,57 +388,57 @@ public class EspIDE extends javax.swing.JFrame {
         FilesToolBar.setPreferredSize(new java.awt.Dimension(321, 40));
 
 
-        ButtonFileNew = new EditButton("新建", "/resources/document.png", "New file");
+        ButtonFileNew = new EditButton("New", "/resources/document.png", "New file");
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileNew, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileNew, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
         ButtonFileNew.addActionListener(evt -> MenuItemFileNew.doClick());
         FilesToolBar.add(ButtonFileNew);
 
-        ButtonFileOpen = new EditButton("打开", "/resources/folder open.png", "Open file from disk");
+        ButtonFileOpen = new EditButton("Open", "/resources/folder open.png", "Open file from disk");
         ButtonFileOpen.addActionListener(evt -> MenuItemFileOpen.doClick());
         FilesToolBar.add(ButtonFileOpen);
 
-        ButtonFileReload = new EditButton("刷新", "/resources/refresh.png", "Reload file from disk (for use with external editor)");
+        ButtonFileReload = new EditButton("Reload", "/resources/refresh.png", "Reload file from disk (for use with external editor)");
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileReload, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileReload, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
         ButtonFileReload.addActionListener(evt -> MenuItemFileReload.doClick());
         FilesToolBar.add(ButtonFileReload);
 
-        ButtonFileSave = new EditButton("保存", "/resources/save.png", "Save file to disk");
+        ButtonFileSave = new EditButton("Save", "/resources/save.png", "Save file to disk");
         ButtonFileSave.addActionListener(evt -> MenuItemFileSave.doClick());
         FilesToolBar.add(ButtonFileSave);
 
-        ButtonFileClose = new EditButton("关闭", "/resources/folder closed.png", "Close file");
+        ButtonFileClose = new EditButton("Close", "/resources/folder closed.png", "Close file");
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileClose, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileClose, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
         ButtonFileClose.addActionListener(evt -> MenuItemFileClose.doClick());
         FilesToolBar.add(ButtonFileClose);
         FilesToolBar.add(new JSeparator());
 
-        ButtonUndo = new EditButton("撤销", "/resources/undo1.png", "Undo last action");
+        ButtonUndo = new EditButton("Undo", "/resources/undo1.png", "Undo last action");
         ButtonUndo.setEnabled(false);
         ButtonUndo.setFocusable(false);
         ButtonUndo.addActionListener(evt -> MenuItemEditUndo.doClick());
         FilesToolBar.add(ButtonUndo);
 
-        ButtonRedo = new EditButton("重做", "/resources/redo1.png", "Redo last action");
+        ButtonRedo = new EditButton("Redo", "/resources/redo1.png", "Redo last action");
         ButtonRedo.setEnabled(false);
         ButtonRedo.setFocusable(false);
         ButtonRedo.addActionListener(evt -> MenuItemEditRedo.doClick());
         FilesToolBar.add(ButtonRedo);
         FilesToolBar.add(new JSeparator());
 
-        ButtonCut = new EditButton("剪切", "/resources/cut.png", "Cut");
+        ButtonCut = new EditButton("Cut", "/resources/cut.png", "Cut");
         ButtonCut.setEnabled(false);
         ButtonCut.addActionListener(evt -> MenuItemEditCut.doClick());
         FilesToolBar.add(ButtonCut);
 
-        ButtonCopy = new EditButton("拷贝", "/resources/copy.png", "Copy");
+        ButtonCopy = new EditButton("Copy", "/resources/copy.png", "Copy");
         ButtonCopy.setEnabled(false);
         ButtonCopy.addActionListener(evt -> MenuItemEditCopy.doClick());
         FilesToolBar.add(ButtonCopy);
 
-        ButtonPaste = new EditButton("粘贴", "/resources/paste.png", "Paste");
+        ButtonPaste = new EditButton("Paste", "/resources/paste.png", "Paste");
         ButtonPaste.setEnabled(false);
         ButtonPaste.addActionListener(evt -> MenuItemEditPaste.doClick());
         FilesToolBar.add(ButtonPaste);
@@ -680,7 +667,7 @@ public class EspIDE extends javax.swing.JFrame {
         EOL.setToolTipText("EOL visible Enable/Disable");
         EOL.setMinimumSize(new java.awt.Dimension(70, 25));
         EOL.setPreferredSize(new java.awt.Dimension(60, 25));
-        EOL.addItemListener(evt -> EOLItemStateChanged(evt));
+        EOL.addItemListener(evt -> thandler.setEOLMarkersVisible(EOL.isSelected()));
 
         CR.setFont(CR.getFont().deriveFont(CR.getFont().getSize() - 4f));
         CR.setSelected(true);
@@ -794,7 +781,7 @@ public class EspIDE extends javax.swing.JFrame {
         RightBottomPane.setOpaque(true);
 
         Command.setEditable(true);
-        Command.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        Command.setFont(Context.FONT_12); // NOI18N
         Command.setMaximumRowCount(20);
         Command.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"AT", "AT+GMR", "AT+RST", ""}));
         Command.setToolTipText("Command to send");
@@ -826,19 +813,9 @@ public class EspIDE extends javax.swing.JFrame {
         RightFilesSplitPane.setAutoscrolls(true);
         RightFilesSplitPane.addPropertyChangeListener(evt -> RightFilesSplitPanePropertyChange(evt));
 
+        thandler.setPopupMenu(ContextMenuTerminal);
 
-        TerminalPane.setToolTipText("terminalArea window");
-        TerminalPane.setMaximumSize(new java.awt.Dimension(100, 100));
-        TerminalPane.setMinimumSize(new java.awt.Dimension(100, 100));
-        TerminalPane.setName(""); // NOI18N
-        TerminalPane.setPreferredSize(new java.awt.Dimension(100, 100));
-
-        thandler.getRSyntaxTextArea().setPopupMenu(ContextMenuTerminal);
-        TerminalPane.setViewportView(thandler.getRSyntaxTextArea());
-        thandler.getRSyntaxTextArea().getAccessibleContext().setAccessibleParent(TerminalPane);
-
-
-        RightFilesSplitPane.setLeftComponent(TerminalPane);
+        RightFilesSplitPane.setLeftComponent(thandler);
 
         FileManagerScrollPane.setBorder(null);
         FileManagerScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -865,7 +842,6 @@ public class EspIDE extends javax.swing.JFrame {
 
 
         NodeFileMgrPane.setMaximumSize(new java.awt.Dimension(145, 145));
-        NodeFileMgrPane.setName(""); // NOI18N
         NodeFileMgrPane.setPreferredSize(new java.awt.Dimension(145, 145));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 2, 2);
         flowLayout1.setAlignOnBaseline(true);
@@ -1042,9 +1018,9 @@ public class EspIDE extends javax.swing.JFrame {
 
         JMenuBar menu = new JMenuBar();
 
-        JMenu MenuFile = Context.createM1("文件");
+        JMenu MenuFile = Context.createM1("File");
 
-        JMenuItem settings = new JMenuItem("设置");
+        JMenuItem settings = new JMenuItem("Setting");
         settings.setIcon(new ImageIcon(getClass().getResource("/resources/settings2.png")));
         settings.addActionListener(evt -> {
             new SettingsFrame(this).setVisible(true);
@@ -1075,7 +1051,7 @@ public class EspIDE extends javax.swing.JFrame {
         MenuItemFileSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemFileSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/save.png"))); // NOI18N
         MenuItemFileSave.setText("<html><u>S</u>ave to disk");
-        MenuItemFileSave.addActionListener(evt ->SaveFile());
+        MenuItemFileSave.addActionListener(evt -> SaveFile());
         MenuFile.add(MenuItemFileSave);
 
 
@@ -1107,13 +1083,13 @@ public class EspIDE extends javax.swing.JFrame {
 
         JMenuItem MenuItemFileExit = new JMenuItem();
         MenuItemFileExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemFileExit.setText("退出");
+        MenuItemFileExit.setText("Exit");
         MenuItemFileExit.addActionListener(evt -> AppClose());
         MenuFile.add(MenuItemFileExit);
 
         menu.add(MenuFile);
 
-        JMenu MenuEdit = Context.createM1("编辑");
+        JMenu MenuEdit = Context.createM1("Edit");
 
         MenuItemEditUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         MenuItemEditUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/undo1.png"))); // NOI18N
@@ -1171,7 +1147,7 @@ public class EspIDE extends javax.swing.JFrame {
         menu.add(MenuEdit);
 
 
-        JMenu MenuView = Context.createM1("视图");
+        JMenu MenuView = Context.createM1("View");
 
         AlwaysOnTop.setText("Always On Top");
         AlwaysOnTop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/AlwaysOnTop.png"))); // NOI18N
@@ -1351,7 +1327,7 @@ public class EspIDE extends javax.swing.JFrame {
             return;
         }
         String cmd = Command.getSelectedItem().toString();
-        //看着是删除重复的记录
+        //锟斤拷锟斤拷锟斤拷删锟斤拷锟截革拷锟侥硷拷录
         int count = Command.getItemCount();
         for (int i = 0; i < count; i++) {
             if (Command.getItemAt(i).equals(cmd)) {
@@ -1380,7 +1356,7 @@ public class EspIDE extends javax.swing.JFrame {
 
     private void ContextMenuTerminalPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
         try {
-            MenuItemTerminalCopy.setEnabled(thandler.getRSyntaxTextArea().getSelectedText().length() > 0);
+            MenuItemTerminalCopy.setEnabled(thandler.hasSelected());
         } catch (Exception e) {
             MenuItemTerminalCopy.setEnabled(false);
         }
@@ -1435,7 +1411,7 @@ public class EspIDE extends javax.swing.JFrame {
         BufferedWriter bw = null;
         try {
             LOGGER.info("Try to saving file " + TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName() + " ...");
-            bw = new BufferedWriter(new OutputStreamWriter( new FileOutputStream(TextEditArea.TEXT_EDIT_AREAS.get(iTab).file), "UTF-8"));
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(TextEditArea.TEXT_EDIT_AREAS.get(iTab).file), "UTF-8"));
             bw.write(TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea.getText());
             bw.flush();
             String filename = TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName();
@@ -2212,9 +2188,6 @@ public class EspIDE extends javax.swing.JFrame {
         System.exit(0);
     }
 
-    private void EOLItemStateChanged(java.awt.event.ItemEvent evt) {
-        thandler.getRSyntaxTextArea().setEOLMarkersVisible(EOL.isSelected());
-    }
 
     private void MenuItemViewTerminalOnlyItemStateChanged(java.awt.event.ItemEvent evt) {
         if (MenuItemViewTerminalOnly.isSelected()) {
@@ -2271,7 +2244,7 @@ public class EspIDE extends javax.swing.JFrame {
         } else if (FirmwareType.current.eq(FirmwareType.NodeMCU)) {
             nodeSaveFileESP(fName);
         } else {
-            thandler.echo("不支持上传文件到 " + FirmwareType.current, true);
+            thandler.echo("detect firmware type : " + FirmwareType.current, true);
         }
     }
 
@@ -2286,9 +2259,6 @@ public class EspIDE extends javax.swing.JFrame {
         UpdateEditorButtons();
     }
 
-    private void TextEditorCaretUpdate(javax.swing.event.CaretEvent evt) {
-        UpdateEditorButtons();
-    }
 
     private void MenuItemViewEditorOnlyItemStateChanged(java.awt.event.ItemEvent evt) {
         if (MenuItemViewEditorOnly.isSelected()) {
@@ -2378,7 +2348,7 @@ public class EspIDE extends javax.swing.JFrame {
             thandler.echo("PORT OPEN " + getBaudRate(), true);
 
             portJustOpen = true;
-            //发送一个回车 触发串口返回，好判断固件类型
+            //
             btnSend("\r\n");
         }
         return success;
@@ -2650,6 +2620,7 @@ public class EspIDE extends javax.swing.JFrame {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 TextEditorCaretPositionChanged(evt);
             }
+
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
@@ -2698,8 +2669,7 @@ public class EspIDE extends javax.swing.JFrame {
 
 
                 theme.apply(thandler.getRSyntaxTextArea());
-                thandler.getRSyntaxTextArea().setFont(thandler.getRSyntaxTextArea().getFont().deriveFont(Config.ins.getTerminal_font_size()));
-                themeTextBackground = thandler.getRSyntaxTextArea().getBackground();
+                thandler.setFontSize(Config.ins.getTerminal_font_size());
                 //SnippetText.setBackground(SnippetTopPane.getBackground());
                 LOGGER.info("Set new color theme: Success.");
             } else {
@@ -2714,27 +2684,6 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void RemoveTab() {
-//        if (FilesTabbedPane.getTabCount() <= 1) {
-//            iTab = 0;
-//            TextEditorList.get(iTab).setText("");
-//            TextEditorList.get(iTab).discardAllEdits();
-//            FilesTabbedPane.setTitleAt(iTab, NewFile);
-//            openedfiles.set(iTab, new File(""));
-//            FileLabelUpdate();
-//            FileChanged.set(iTab, false);
-//            UpdateEditorButtons();
-//            LOGGER.info("FileTab cleared: Success.");
-//        } else {
-//            openedfiles.remove(iTab);
-//            FileChanged.remove(iTab);
-//            autoCompletions.remove(iTab);
-//            TextEditorList.remove(iTab);
-//            FilePaneList.remove(iTab);
-//            FilesTabbedPane.removeTabAt(iTab);
-//            FilesTabbedPane.setSelectedIndex(iTab);
-//            FileLabelUpdate();
-//            LOGGER.info("FileTab removed: Success.");
-//        }
         TextEditArea.TEXT_EDIT_AREAS.remove(iTab);
         FilesTabbedPane.removeTabAt(iTab);
         if (FilesTabbedPane.getTabCount() == 0) {
@@ -3269,13 +3218,13 @@ public class EspIDE extends javax.swing.JFrame {
         chooser.setDialogTitle("Select file to upload to ESP");
         chooser.setMultiSelectionEnabled(true);
         int returnVal = chooser.showOpenDialog(LeftBasePane);
-        mFile = new ArrayList<>();
+        upload_file_list = new ArrayList<>();
         LOGGER.info("Uploader: chooser selected file:" + chooser.getSelectedFiles().length);
-        if (mFile.addAll(Arrays.asList(chooser.getSelectedFiles()))) {
-//        if ( mFile.add(chooser.getSelectedFile()) ) {
-            mFileIndex = 0;
+        if (upload_file_list.addAll(Arrays.asList(chooser.getSelectedFiles()))) {
+//        if ( upload_file_list.add(chooser.getSelectedFile()) ) {
+            upload_file_index = 0;
         } else {
-            mFileIndex = -1;
+            upload_file_index = -1;
             LOGGER.info("Uploader: no file selected");
             return;
         }
@@ -3290,7 +3239,7 @@ public class EspIDE extends javax.swing.JFrame {
     }
 
     private void UploadFilesStart() {
-        UploadFileName = mFile.get(mFileIndex).getName();
+        UploadFileName = upload_file_list.get(upload_file_index).getName();
         sendBuf = new ArrayList<>();
         PacketsData = new ArrayList<>();
         PacketsCRC = new ArrayList<>();
@@ -3302,7 +3251,7 @@ public class EspIDE extends javax.swing.JFrame {
         rx_byte = new byte[0];
         tx_byte = new byte[0];
 
-        if (!LoadBinaryFile(mFile.get(mFileIndex))) {
+        if (!LoadBinaryFile(upload_file_list.get(upload_file_index))) {
             LOGGER.info("Uploader: loaded fail!");
             return;
         }
@@ -3492,13 +3441,11 @@ public class EspIDE extends javax.swing.JFrame {
                 chooser.setFileFilter(FILTER_PYTHON);
                 NodeFileMgrPane.setVisible(false);
                 PyFileMgrPane.setVisible(true);
-                thandler.getRSyntaxTextArea().setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
                 break;
             case NodeMCU:
                 chooser.setFileFilter(FILTER_LUA);
                 NodeFileMgrPane.setVisible(true);
                 PyFileMgrPane.setVisible(false);
-                thandler.getRSyntaxTextArea().setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
                 break;
             case AT:
                 NodeFileMgrPane.setVisible(false);
@@ -3506,6 +3453,7 @@ public class EspIDE extends javax.swing.JFrame {
                 break;
         }
 
+        thandler.setSyntaxEditingStyle(ftype);
 
         updateCommandsSet();
     }
@@ -3596,6 +3544,11 @@ public class EspIDE extends javax.swing.JFrame {
         timeout.setInitialDelay(delay);
         timeout.start();
     } // WatchDogPyListDir
+
+    @Override
+    public void listen(String command) {
+       btnSend(command);
+    }
 
     private class PortNodeFilesReader implements SerialPortEventListener {
 
@@ -3853,7 +3806,7 @@ public class EspIDE extends javax.swing.JFrame {
                                 btnSend("AT+GMR");
                                 SetFirmwareType(yh.espide.FirmwareType.AT);
                             } else {
-                                thandler.echo("未成功识别固件，重新打开串口或手动切换固件类型。", true);
+                                thandler.echo("Can't detect firmware, Choose by yourself.", true);
                             }
 
                             portJustOpen = false;
@@ -4087,7 +4040,7 @@ public class EspIDE extends javax.swing.JFrame {
                         LOGGER.info(e.toString());
                     }
                     StopSend();
-                    if (mFileIndex != -1 && mFileIndex++ < mFile.size()) {
+                    if (upload_file_index != -1 && upload_file_index++ < upload_file_list.size()) {
                         UploadFilesStart();
                     }
                 }

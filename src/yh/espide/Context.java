@@ -22,6 +22,8 @@ import java.util.List;
  */
 public class Context {
 
+    public static final Font FONT_12 =new Font("é›…é»‘", 0, 12);
+
     public static RSyntaxTextArea create1(FirmwareType type) {
         RSyntaxTextArea textArea = new RSyntaxTextArea();
 
@@ -87,7 +89,7 @@ public class Context {
 
     public static JMenu createM1(String text) {
         JMenu item = new JMenu(text);
-        item.setFont(new Font("ºÚÌå", Font.PLAIN, 12));
+        item.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 12));
         return item;
     }
 
