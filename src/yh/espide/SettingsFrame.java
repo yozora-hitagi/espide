@@ -76,6 +76,7 @@ public class SettingsFrame extends JDialog {
 
         EditorTheme.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         EditorTheme.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Default", "Dark", "Eclipse", "IDEA", "Visual Studio", "Default-alt"}));
+        EditorTheme.setSelectedIndex(Config.ins.getColor_theme());
         EditorTheme.addActionListener(evt -> EditorThemeActionPerformed(evt));
 
 

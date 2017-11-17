@@ -3,6 +3,7 @@ package yh.espide;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.ActionMap;
@@ -91,11 +92,15 @@ public class TerminalHandler extends RTextScrollPane {
         rSyntaxTextArea.setCloseMarkupTags(false);
         rSyntaxTextArea.setDragEnabled(false);
         rSyntaxTextArea.setFadeCurrentLineHighlight(true);
+
         rSyntaxTextArea.setHighlightSecondaryLanguages(false);
-        rSyntaxTextArea.setMaximumSize(new java.awt.Dimension(100, 100));
+
+        //rSyntaxTextArea.setMaximumSize(new java.awt.Dimension(100, 100));
         rSyntaxTextArea.setMinimumSize(new java.awt.Dimension(100, 100));
         rSyntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
 
+
+        rSyntaxTextArea.setLineWrap(true);
 
         rSyntaxTextArea.addKeyListener(new KeyAdapter() {
             @Override
@@ -199,6 +204,7 @@ public class TerminalHandler extends RTextScrollPane {
 
 
     public void setSyntaxEditingStyle(FirmwareType type) {
+
         switch (type) {
             case MicroPython:
                 rSyntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
@@ -230,9 +236,10 @@ public class TerminalHandler extends RTextScrollPane {
     }
 
 
-    public RSyntaxTextArea getRSyntaxTextArea() {
-        return rSyntaxTextArea;
+    public void setTheme(Theme theme){
+        theme.apply(rSyntaxTextArea);
     }
+
 
     public void add(String rc) {
         Document doc = rSyntaxTextArea.getDocument();

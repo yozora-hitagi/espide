@@ -10,9 +10,10 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -159,7 +160,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     private javax.swing.JButton PyListDir;
     private javax.swing.JButton ReScan;
     private javax.swing.JLayeredPane RightBasePane;
-    private javax.swing.JSplitPane RightFilesSplitPane;
+    private javax.swing.JSplitPane RightTerminalSplitPane;
     private javax.swing.JComboBox Speed;
     private javax.swing.JLayeredPane SriptsTab;
 
@@ -235,7 +236,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         EOL = new javax.swing.JCheckBox();
         CR = new javax.swing.JCheckBox();
         LF = new javax.swing.JCheckBox();
-        RightFilesSplitPane = new javax.swing.JSplitPane();
+        RightTerminalSplitPane = new javax.swing.JSplitPane();
 
         FileManagerScrollPane = new javax.swing.JScrollPane();
         FileManagersLayer = new javax.swing.JLayeredPane();
@@ -354,6 +355,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         HorizontSplit.setDividerLocation(550);
         HorizontSplit.setMinimumSize(new java.awt.Dimension(100, 100));
         HorizontSplit.setPreferredSize(new java.awt.Dimension(768, 567));
+        HorizontSplit.addPropertyChangeListener(evt -> reLocationRightSplit());
 
         LeftBasePane.setOpaque(true);
 
@@ -768,19 +770,18 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         Port.getAccessibleContext().setAccessibleName("");
 
 
-
-        RightFilesSplitPane.setDividerLocation(300);
-        RightFilesSplitPane.setAutoscrolls(true);
-        RightFilesSplitPane.addPropertyChangeListener(evt -> RightFilesSplitPanePropertyChange(evt));
+//        RightTerminalSplitPane.setDividerLocation(300);
+        RightTerminalSplitPane.setAutoscrolls(true);
+        RightTerminalSplitPane.addPropertyChangeListener(evt -> RightFilesSplitPanePropertyChange(evt));
 
         thandler.setPopupMenu(ContextMenuTerminal);
 
-        RightFilesSplitPane.setLeftComponent(thandler);
+        RightTerminalSplitPane.setLeftComponent(thandler);
 
         FileManagerScrollPane.setBorder(null);
         FileManagerScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        FileManagersLayer.setMaximumSize(new java.awt.Dimension(145, 145));
+        //FileManagersLayer.setMaximumSize(new java.awt.Dimension(145, 145));
 
 
         firmware_type_label.addActionListener(e -> {
@@ -837,7 +838,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FileListReload.setMargin(new java.awt.Insets(2, 2, 2, 2));
         FileListReload.setMaximumSize(new java.awt.Dimension(130, 25));
         FileListReload.setPreferredSize(new java.awt.Dimension(130, 25));
-        FileListReload.addActionListener(evt ->  NodeListFiles());
+        FileListReload.addActionListener(evt -> NodeListFiles());
         NodeFileMgrPane.add(FileListReload);
 
         FileRenamePanel.setMaximumSize(new java.awt.Dimension(130, 45));
@@ -925,11 +926,11 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         FileManagerScrollPane.setViewportView(FileManagersLayer);
 
-        RightFilesSplitPane.setRightComponent(FileManagerScrollPane);
+        RightTerminalSplitPane.setRightComponent(FileManagerScrollPane);
 
 
         RightBasePane.setLayer(LEDPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        RightBasePane.setLayer(RightFilesSplitPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        RightBasePane.setLayer(RightTerminalSplitPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout RightBasePaneLayout = new javax.swing.GroupLayout(RightBasePane);
         RightBasePane.setLayout(RightBasePaneLayout);
@@ -937,9 +938,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
                 RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(RightBasePaneLayout.createSequentialGroup()
                                 .addGroup(RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(RightFilesSplitPane)
+                                        .addComponent(RightTerminalSplitPane)
                                         .addGroup(RightBasePaneLayout.createSequentialGroup()
-                                               )
+                                        )
                                         .addGroup(RightBasePaneLayout.createSequentialGroup()
                                                 .addGroup(RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 
@@ -953,11 +954,11 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
                                 .addGap(1, 1, 1)
                                 .addComponent(LEDPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(RightFilesSplitPane)
+                                .addComponent(RightTerminalSplitPane)
                                 .addGap(5, 5, 5)
 
                                 .addGroup(RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                      ))
+                                ))
         );
 
 
@@ -1113,13 +1114,13 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         MenuItemViewTerminalOnly.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.ALT_MASK));
         MenuItemViewTerminalOnly.setText("Show terminalArea only (Left panel show/hide)");
         MenuItemViewTerminalOnly.setToolTipText("Enable/disable left panel");
-        MenuItemViewTerminalOnly.addItemListener(evt -> MenuItemViewTerminalOnlyItemStateChanged(evt));
+        MenuItemViewTerminalOnly.addItemListener(evt -> LeftRightOnlyShowStateChanged(evt));
         MenuView.add(MenuItemViewTerminalOnly);
 
         MenuItemViewEditorOnly.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.ALT_MASK));
         MenuItemViewEditorOnly.setText("Show Editor only (Right panel show/hide)");
         MenuItemViewEditorOnly.setToolTipText("Enable/disable left panel");
-        MenuItemViewEditorOnly.addItemListener(evt -> MenuItemViewEditorOnlyItemStateChanged(evt));
+        MenuItemViewEditorOnly.addItemListener(evt -> LeftRightOnlyShowStateChanged(evt));
         MenuView.add(MenuItemViewEditorOnly);
         MenuView.add(new JPopupMenu.Separator());
 
@@ -1200,7 +1201,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             //Speed.setEnabled(true);
             ReScan.setEnabled(true);
 
-           thandler.setEnabled(false);
+            thandler.setEnabled(false);
 
             CR.setEnabled(false);
             LF.setEnabled(false);
@@ -1229,7 +1230,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
 
-
     private void SetWindowSize() {
         int x, y, h, w;
         x = Regedit.getInt(WIN_X, 0);
@@ -1249,20 +1249,17 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         if (MenuItemViewFileManager.isSelected()) {
             FileManagerScrollPane.setEnabled(true);
             FileManagerScrollPane.setVisible(true);
-            //div = prefs.getInt( FM_DIV, RightFilesSplitPane.getWidth()-w );
-            //if ( div > RightFilesSplitPane.getWidth()-w ) {
-            div = RightFilesSplitPane.getWidth() - w;
+            //div = prefs.getInt( FM_DIV, RightTerminalSplitPane.getWidth()-w );
+            //if ( div > RightTerminalSplitPane.getWidth()-w ) {
+            div = RightTerminalSplitPane.getWidth() - w;
             //}
-            RightFilesSplitPane.setDividerLocation(div);
+            RightTerminalSplitPane.setDividerLocation(div);
         } else {
             FileManagerScrollPane.setEnabled(false);
             FileManagerScrollPane.setVisible(false);
-            RightFilesSplitPane.setDividerLocation(RightFilesSplitPane.getWidth() - RightFilesSplitPane.getDividerSize());
+            RightTerminalSplitPane.setDividerLocation(RightTerminalSplitPane.getWidth() - RightTerminalSplitPane.getDividerSize());
         }
     }
-
-
-
 
 
     private void ContextMenuTerminalPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
@@ -1974,7 +1971,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     private void RightFilesSplitPanePropertyChange(java.beans.PropertyChangeEvent evt) {
         if ("dividerLocation".equals(evt.getPropertyName()) && MenuItemViewFileManager.isSelected()) {
-            Regedit.setInt(Regedit.FM_DIV, RightFilesSplitPane.getDividerLocation());
+            Regedit.setInt(Regedit.FM_DIV, RightTerminalSplitPane.getDividerLocation());
         }
     }
 
@@ -2089,15 +2086,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
 
-    private void MenuItemViewTerminalOnlyItemStateChanged(java.awt.event.ItemEvent evt) {
-        if (MenuItemViewTerminalOnly.isSelected()) {
-            MenuItemViewEditorOnly.setSelected(false);
-            HorizontSplit.setDividerLocation(0);
-        } else {
-            HorizontSplit.setDividerLocation(550);
-        }
-    }
-
     private void NodeMCUComponentShown(java.awt.event.ComponentEvent evt) {
         UpdateEditorButtons();
         UpdateButtons();
@@ -2160,13 +2148,25 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
 
-    private void MenuItemViewEditorOnlyItemStateChanged(java.awt.event.ItemEvent evt) {
-        if (MenuItemViewEditorOnly.isSelected()) {
+    private void reLocationRightSplit() {
+        RightTerminalSplitPane.setDividerLocation(RightTerminalSplitPane.getWidth() - 180);
+    }
+
+    private void LeftRightOnlyShowStateChanged(java.awt.event.ItemEvent evt) {
+        if (evt.getSource() == MenuItemViewEditorOnly && MenuItemViewEditorOnly.isSelected()) {
             MenuItemViewTerminalOnly.setSelected(false);
-            HorizontSplit.setDividerLocation(HorizontSplit.getWidth());
+            LeftBasePane.setVisible(true);
+            RightBasePane.setVisible(false);
+        } else if (evt.getSource() == MenuItemViewTerminalOnly && MenuItemViewTerminalOnly.isSelected()) {
+            MenuItemViewEditorOnly.setSelected(false);
+            LeftBasePane.setVisible(false);
+            RightBasePane.setVisible(true);
         } else {
+            LeftBasePane.setVisible(true);
+            RightBasePane.setVisible(true);
             HorizontSplit.setDividerLocation(550);
         }
+        reLocationRightSplit();
     }
 
 
@@ -2388,6 +2388,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         FileAsButton.get(i).setComponentPopupMenu(FilePopupMenu.get(x));
         NodeFileMgrPane.add(FileAsButton.get(i));
+
     }
 
     private void AddMenuItemSeparator(int x) {
@@ -2567,8 +2568,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
                     area.setFont(area.getFont().deriveFont(Config.ins.getEditor_font_size()));
                 }
 
-
-                theme.apply(thandler.getRSyntaxTextArea());
+                thandler.setTheme(theme);
                 thandler.setFontSize(Config.ins.getTerminal_font_size());
                 //SnippetText.setBackground(SnippetTopPane.getBackground());
                 LOGGER.info("Set new color theme: Success.");
@@ -3446,7 +3446,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     @Override
     public void listen(String command) {
-       btnSend(command);
+        btnSend(command);
     }
 
     private class PortNodeFilesReader implements SerialPortEventListener {
