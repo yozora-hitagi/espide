@@ -7,9 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="755c87fb-789a-4a51-adcb-8d74efc7dba1" name="Default" comment="简单提交">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/CommandsSet$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/CommandsSet.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$10.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$9.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/CommandsSet.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/CommandsSet.class" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/yh/espide/CommandsSet.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/Config.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/Config.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/Context.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/Context.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$1.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$1.class" />
@@ -30,12 +32,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/SettingsFrame.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/SettingsFrame.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/TerminalHandler.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/TerminalHandler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/Context.java" afterPath="$PROJECT_DIR$/src/yh/espide/Context.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/EditButton.java" afterPath="$PROJECT_DIR$/src/yh/espide/EditButton.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/Config.java" afterPath="$PROJECT_DIR$/src/yh/espide/Config.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/EspIDE.java" afterPath="$PROJECT_DIR$/src/yh/espide/EspIDE.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/SettingsFrame.java" afterPath="$PROJECT_DIR$/src/yh/espide/SettingsFrame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/TerminalHandler.java" afterPath="$PROJECT_DIR$/src/yh/espide/TerminalHandler.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -60,16 +59,12 @@
       <file leaf-file-name="EspIDE.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/yh/espide/EspIDE.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1510">
-              <caret line="1727" column="17" lean-forward="true" selection-start-line="1727" selection-start-column="17" selection-end-line="1727" selection-end-column="17" />
+            <state relative-caret-position="49796">
+              <caret line="2784" column="28" lean-forward="true" selection-start-line="2784" selection-start-column="28" selection-end-line="2784" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#102703#102704#0" expanded="true" />
-                <element signature="e#102734#102735#0" expanded="true" />
-                <element signature="e#112520#112521#0" expanded="true" />
-                <element signature="e#112558#112559#0" expanded="true" />
-                <element signature="e#157415#157416#0" expanded="true" />
-                <element signature="e#157446#157447#0" expanded="true" />
+                <element signature="e#14213#14379#0" expanded="true" />
+                <element signature="e#14378#14379#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -78,7 +73,7 @@
       <file leaf-file-name="Regedit.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/yh/espide/Regedit.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="647">
+            <state relative-caret-position="893">
               <caret line="48" column="53" lean-forward="false" selection-start-line="48" selection-start-column="53" selection-end-line="48" selection-end-column="53" />
               <folding />
             </state>
@@ -88,35 +83,9 @@
       <file leaf-file-name="TerminalHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/yh/espide/TerminalHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="205" column="19" lean-forward="false" selection-start-line="205" selection-start-column="19" selection-end-line="205" selection-end-column="19" />
-              <folding>
-                <element signature="e#3239#4070#0" expanded="true" />
-                <element signature="e#4069#4070#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Theme.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/Theme.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-315">
-              <caret line="178" column="16" lean-forward="false" selection-start-line="178" selection-start-column="16" selection-end-line="178" selection-end-column="16" />
+            <state relative-caret-position="3192">
+              <caret line="185" column="24" lean-forward="false" selection-start-line="185" selection-start-column="24" selection-end-line="185" selection-end-column="24" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Config.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/yh/espide/Config.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="108" column="15" lean-forward="false" selection-start-line="108" selection-start-column="15" selection-end-line="108" selection-end-column="15" />
-              <folding>
-                <element signature="e#3116#3117#0" expanded="true" />
-                <element signature="e#3160#3161#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -133,11 +102,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>settext</find>
-      <find>RightFilesSplitPane</find>
-      <find>RightFilesSplitPane.setDividerLocation</find>
-      <find>FilesUploadActionPerformed</find>
-      <find>EOLItemStateChanged</find>
       <find>New</find>
       <find>MenuItemFileNew</find>
       <find>setting</find>
@@ -162,7 +126,12 @@
       <find>reload</find>
       <find>Reload</find>
       <find>FileListReload</find>
+      <find>parent</find>
       <find>NodeListFiles</find>
+      <find>sendcom</find>
+      <find>btnsend</find>
+      <find>FileListReloadActionPerformed</find>
+      <find>nodelist</find>
     </findStrings>
     <replaceStrings>
       <replace>Open.isSelected()</replace>
@@ -233,15 +202,15 @@
         <option value="$PROJECT_DIR$/src/resources/python.autocomplete" />
         <option value="$PROJECT_DIR$/src/yh/espide/CompletionProviderCreator.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/LED.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/CommandsSet.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/Config.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/TextEditArea.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/SettingsFrame.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/EditButton.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/Context.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/Regedit.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/EspIDE.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Config.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/CommandsSet.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/TerminalHandler.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/EspIDE.java" />
       </list>
     </option>
   </component>
@@ -292,8 +261,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -365,6 +332,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -871,7 +840,8 @@
       <workItem from="1509669977904" duration="7592000" />
       <workItem from="1510792199269" duration="23899000" />
       <workItem from="1510830122273" duration="9036000" />
-      <workItem from="1510878517567" duration="7716000" />
+      <workItem from="1510878517567" duration="13364000" />
+      <workItem from="1510898689304" duration="42000" />
     </task>
     <task id="LOCAL-00001" summary="简单提交">
       <created>1510796107130</created>
@@ -894,11 +864,18 @@
       <option name="project" value="LOCAL" />
       <updated>1510821434769</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="改造命令行，完成一半">
+      <created>1510891191811</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1510891191811</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="212763000" />
+    <option name="totallyTimeSpent" value="218453000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -916,7 +893,6 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864866" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32540542" sideWeight="0.49520767" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -928,9 +904,8 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31522897" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31842387" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3264865" sideWeight="0.4968051" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -942,8 +917,10 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32540542" sideWeight="0.49520767" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3264865" sideWeight="0.4968051" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -973,11 +950,12 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="删了些觉得可有可无的东西， 稍微改进了些代码结构" />
     <MESSAGE value="简单提交" />
-    <option name="LAST_COMMIT_MESSAGE" value="简单提交" />
+    <MESSAGE value="改造命令行，完成一半" />
+    <option name="LAST_COMMIT_MESSAGE" value="改造命令行，完成一半" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="57" />
+      <option name="time" value="60" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -986,22 +964,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/LED.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="10" lean-forward="false" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/autocomplete/AutoCompletion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="247" column="11" lean-forward="false" selection-start-line="247" selection-start-column="11" selection-end-line="247" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/io/Reader.java" />
     <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/io/BufferedReader.java" />
     <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/io/InputStreamReader.java" />
@@ -1040,11 +1002,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="409">
           <caret line="50" column="40" lean-forward="true" selection-start-line="50" selection-start-column="40" selection-end-line="50" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#22985#0" expanded="true" />
-            <element signature="e#3397#3398#0" expanded="false" />
-            <element signature="e#3427#3428#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1054,7 +1011,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
           <caret line="21" column="39" lean-forward="false" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1062,9 +1018,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="249">
           <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1102,19 +1055,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Regedit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="647">
-          <caret line="48" column="53" lean-forward="false" selection-start-line="48" selection-start-column="53" selection-end-line="48" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/text/Document.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3192">
           <caret line="191" column="15" lean-forward="false" selection-start-line="191" selection-start-column="15" selection-end-line="191" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1122,7 +1066,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="118" column="15" lean-forward="false" selection-start-line="118" selection-start-column="15" selection-end-line="118" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1130,7 +1073,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="236">
           <caret line="280" column="38" lean-forward="false" selection-start-line="280" selection-start-column="38" selection-end-line="280" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1138,7 +1080,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="153" column="8" lean-forward="false" selection-start-line="153" selection-start-column="8" selection-end-line="153" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1146,7 +1087,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="350">
           <caret line="434" column="22" lean-forward="true" selection-start-line="434" selection-start-column="22" selection-end-line="434" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1154,7 +1094,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="444">
           <caret line="54" column="6" lean-forward="false" selection-start-line="54" selection-start-column="6" selection-end-line="54" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1162,7 +1101,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1170,7 +1108,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="58">
           <caret line="600" column="9" lean-forward="false" selection-start-line="600" selection-start-column="9" selection-end-line="600" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1178,7 +1115,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
           <caret line="62" column="16" lean-forward="false" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1186,26 +1122,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="147" column="19" lean-forward="false" selection-start-line="147" selection-start-column="19" selection-end-line="147" selection-end-column="19" />
-          <folding>
-            <element signature="e#5748#5749#0" expanded="false" />
-            <element signature="e#5784#5785#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/AWTKeyStroke.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="707" column="25" lean-forward="false" selection-start-line="707" selection-start-column="25" selection-end-line="707" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/KeyStroke.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="196" column="28" lean-forward="false" selection-start-line="196" selection-start-column="28" selection-end-line="196" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1213,7 +1129,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="201" column="18" lean-forward="false" selection-start-line="201" selection-start-column="18" selection-end-line="201" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1229,18 +1144,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="138" column="0" lean-forward="false" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="2451" column="27" lean-forward="false" selection-start-line="2451" selection-start-column="27" selection-end-line="2451" selection-end-column="27" />
-          <folding>
-            <element signature="e#93143#93144#0" expanded="true" />
-            <element signature="e#93184#93185#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1248,18 +1151,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="112" column="16" lean-forward="false" selection-start-line="112" selection-start-column="16" selection-end-line="112" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="108" column="15" lean-forward="false" selection-start-line="108" selection-start-column="15" selection-end-line="108" selection-end-column="15" />
-          <folding>
-            <element signature="e#3116#3117#0" expanded="true" />
-            <element signature="e#3160#3161#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1267,7 +1158,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
           <caret line="2589" column="24" lean-forward="false" selection-start-line="2589" selection-start-column="24" selection-end-line="2589" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1275,7 +1165,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="1649" column="16" lean-forward="false" selection-start-line="1649" selection-start-column="16" selection-end-line="1649" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1283,33 +1172,75 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="3137" column="23" lean-forward="true" selection-start-line="3137" selection-start-column="23" selection-end-line="3137" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/ActionMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="133" column="16" lean-forward="false" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="2232" column="32" lean-forward="false" selection-start-line="2232" selection-start-column="32" selection-end-line="2232" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/AWTKeyStroke.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="433" column="31" lean-forward="false" selection-start-line="433" selection-start-column="31" selection-end-line="433" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/KeyStroke.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="85" column="28" lean-forward="false" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+          <folding>
+            <element signature="e#2786#2787#0" expanded="true" />
+            <element signature="e#2830#2831#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/CommandsSet.java" />
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Regedit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="893">
+          <caret line="48" column="53" lean-forward="false" selection-start-line="48" selection-start-column="53" selection-end-line="48" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/yh/espide/TerminalHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="205" column="19" lean-forward="false" selection-start-line="205" selection-start-column="19" selection-end-line="205" selection-end-column="19" />
-          <folding>
-            <element signature="e#3239#4070#0" expanded="true" />
-            <element signature="e#4069#4070#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="3192">
+          <caret line="185" column="24" lean-forward="false" selection-start-line="185" selection-start-column="24" selection-end-line="185" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/yh/espide/EspIDE.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1510">
-          <caret line="1727" column="17" lean-forward="true" selection-start-line="1727" selection-start-column="17" selection-end-line="1727" selection-end-column="17" />
+        <state relative-caret-position="49796">
+          <caret line="2784" column="28" lean-forward="true" selection-start-line="2784" selection-start-column="28" selection-end-line="2784" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#102703#102704#0" expanded="true" />
-            <element signature="e#102734#102735#0" expanded="true" />
-            <element signature="e#112520#112521#0" expanded="true" />
-            <element signature="e#112558#112559#0" expanded="true" />
-            <element signature="e#157415#157416#0" expanded="true" />
-            <element signature="e#157446#157447#0" expanded="true" />
+            <element signature="e#14213#14379#0" expanded="true" />
+            <element signature="e#14378#14379#0" expanded="true" />
           </folding>
         </state>
       </provider>

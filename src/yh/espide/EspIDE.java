@@ -100,7 +100,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     private javax.swing.JButton ButtonSendSelected;
     private javax.swing.JButton ButtonUndo;
     private javax.swing.JCheckBox CR;
-    private javax.swing.JComboBox Command;
     private javax.swing.JPopupMenu ContextMenuESPFileLUA;
     private javax.swing.JPopupMenu ContextMenuTerminal;
     private javax.swing.JCheckBox EOL;
@@ -160,9 +159,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     private javax.swing.JButton PyListDir;
     private javax.swing.JButton ReScan;
     private javax.swing.JLayeredPane RightBasePane;
-    private javax.swing.JLayeredPane RightBottomPane;
     private javax.swing.JSplitPane RightFilesSplitPane;
-    private javax.swing.JButton SendCommand;
     private javax.swing.JComboBox Speed;
     private javax.swing.JLayeredPane SriptsTab;
 
@@ -238,8 +235,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         EOL = new javax.swing.JCheckBox();
         CR = new javax.swing.JCheckBox();
         LF = new javax.swing.JCheckBox();
-        RightBottomPane = new javax.swing.JLayeredPane();
-        Command = new javax.swing.JComboBox();
         RightFilesSplitPane = new javax.swing.JSplitPane();
 
         FileManagerScrollPane = new javax.swing.JScrollPane();
@@ -254,10 +249,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FileRename = new javax.swing.JTextField();
         PyFileMgrPane = new javax.swing.JLayeredPane();
         PyListDir = new javax.swing.JButton();
-
-
-        SendCommand = new javax.swing.JButton();
-
 
         MenuItemFileNew = new javax.swing.JMenuItem();
         MenuItemFileOpen = new javax.swing.JMenuItem();
@@ -776,37 +767,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         Port.getAccessibleContext().setAccessibleName("");
 
-        RightBottomPane.setAlignmentX(0.0F);
-        RightBottomPane.setAlignmentY(0.0F);
-        RightBottomPane.setOpaque(true);
-
-        Command.setEditable(true);
-        Command.setFont(Context.FONT_12); // NOI18N
-        Command.setMaximumRowCount(20);
-        Command.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"AT", "AT+GMR", "AT+RST", ""}));
-        Command.setToolTipText("Command to send");
-        Command.setAlignmentX(0.0F);
-        Command.setAlignmentY(0.0F);
-        Command.setAutoscrolls(true);
-        Command.setEnabled(false);
-        Command.setName("Command"); // NOI18N
-        Command.addActionListener(evt -> CommandActionPerformed(evt));
-
-
-        RightBottomPane.setLayer(Command, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout RightBottomPaneLayout = new javax.swing.GroupLayout(RightBottomPane);
-        RightBottomPane.setLayout(RightBottomPaneLayout);
-        RightBottomPaneLayout.setHorizontalGroup(
-                RightBottomPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(Command, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        RightBottomPaneLayout.setVerticalGroup(
-                RightBottomPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(Command, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
-        Command.getAccessibleContext().setAccessibleName("Command");
 
 
         RightFilesSplitPane.setDividerLocation(300);
@@ -877,7 +837,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FileListReload.setMargin(new java.awt.Insets(2, 2, 2, 2));
         FileListReload.setMaximumSize(new java.awt.Dimension(130, 25));
         FileListReload.setPreferredSize(new java.awt.Dimension(130, 25));
-        FileListReload.addActionListener(evt -> FileListReloadActionPerformed(evt));
+        FileListReload.addActionListener(evt ->  NodeListFiles());
         NodeFileMgrPane.add(FileListReload);
 
         FileRenamePanel.setMaximumSize(new java.awt.Dimension(130, 45));
@@ -967,18 +927,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         RightFilesSplitPane.setRightComponent(FileManagerScrollPane);
 
-        SendCommand.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        SendCommand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/left.png"))); // NOI18N
-        SendCommand.setAlignmentY(0.0F);
-        SendCommand.setEnabled(false);
-        SendCommand.setText("Send");
-        SendCommand.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        SendCommand.addActionListener(evt -> SendCommandActionPerformed(evt));
 
         RightBasePane.setLayer(LEDPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        RightBasePane.setLayer(RightBottomPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
         RightBasePane.setLayer(RightFilesSplitPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        RightBasePane.setLayer(SendCommand, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout RightBasePaneLayout = new javax.swing.GroupLayout(RightBasePane);
         RightBasePane.setLayout(RightBasePaneLayout);
@@ -988,9 +939,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
                                 .addGroup(RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(RightFilesSplitPane)
                                         .addGroup(RightBasePaneLayout.createSequentialGroup()
-                                                .addComponent(RightBottomPane)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(SendCommand, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                               )
                                         .addGroup(RightBasePaneLayout.createSequentialGroup()
                                                 .addGroup(RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 
@@ -1008,11 +957,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
                                 .addGap(5, 5, 5)
 
                                 .addGroup(RightBasePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(RightBottomPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(SendCommand, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                      ))
         );
 
-        SendCommand.getAccessibleContext().setAccessibleName("");
 
         HorizontSplit.setRightComponent(RightBasePane);
 
@@ -1234,8 +1181,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             Port.setEnabled(false);
             //Speed.setEnabled(false);
             ReScan.setEnabled(false);
-            SendCommand.setEnabled(true);
-            Command.setEnabled(true);
+
+            thandler.setEnabled(true);
+
             CR.setEnabled(true);
             LF.setEnabled(true);
             // left panel
@@ -1251,8 +1199,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             Port.setEnabled(true);
             //Speed.setEnabled(true);
             ReScan.setEnabled(true);
-            SendCommand.setEnabled(false);
-            Command.setEnabled(false);
+
+           thandler.setEnabled(false);
+
             CR.setEnabled(false);
             LF.setEnabled(false);
             // left panel
@@ -1279,12 +1228,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         isFileManagerShow();
     }
 
-    private void updateCommandsSet() {
-        Command.removeAllItems();
-        for (Object c : CommandsSet.get(FirmwareType.current)) {
-            Command.addItem(c);
-        }
-    }
+
 
     private void SetWindowSize() {
         int x, y, h, w;
@@ -1317,42 +1261,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         }
     }
 
-    private void SendCommandActionPerformed(java.awt.event.ActionEvent evt) {
-        if (Config.ins.isCommand_echo()) {
-            thandler.echo(Command.getSelectedItem().toString(), true);
-        }
 
-        if (!Open.isSelected() || portJustOpen) {
-            LOGGER.info("Port not open, operation cancel.");
-            return;
-        }
-        String cmd = Command.getSelectedItem().toString();
-        //������ɾ���ظ��ļ�¼
-        int count = Command.getItemCount();
-        for (int i = 0; i < count; i++) {
-            if (Command.getItemAt(i).equals(cmd)) {
-                Command.removeItemAt(i);
-                i--;
-                count--;
-            }
-        }
-        Command.insertItemAt(cmd, 0); // Add to History after last Position
 
-        send(addCRLF(cmd), true);
-        // History trim
-        if (Command.getItemCount() > 20) {
-            Command.removeItemAt(Command.getItemCount() - 1);
-        }
 
-        Command.setSelectedIndex(-1);
-    }
-
-    private void CommandActionPerformed(java.awt.event.ActionEvent evt) {
-        //log("CommandActionPerformed " + evt.getActionCommand());
-        if ("comboBoxEdited".equals(evt.getActionCommand())) { // Hit Enter
-            SendCommand.doClick();
-        }
-    }
 
     private void ContextMenuTerminalPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
         try {
@@ -2026,14 +1937,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     }
 
-    private void MenuItemFileRemoveESPActionPerformed(java.awt.event.ActionEvent evt) {
-        String ft = TextEditArea.TEXT_EDIT_AREAS.get(iTab).file.getName();
-        if (ft.length() == 0) {
-            LOGGER.info("removeFileFromESP: FAIL. Can't remove file from ESP without name.");
-            JOptionPane.showMessageDialog(null, "Can't remove file from ESP without name.");
-        }
-        removeFileFromESP(ft);
-    }
 
     private void removeFileFromESP(String FileName) {
         btnSend("file.remove(\"" + FileName + "\")");
@@ -2083,9 +1986,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         isFileManagerShow();
     }
 
-    private void FileListReloadActionPerformed(java.awt.event.ActionEvent evt) {
-        NodeListFiles();
-    }
 
     private void FileAsButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         String fn = evt.getActionCommand();
@@ -3455,7 +3355,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         thandler.setSyntaxEditingStyle(ftype);
 
-        updateCommandsSet();
     }
 
     private boolean pySaveFileESP(String ft) {

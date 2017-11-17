@@ -9,7 +9,6 @@ public class Config {
     public static final Config ins = new Config();
 
 
-    private boolean command_echo =true;
 
     //kb
     private int termnal_max_text_size = 100;
@@ -32,7 +31,6 @@ public class Config {
     private int editor_font_size = 13;
 
     private Config() {
-        command_echo = getBoolean(COMMAND_ECHO, command_echo);
         termnal_max_text_size=getInt(TERMINAL_MAX_SIZE,termnal_max_text_size);
         dumb_mode=getBoolean(DUMB_MODE, dumb_mode);
         turbo_mode=getBoolean(TURBO_MODE, turbo_mode);
@@ -96,15 +94,6 @@ public class Config {
         this.delay_after_answer = delay_after_answer;
     }
 
-
-    public boolean isCommand_echo() {
-        return command_echo;
-    }
-
-    public void setCommand_echo(boolean command_echo) {
-        setBoolean(COMMAND_ECHO, command_echo);
-        this.command_echo = command_echo;
-    }
 
     public int getTermnal_max_text_size() {
         return termnal_max_text_size;

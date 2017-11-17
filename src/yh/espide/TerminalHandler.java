@@ -5,12 +5,16 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import javax.swing.ActionMap;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
@@ -27,6 +31,9 @@ public class TerminalHandler extends RTextScrollPane {
 
     AtomicInteger location = new AtomicInteger(0);
     AtomicBoolean control = new AtomicBoolean(true);
+
+    ArrayList<String> history = new ArrayList();
+    int history_loc = 0;
 
     CommandListener listener;
 
@@ -67,10 +74,11 @@ public class TerminalHandler extends RTextScrollPane {
 
 
         }) {
-            @Override
-            public void undoLastAction() {
-                // super.undoLastAction();
-            }
+//            @Override
+//            public void undoLastAction() {
+//                // super.undoLastAction();
+//            }
+
         };
 
         // rSyntaxTextArea.setEditable(false);
@@ -88,6 +96,7 @@ public class TerminalHandler extends RTextScrollPane {
         rSyntaxTextArea.setMinimumSize(new java.awt.Dimension(100, 100));
         rSyntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
 
+
         rSyntaxTextArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -95,6 +104,13 @@ public class TerminalHandler extends RTextScrollPane {
 
                 int length = rSyntaxTextArea.getText().length();
                 int key = e.getKeyCode();
+
+                if (key == KeyEvent.VK_BACK_SPACE) {
+                    if (rSyntaxTextArea.getCaretPosition() < location.get()) {
+                        rSyntaxTextArea.setCaretPosition(length);
+                    }
+                }
+
                 if (key == KeyEvent.VK_ENTER) {
                     if (null != listener) {
                         rSyntaxTextArea.setCaretPosition(length);
@@ -105,7 +121,33 @@ public class TerminalHandler extends RTextScrollPane {
                             command = rSyntaxTextArea.getText().substring(location.get());
                         }
                         listener.listen(command);
+
+                        history.add(command);
+                        history_loc = history.size();
                     }
+                }
+
+                if (key == KeyEvent.VK_UP || (key == KeyEvent.VK_DOWN)) {
+                    rSyntaxTextArea.setCaretPosition(location.get());
+                }
+                if (key == KeyEvent.VK_UP && history_loc > 0) {
+                    history_loc--;
+                    try {
+                        rSyntaxTextArea.getDocument().remove(location.get(), length - location.get());
+                    } catch (BadLocationException e1) {
+                        rSyntaxTextArea.setText(rSyntaxTextArea.getText().substring(0, location.get() + 1));
+                    }
+                    rSyntaxTextArea.append(history.get(history_loc));
+
+                } else if (key == KeyEvent.VK_DOWN && history_loc < history.size() - 1) {
+                    history_loc++;
+                    try {
+                        rSyntaxTextArea.getDocument().remove(location.get(), length - location.get());
+                    } catch (BadLocationException e1) {
+                        rSyntaxTextArea.setText(rSyntaxTextArea.getText().substring(0, location.get() + 1));
+                    }
+                    rSyntaxTextArea.append(history.get(history_loc));
+
                 }
 
 
@@ -122,6 +164,16 @@ public class TerminalHandler extends RTextScrollPane {
         rSyntaxTextArea.getAccessibleContext().setAccessibleParent(this);
 
 
+        List rl = new ArrayList();
+        rl.add(rSyntaxTextArea.getInputMap().get(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK, false)));
+        rl.add(rSyntaxTextArea.getInputMap().get(KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.KEY_LOCATION_UNKNOWN, false)));
+        ActionMap am = rSyntaxTextArea.getActionMap();
+        while (null != am) {
+            for (Object b : rl)
+                am.remove(b);
+            am = am.getParent();
+        }
+
     }
 
 
@@ -129,7 +181,10 @@ public class TerminalHandler extends RTextScrollPane {
      * clean terminal text
      */
     public void clean() {
+        control.set(false);
         rSyntaxTextArea.setText("");
+        location.set(0);
+        control.set(true);
     }
 
 
