@@ -7,10 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="755c87fb-789a-4a51-adcb-8d74efc7dba1" name="Default" comment="简单提交">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/lang.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/lang_zh_CN.properties" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.project" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/CommandsSet$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/CommandsSet.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$10.class" afterPath="" />
@@ -36,11 +33,13 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/SettingsFrame.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/SettingsFrame.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/TerminalHandler.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/TerminalHandler.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lang.properties" afterPath="$PROJECT_DIR$/src/lang.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lang_zh_CN.properties" afterPath="$PROJECT_DIR$/src/lang_zh_CN.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/Context.java" afterPath="$PROJECT_DIR$/src/yh/espide/Context.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/EditButton.java" afterPath="$PROJECT_DIR$/src/yh/espide/EditButton.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/EspIDE.java" afterPath="$PROJECT_DIR$/src/yh/espide/EspIDE.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/yh/espide/LED.java" afterPath="$PROJECT_DIR$/src/yh/espide/Icon.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/Icon.java" afterPath="$PROJECT_DIR$/src/yh/espide/Icon.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -76,8 +75,8 @@
       <file leaf-file-name="Icon.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/yh/espide/Icon.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="51" column="47" lean-forward="false" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
+            <state relative-caret-position="266">
+              <caret line="14" column="114" lean-forward="false" selection-start-line="14" selection-start-column="114" selection-end-line="14" selection-end-column="114" />
               <folding />
             </state>
           </provider>
@@ -96,21 +95,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EspIDE.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="EspIDE.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/yh/espide/EspIDE.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="41097">
-              <caret line="2329" column="0" lean-forward="true" selection-start-line="2329" selection-start-column="0" selection-end-line="2329" selection-end-column="0" />
+            <state relative-caret-position="544">
+              <caret line="2210" column="57" lean-forward="true" selection-start-line="2210" selection-start-column="57" selection-end-line="2210" selection-end-column="57" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+      <file leaf-file-name="TextEditArea.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditArea.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="4" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
+            <state relative-caret-position="380">
+              <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Context.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/yh/espide/Context.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="25" column="50" lean-forward="false" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TerminalHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/yh/espide/TerminalHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="164">
+              <caret line="165" column="17" lean-forward="false" selection-start-line="165" selection-start-column="16" selection-end-line="165" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -128,15 +147,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>SendTimerStart(</find>
-      <find>btnSend(</find>
-      <find>q</find>
-      <find>undoaction</find>
-      <find>reload</find>
-      <find>Reload</find>
-      <find>FileListReload</find>
-      <find>parent</find>
-      <find>NodeListFiles</find>
       <find>sendcom</find>
       <find>btnsend</find>
       <find>FileListReloadActionPerformed</find>
@@ -149,7 +159,6 @@
       <find>HorizontSplit</find>
       <find>&quot;divider</find>
       <find>RightTerminalSplitPane</find>
-      <find>NodeFileMgrPane</find>
       <find>FileManagerScrollPane</find>
       <find>ScrollPaneConstants</find>
       <find>EditorTheme</find>
@@ -158,9 +167,18 @@
       <find>MenuItemFileOpen</find>
       <find>.png</find>
       <find>chooser</find>
+      <find>AutoScroll</find>
+      <find>new java.awt.Font(&quot;Tahoma&quot;, 0, 8)</find>
+      <find>Font(</find>
+      <find>new java.awt.Font(&quot;Tahoma&quot;, 0, 12)</find>
+      <find>undo</find>
+      <find>MenuItemEditUndo</find>
+      <find>filemanager</find>
+      <find>NodeFileMgrPane</find>
+      <find>fs info</find>
+      <find>REFRESH3</find>
     </findStrings>
     <replaceStrings>
-      <replace>Open.isSelected()</replace>
       <replace>firmwareType.eq(FirmwareType.NodeMCU)</replace>
       <replace>set.add</replace>
       <replace>FirmwareType.current</replace>
@@ -188,6 +206,9 @@
       <replace>LED.GREY</replace>
       <replace>TextEditArea.TEXT_EDIT_AREAS.get(iTab).file</replace>
       <replace>TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea</replace>
+      <replace>Context.FONT_8</replace>
+      <replace>Context.FONT_10</replace>
+      <replace>Context.FONT_12</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -231,16 +252,16 @@
         <option value="$PROJECT_DIR$/src/yh/espide/Config.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/CommandsSet.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/SettingsFrame.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/Context.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/Regedit.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/TerminalHandler.java" />
         <option value="$PROJECT_DIR$/src/lang_zh_CN.properties" />
-        <option value="$PROJECT_DIR$/src/lang.properties" />
         <option value="$PROJECT_DIR$/src/yh/espide/LED.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/EditButton.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/Icon.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/EspIDE.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Icon.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Context.java" />
+        <option value="$PROJECT_DIR$/src/lang.properties" />
+        <option value="$PROJECT_DIR$/src/yh/espide/EspIDE.java" />
       </list>
     </option>
   </component>
@@ -291,7 +312,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -374,6 +394,54 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="out" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="production" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="espide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resource Bundle 'lang'" />
+              <option name="myItemType" value="com.intellij.lang.properties.projectView.ResourceBundleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="espide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="espide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="out" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="production" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="espide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="espide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="espide" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value=".idea" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -382,10 +450,11 @@
       </pane>
       <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="File.Encoding" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -393,6 +462,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="D:/Green/PortableGit/bin/git.exe" />
     <property name="js.eslint.eslintPackage" value="" />
+    <property name="add_unversioned_files" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -896,7 +966,8 @@
       <workItem from="1510908471924" duration="2664000" />
       <workItem from="1510915009854" duration="6431000" />
       <workItem from="1510924051007" duration="274000" />
-      <workItem from="1511138871413" duration="7183000" />
+      <workItem from="1511138871413" duration="7613000" />
+      <workItem from="1511148166356" duration="6251000" />
     </task>
     <task id="LOCAL-00001" summary="简单提交">
       <created>1510796107130</created>
@@ -940,11 +1011,18 @@
       <option name="project" value="LOCAL" />
       <updated>1510924287301</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="简单提交">
+      <created>1511147735428</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1511147735428</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="235172000" />
+    <option name="totallyTimeSpent" value="241853000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -968,21 +1046,21 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38477802" sideWeight="0.50572914" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864866" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864866" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27955273" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28221512" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32540542" sideWeight="0.4968051" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3837838" sideWeight="0.49427083" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3837838" sideWeight="0.49427083" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1025,7 +1103,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="69" />
+      <option name="time" value="71" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1034,18 +1112,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/RSyntaxDocument.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="50" column="40" lean-forward="true" selection-start-line="50" selection-start-column="40" selection-end-line="50" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#22985#0" expanded="false" />
-            <element signature="e#3397#3398#0" expanded="false" />
-            <element signature="e#3427#3428#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://D:/Green/jdk1.8.0_77/src.zip!/javax/swing/text/AbstractDocument.java" />
     <entry file="jar://D:/Green/jdk1.8.0_77/src.zip!/javax/swing/text/PlainDocument.java" />
     <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rtextarea/RDocument.java">
@@ -1137,22 +1203,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditArea.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/TerminalHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="120" column="60" lean-forward="false" selection-start-line="120" selection-start-column="60" selection-end-line="120" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/yh/espide/SettingsFrame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
@@ -1177,30 +1227,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Context.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="27" column="70" lean-forward="false" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/jssc/SerialNativeInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="306" column="7" lean-forward="false" selection-start-line="306" selection-start-column="7" selection-end-line="306" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/out/production/espide/lang_zh_CN.properties">
-      <provider editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1231,17 +1261,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lang.properties">
-      <provider selected="true" editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/yh/espide/EditButton.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
@@ -1260,14 +1279,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Icon.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="51" column="47" lean-forward="false" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/yh/espide/Version.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
@@ -1276,18 +1287,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/EspIDE.java">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41097">
-          <caret line="2329" column="0" lean-forward="true" selection-start-line="2329" selection-start-column="0" selection-end-line="2329" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/.project">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="4" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/espide/lang_zh_CN.properties">
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Context.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="25" column="50" lean-forward="false" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditArea.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Icon.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="114" lean-forward="false" selection-start-line="14" selection-start-column="114" selection-end-line="14" selection-end-column="114" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lang.properties">
+      <provider selected="true" editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/TerminalHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="165" column="17" lean-forward="false" selection-start-line="165" selection-start-column="16" selection-end-line="165" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/EspIDE.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="2210" column="57" lean-forward="true" selection-start-line="2210" selection-start-column="57" selection-end-line="2210" selection-end-column="57" />
           <folding />
         </state>
       </provider>

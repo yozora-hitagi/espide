@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 public class Context {
 
     public static final Font FONT_12 =new Font("雅黑", 0, 12);
+    public static final Font FONT_10 =new Font("雅黑", 0, 10);
+    public static final Font FONT_8 =new Font("雅黑", 0, 8);
 
     public static final ResourceBundle BUNDLE=ResourceBundle.getBundle("lang");
 

@@ -11,9 +11,7 @@ public class Icon {
     public static ImageIcon LED_GREEN = new ImageIcon(Icon.class.getResource("/resources/led_green.png"));
     public static ImageIcon LED_RED = new ImageIcon(Icon.class.getResource("/resources/led_red.png"));
     public static ImageIcon LED_BLUE = new ImageIcon(Icon.class.getResource("/resources/led_blue.png"));
-
     public static ImageIcon TERMINAL_CLEAR = new ImageIcon(Icon.class.getResource("/resources/terminal_clear.png"));
-
     public static ImageIcon ESP8299_64X64 = new ImageIcon(Icon.class.getResource("/resources/ESP8266-64x64.png"));
     public static ImageIcon LUA = new ImageIcon(Icon.class.getResource("/resources/lua.png"));
     public static ImageIcon LC = new ImageIcon(Icon.class.getResource("/resources/lc.png"));

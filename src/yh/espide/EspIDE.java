@@ -611,7 +611,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         PortRTS.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         PortRTS.addActionListener(evt -> PortRTSActionPerformed(evt));
 
-        Open.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        Open.setFont(Context.FONT_10); // NOI18N
         Open.setIcon(Icon.CONNECT1); // NOI18N
         Open.setText("Open");
         Open.setToolTipText("Open/Close selected serial port");
@@ -622,7 +622,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         Open.setPreferredSize(new java.awt.Dimension(80, 25));
         Open.addActionListener(evt -> OpenActionPerformed(evt));
 
-        Speed.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        Speed.setFont(Context.FONT_12); // NOI18N
         Speed.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "460800", "921600"}));
         Speed.setToolTipText("Select baud rate");
         Speed.setMaximumSize(new java.awt.Dimension(80, 25));
@@ -635,15 +635,15 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         ReScan.setPreferredSize(new java.awt.Dimension(25, 25));
         ReScan.addActionListener(evt -> PortFinder());
 
-        AutoScroll.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+        AutoScroll.setFont(Context.FONT_8); // NOI18N
         AutoScroll.setSelected(true);
-        AutoScroll.setText("AutoScroll");
+        AutoScroll.setText(Context.BUNDLE.getString("AutoScroll"));
         AutoScroll.setToolTipText("terminalArea AutoScroll Enable/Disable");
         AutoScroll.setMinimumSize(new java.awt.Dimension(70, 25));
         AutoScroll.setPreferredSize(new java.awt.Dimension(60, 25));
         AutoScroll.addActionListener(evt -> AutoScrollActionPerformed(evt));
 
-        Port.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        Port.setFont(Context.FONT_10); // NOI18N
         Port.setMaximumRowCount(20);
         Port.setModel(new javax.swing.DefaultComboBoxModel(new String[]{}));
         Port.setToolTipText("Serial port chooser");
@@ -653,7 +653,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         Port.setEditable(true);
 
-        EOL.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+        EOL.setFont(Context.FONT_8); // NOI18N
         EOL.setText("EOL");
         EOL.setToolTipText("EOL visible Enable/Disable");
         EOL.setMinimumSize(new java.awt.Dimension(70, 25));
@@ -807,7 +807,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         NodeFileMgrPane.setLayout(flowLayout1);
 
         FileFormat.setIcon(Icon.FILE_MANAGER_DELETE); // NOI18N
-        FileFormat.setText("Format");
+        FileFormat.setText(Context.BUNDLE.getString("FS Format"));
         FileFormat.setToolTipText("Format (erase) NodeMCU file system. All files will be removed!");
         FileFormat.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         FileFormat.setMargin(new java.awt.Insets(2, 4, 2, 4));
@@ -818,7 +818,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         NodeFileMgrPane.add(FileFormat);
 
         FileSystemInfo.setIcon(Icon.FILE_MANAGER); // NOI18N
-        FileSystemInfo.setText("FS Info");
+        FileSystemInfo.setText(Context.BUNDLE.getString("FS Info"));
         FileSystemInfo.setToolTipText("Execute command file.fsinfo() and show total, used and remainig space on the ESP filesystem");
         FileSystemInfo.setAlignmentX(0.5F);
         FileSystemInfo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -828,9 +828,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FileSystemInfo.addActionListener(evt -> NodeFileSystemInfo());
         NodeFileMgrPane.add(FileSystemInfo);
 
-        FileListReload.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        FileListReload.setFont(Context.FONT_12); // NOI18N
         FileListReload.setIcon(Icon.REFRESH3); // NOI18N
-        FileListReload.setText("Reload");
+        FileListReload.setText(Context.BUNDLE.getString("FS Reload"));
         FileListReload.setAlignmentX(0.5F);
         FileListReload.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         FileListReload.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -900,6 +900,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FileManagersLayer.setLayer(firmware_type_label, JLayeredPane.DEFAULT_LAYER);
         FileManagersLayer.setLayer(NodeFileMgrPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
         FileManagersLayer.setLayer(PyFileMgrPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        NodeFileMgrPane.setVisible(false);
+        PyFileMgrPane.setVisible(false);
 
         javax.swing.GroupLayout FileManagersLayerLayout = new javax.swing.GroupLayout(FileManagersLayer);
         FileManagersLayer.setLayout(FileManagersLayerLayout);
@@ -2336,7 +2339,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FileAsButton.add(new javax.swing.JButton());
         int i = FileAsButton.size() - 1;
         FileAsButton.get(i).setText(FileName);
-        //FileAsButton.get(i).setFont(new java.awt.Font("Tahoma", 0, 12));
+        //FileAsButton.get(i).setFont(Context.FONT_12);
         FileAsButton.get(i).setAlignmentX(0.5F);
         FileAsButton.get(i).setMargin(new java.awt.Insets(2, 2, 2, 2));
         FileAsButton.get(i).setMaximumSize(new java.awt.Dimension(130, 25));
@@ -3334,20 +3337,19 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FirmwareType.current = ftype;
         firmware_type_label.setText(ftype.toString());
         chooser.resetChoosableFileFilters();
+
+        NodeFileMgrPane.setVisible(false);
+        PyFileMgrPane.setVisible(false);
         switch (ftype) {
             case MicroPython:
                 chooser.setFileFilter(FILTER_PYTHON);
-                NodeFileMgrPane.setVisible(false);
                 PyFileMgrPane.setVisible(true);
                 break;
             case NodeMCU:
                 chooser.setFileFilter(FILTER_LUA);
                 NodeFileMgrPane.setVisible(true);
-                PyFileMgrPane.setVisible(false);
                 break;
             case AT:
-                NodeFileMgrPane.setVisible(false);
-                PyFileMgrPane.setVisible(false);
                 break;
         }
 
