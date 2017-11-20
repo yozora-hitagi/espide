@@ -12,8 +12,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -295,13 +293,13 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         });
 
         MenuItemTerminalClear.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemTerminalClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal_clear.png"))); // NOI18N
+        MenuItemTerminalClear.setIcon(Icon.TERMINAL_CLEAR); // NOI18N
         MenuItemTerminalClear.setText("Clear");
         MenuItemTerminalClear.addActionListener(evt -> thandler.clean());
         ContextMenuTerminal.add(MenuItemTerminalClear);
 
         MenuItemTerminalCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemTerminalCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/copy.png"))); // NOI18N
+        MenuItemTerminalCopy.setIcon(Icon.COPY); // NOI18N
         MenuItemTerminalCopy.setText("Copy");
         MenuItemTerminalCopy.setToolTipText("Copy selected text to system clipboard");
         MenuItemTerminalCopy.setEnabled(false);
@@ -309,12 +307,12 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         ContextMenuTerminal.add(MenuItemTerminalCopy);
 
 
-        MenuItemESPFileDo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/play.png"))); // NOI18N
+        MenuItemESPFileDo.setIcon(Icon.PLAY); // NOI18N
         MenuItemESPFileDo.setText("Do file");
         ContextMenuESPFileLUA.add(MenuItemESPFileDo);
         ContextMenuESPFileLUA.add(TerminalSeparator3);
 
-        MenuItemESPFileDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/file_remove.png"))); // NOI18N
+        MenuItemESPFileDelete.setIcon(Icon.FILE_REMOVE); // NOI18N
         MenuItemESPFileDelete.setText("Delete file");
         ContextMenuESPFileLUA.add(MenuItemESPFileDelete);
 
@@ -381,67 +379,67 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FilesToolBar.setPreferredSize(new java.awt.Dimension(321, 40));
 
 
-        ButtonFileNew = new EditButton("New", "/resources/document.png", "New file");
+        ButtonFileNew = new EditButton(Context.BUNDLE.getString("New"), Icon.DOCUMENT, "New file");
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileNew, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileNew, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
         ButtonFileNew.addActionListener(evt -> MenuItemFileNew.doClick());
         FilesToolBar.add(ButtonFileNew);
 
-        ButtonFileOpen = new EditButton("Open", "/resources/folder open.png", "Open file from disk");
+        ButtonFileOpen = new EditButton(Context.BUNDLE.getString("Open"), Icon.FOLDER_OPEN, "Open file from disk");
         ButtonFileOpen.addActionListener(evt -> MenuItemFileOpen.doClick());
         FilesToolBar.add(ButtonFileOpen);
 
-        ButtonFileReload = new EditButton("Reload", "/resources/refresh.png", "Reload file from disk (for use with external editor)");
+        ButtonFileReload = new EditButton(Context.BUNDLE.getString("Reload"), Icon.REFRESH, "Reload file from disk (for use with external editor)");
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileReload, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileReload, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
         ButtonFileReload.addActionListener(evt -> MenuItemFileReload.doClick());
         FilesToolBar.add(ButtonFileReload);
 
-        ButtonFileSave = new EditButton("Save", "/resources/save.png", "Save file to disk");
+        ButtonFileSave = new EditButton(Context.BUNDLE.getString("Save"), Icon.SAVE, "Save file to disk");
         ButtonFileSave.addActionListener(evt -> MenuItemFileSave.doClick());
         FilesToolBar.add(ButtonFileSave);
 
-        ButtonFileClose = new EditButton("Close", "/resources/folder closed.png", "Close file");
+        ButtonFileClose = new EditButton(Context.BUNDLE.getString("Close"), Icon.FOLDER_CLOSED, "Close file");
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, MenuItemFileClose, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), ButtonFileClose, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
         ButtonFileClose.addActionListener(evt -> MenuItemFileClose.doClick());
         FilesToolBar.add(ButtonFileClose);
         FilesToolBar.add(new JSeparator());
 
-        ButtonUndo = new EditButton("Undo", "/resources/undo1.png", "Undo last action");
+        ButtonUndo = new EditButton(Context.BUNDLE.getString("Undo"),Icon.UNDO1, "Undo last action");
         ButtonUndo.setEnabled(false);
         ButtonUndo.setFocusable(false);
         ButtonUndo.addActionListener(evt -> MenuItemEditUndo.doClick());
         FilesToolBar.add(ButtonUndo);
 
-        ButtonRedo = new EditButton("Redo", "/resources/redo1.png", "Redo last action");
+        ButtonRedo = new EditButton(Context.BUNDLE.getString("Redo"), Icon.REDO1, "Redo last action");
         ButtonRedo.setEnabled(false);
         ButtonRedo.setFocusable(false);
         ButtonRedo.addActionListener(evt -> MenuItemEditRedo.doClick());
         FilesToolBar.add(ButtonRedo);
         FilesToolBar.add(new JSeparator());
 
-        ButtonCut = new EditButton("Cut", "/resources/cut.png", "Cut");
+        ButtonCut = new EditButton(Context.BUNDLE.getString("Cut"),Icon.CUT, "Cut");
         ButtonCut.setEnabled(false);
         ButtonCut.addActionListener(evt -> MenuItemEditCut.doClick());
         FilesToolBar.add(ButtonCut);
 
-        ButtonCopy = new EditButton("Copy", "/resources/copy.png", "Copy");
+        ButtonCopy = new EditButton(Context.BUNDLE.getString("Copy"), Icon.COPY, "Copy");
         ButtonCopy.setEnabled(false);
         ButtonCopy.addActionListener(evt -> MenuItemEditCopy.doClick());
         FilesToolBar.add(ButtonCopy);
 
-        ButtonPaste = new EditButton("Paste", "/resources/paste.png", "Paste");
+        ButtonPaste = new EditButton(Context.BUNDLE.getString("Paste"), Icon.PASTE, "Paste");
         ButtonPaste.setEnabled(false);
         ButtonPaste.addActionListener(evt -> MenuItemEditPaste.doClick());
         FilesToolBar.add(ButtonPaste);
         FilesToolBar.add(new JSeparator());
 
-        ButtonSendSelected = new EditButton("Block", "/resources/send_selected.png", "Send selected block to ESP");
+        ButtonSendSelected = new EditButton("Block", Icon.SEND_SELECTED, "Send selected block to ESP");
         ButtonSendSelected.addActionListener(evt -> MenuItemEditSendSelected.doClick());
         FilesToolBar.add(ButtonSendSelected);
 
-        ButtonSendLine = new EditButton("Line", "/resources/run_line.png", "Send current line to ESP");
+        ButtonSendLine = new EditButton("Line", Icon.RUN_LINE, "Send current line to ESP");
         ButtonSendLine.setFocusable(false);
         ButtonSendLine.addActionListener(evt -> MenuItemEditSendLine.doClick());
         FilesToolBar.add(ButtonSendLine);
@@ -453,7 +451,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         Busy.setBackground(new java.awt.Color(0, 153, 0));
         Busy.setForeground(new java.awt.Color(255, 255, 255));
         Busy.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Busy.setIcon(LED.GREY); // NOI18N
+        Busy.setIcon(Icon.LED_GREY); // NOI18N
         Busy.setText("IDLE");
         Busy.setOpaque(true);
 
@@ -463,7 +461,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         LeftMainButtons.setOpaque(true);
         LeftMainButtons.setLayout(new java.awt.FlowLayout());
 
-        FileSaveESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/move.png"))); // NOI18N
+        FileSaveESP.setIcon(Icon.MOVE); // NOI18N
         FileSaveESP.setText("<html><u>S</u>ave to ESP");
         FileSaveESP.setToolTipText("Send file to ESP and save into flash memory");
         FileSaveESP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -475,7 +473,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FileSaveESP.addActionListener(evt -> FileSaveESPActionPerformed(evt));
         LeftMainButtons.add(FileSaveESP);
 
-        FileSendESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/play.png"))); // NOI18N
+        FileSendESP.setIcon(Icon.PLAY); // NOI18N
         FileSendESP.setText("<html>S<u>e</u>nd to ESP");
         FileSendESP.setToolTipText("Send file to ESP and run  \"line by line\"");
         FileSendESP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -488,7 +486,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         LeftMainButtons.add(FileSendESP);
 
 
-        FilesUpload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/uploadLUA.png"))); // NOI18N
+        FilesUpload.setIcon(Icon.UPLOADLUA); // NOI18N
         FilesUpload.setText("Upload ...");
         FilesUpload.setToolTipText("Upload file from disk to ESP flash memory");
         FilesUpload.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -582,7 +580,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         LEDPanel.setOpaque(true);
 
         PortOpenLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        PortOpenLabel.setIcon(LED.GREY); // NOI18N
+        PortOpenLabel.setIcon(Icon.LED_GREY); // NOI18N
         PortOpenLabel.setText("Open");
         PortOpenLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PortOpenLabel.setMaximumSize(new java.awt.Dimension(50, 25));
@@ -591,7 +589,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         PortOpenLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         PortCTS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        PortCTS.setIcon(LED.GREY); // NOI18N
+        PortCTS.setIcon(Icon.LED_GREY); // NOI18N
         PortCTS.setText("CTS");
         PortCTS.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PortCTS.setMaximumSize(new java.awt.Dimension(50, 25));
@@ -599,14 +597,14 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         PortCTS.setPreferredSize(new java.awt.Dimension(50, 25));
         PortCTS.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        PortDTR.setIcon(LED.GREY); // NOI18N
+        PortDTR.setIcon(Icon.LED_GREY); // NOI18N
         PortDTR.setText("DTR");
         PortDTR.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PortDTR.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         PortDTR.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         PortDTR.addActionListener(evt -> PortDTRActionPerformed(evt));
 
-        PortRTS.setIcon(LED.GREY); // NOI18N
+        PortRTS.setIcon(Icon.LED_GREY); // NOI18N
         PortRTS.setText("RTS");
         PortRTS.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PortRTS.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -614,7 +612,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         PortRTS.addActionListener(evt -> PortRTSActionPerformed(evt));
 
         Open.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        Open.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/connect1.png"))); // NOI18N
+        Open.setIcon(Icon.CONNECT1); // NOI18N
         Open.setText("Open");
         Open.setToolTipText("Open/Close selected serial port");
         Open.setIconTextGap(2);
@@ -631,7 +629,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         Speed.setMinimumSize(new java.awt.Dimension(80, 25));
         Speed.setPreferredSize(new java.awt.Dimension(80, 25));
 
-        ReScan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh3.png"))); // NOI18N
+        ReScan.setIcon(Icon.REFRESH3); // NOI18N
         ReScan.setMaximumSize(new java.awt.Dimension(25, 25));
         ReScan.setMinimumSize(new java.awt.Dimension(25, 25));
         ReScan.setPreferredSize(new java.awt.Dimension(25, 25));
@@ -808,7 +806,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         flowLayout1.setAlignOnBaseline(true);
         NodeFileMgrPane.setLayout(flowLayout1);
 
-        FileFormat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/file manager (delete).png"))); // NOI18N
+        FileFormat.setIcon(Icon.FILE_MANAGER_DELETE); // NOI18N
         FileFormat.setText("Format");
         FileFormat.setToolTipText("Format (erase) NodeMCU file system. All files will be removed!");
         FileFormat.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -819,7 +817,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         FileFormat.addActionListener(evt -> MenuItemESPFormatActionPerformed(evt));
         NodeFileMgrPane.add(FileFormat);
 
-        FileSystemInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/file manager.png"))); // NOI18N
+        FileSystemInfo.setIcon(Icon.FILE_MANAGER); // NOI18N
         FileSystemInfo.setText("FS Info");
         FileSystemInfo.setToolTipText("Execute command file.fsinfo() and show total, used and remainig space on the ESP filesystem");
         FileSystemInfo.setAlignmentX(0.5F);
@@ -831,7 +829,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         NodeFileMgrPane.add(FileSystemInfo);
 
         FileListReload.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        FileListReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh3.png"))); // NOI18N
+        FileListReload.setIcon(Icon.REFRESH3); // NOI18N
         FileListReload.setText("Reload");
         FileListReload.setAlignmentX(0.5F);
         FileListReload.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -887,7 +885,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         PyFileMgrPane.setPreferredSize(new java.awt.Dimension(155, 155));
         PyFileMgrPane.setLayout(new java.awt.FlowLayout());
 
-        PyListDir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh3.png"))); // NOI18N
+        PyListDir.setIcon(Icon.REFRESH3); // NOI18N
         PyListDir.setText("ListDir /");
         PyListDir.setToolTipText("Execute command listdir() and show files");
         PyListDir.setAlignmentX(0.5F);
@@ -966,30 +964,30 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         JMenuBar menu = new JMenuBar();
 
-        JMenu MenuFile = Context.createM1("File");
+        JMenu MenuFile = Context.createM1(Context.BUNDLE.getString("File"));
 
-        JMenuItem settings = new JMenuItem("Setting");
-        settings.setIcon(new ImageIcon(getClass().getResource("/resources/settings2.png")));
+        JMenuItem settings = new JMenuItem(Context.BUNDLE.getString("Setting"));
+        settings.setIcon(Icon.SETTINGS2);
         settings.addActionListener(evt -> {
             new SettingsFrame(this).setVisible(true);
         });
         MenuFile.add(settings);
 
         MenuItemFileNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemFileNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/document.png"))); // NOI18N
+        MenuItemFileNew.setIcon(Icon.DOCUMENT); // NOI18N
         MenuItemFileNew.setText("<html><u>N</u>ew");
         MenuItemFileNew.setToolTipText("File New");
         MenuItemFileNew.addActionListener(evt -> FileNew(""));
         MenuFile.add(MenuItemFileNew);
 
         MenuItemFileOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemFileOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/folder open.png"))); // NOI18N
+        MenuItemFileOpen.setIcon(Icon.FOLDER_OPEN); // NOI18N
         MenuItemFileOpen.setText("<html><u>O</u>pen from disk");
         MenuItemFileOpen.addActionListener(evt -> OpenFile());
         MenuFile.add(MenuItemFileOpen);
 
         MenuItemFileReload.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemFileReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh.png"))); // NOI18N
+        MenuItemFileReload.setIcon(Icon.REFRESH); // NOI18N
         MenuItemFileReload.setText("<html><u>R</u>eload from disk");
         MenuItemFileReload.setToolTipText("Reload file from disk, if you use external editor");
         MenuItemFileReload.setEnabled(false);
@@ -997,21 +995,21 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         MenuFile.add(MenuItemFileReload);
 
         MenuItemFileSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemFileSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/save.png"))); // NOI18N
+        MenuItemFileSave.setIcon(Icon.SAVE); // NOI18N
         MenuItemFileSave.setText("<html><u>S</u>ave to disk");
         MenuItemFileSave.addActionListener(evt -> SaveFile());
         MenuFile.add(MenuItemFileSave);
 
 
         MenuItemFileClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemFileClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/folder closed.png"))); // NOI18N
-        MenuItemFileClose.setText("Close");
+        MenuItemFileClose.setIcon(Icon.FOLDER_CLOSED); // NOI18N
+        MenuItemFileClose.setText(Context.BUNDLE.getString("Close"));
         MenuItemFileClose.addActionListener(evt -> MenuItemFileCloseActionPerformed(evt));
         MenuFile.add(MenuItemFileClose);
         MenuFile.add(new JPopupMenu.Separator());
 
         MenuItemFileSaveESP.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemFileSaveESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/move.png"))); // NOI18N
+        MenuItemFileSaveESP.setIcon(Icon.MOVE); // NOI18N
         MenuItemFileSaveESP.setText("<html><u>S</u>ave to ESP");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, FileSaveESP, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), MenuItemFileSaveESP, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -1021,7 +1019,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         MenuFile.add(MenuItemFileSaveESP);
 
         MenuItemFileSendESP.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemFileSendESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/script_send.png"))); // NOI18N
+        MenuItemFileSendESP.setIcon(Icon.SCRIPT_SEND); // NOI18N
         MenuItemFileSendESP.setText("<html>S<u>e</u>nd to ESP");
         MenuItemFileSendESP.addActionListener(evt -> FileSendESP.doClick());
         MenuFile.add(MenuItemFileSendESP);
@@ -1031,53 +1029,53 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         JMenuItem MenuItemFileExit = new JMenuItem();
         MenuItemFileExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemFileExit.setText("Exit");
+        MenuItemFileExit.setText(Context.BUNDLE.getString("Exit"));
         MenuItemFileExit.addActionListener(evt -> AppClose());
         MenuFile.add(MenuItemFileExit);
 
         menu.add(MenuFile);
 
-        JMenu MenuEdit = Context.createM1("Edit");
+        JMenu MenuEdit = Context.createM1(Context.BUNDLE.getString("Edit"));
 
         MenuItemEditUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemEditUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/undo1.png"))); // NOI18N
-        MenuItemEditUndo.setText("Undo");
+        MenuItemEditUndo.setIcon(Icon.UNDO1); // NOI18N
+        MenuItemEditUndo.setText(Context.BUNDLE.getString("Undo"));
         MenuItemEditUndo.setEnabled(false);
         MenuItemEditUndo.addActionListener(evt -> MenuItemEditUndoActionPerformed(evt));
         MenuEdit.add(MenuItemEditUndo);
 
         MenuItemEditRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
-        MenuItemEditRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/redo1.png"))); // NOI18N
-        MenuItemEditRedo.setText("Redo");
+        MenuItemEditRedo.setIcon(Icon.REDO1); // NOI18N
+        MenuItemEditRedo.setText(Context.BUNDLE.getString("Redo"));
         MenuItemEditRedo.setEnabled(false);
         MenuItemEditRedo.addActionListener(evt -> MenuItemEditRedoActionPerformed(evt));
         MenuEdit.add(MenuItemEditRedo);
         MenuEdit.add(new JPopupMenu.Separator());
 
         MenuItemEditCut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemEditCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cut.png"))); // NOI18N
-        MenuItemEditCut.setText("Cut");
+        MenuItemEditCut.setIcon(Icon.CUT); // NOI18N
+        MenuItemEditCut.setText(Context.BUNDLE.getString("Cut"));
         MenuItemEditCut.setEnabled(false);
         MenuItemEditCut.addActionListener(evt -> MenuItemEditCutActionPerformed(evt));
         MenuEdit.add(MenuItemEditCut);
 
         MenuItemEditCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemEditCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/copy.png"))); // NOI18N
-        MenuItemEditCopy.setText("Copy");
+        MenuItemEditCopy.setIcon(Icon.COPY); // NOI18N
+        MenuItemEditCopy.setText(Context.BUNDLE.getString("Copy"));
         MenuItemEditCopy.setEnabled(false);
         MenuItemEditCopy.addActionListener(evt -> MenuItemEditCopyActionPerformed(evt));
         MenuEdit.add(MenuItemEditCopy);
 
         MenuItemEditPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemEditPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/paste.png"))); // NOI18N
-        MenuItemEditPaste.setText("Paste");
+        MenuItemEditPaste.setIcon(Icon.PASTE); // NOI18N
+        MenuItemEditPaste.setText(Context.BUNDLE.getString("Paste"));
         MenuItemEditPaste.setEnabled(false);
         MenuItemEditPaste.addActionListener(evt -> MenuItemEditPasteActionPerformed(evt));
         MenuEdit.add(MenuItemEditPaste);
         MenuEdit.add(new JPopupMenu.Separator());
 
         MenuItemEditSendSelected.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemEditSendSelected.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/send_selected.png"))); // NOI18N
+        MenuItemEditSendSelected.setIcon(Icon.SEND_SELECTED); // NOI18N
         MenuItemEditSendSelected.setText("<html>Send selected <u>B</u>lock to ESP");
         MenuItemEditSendSelected.setToolTipText("Send selected block to ESP");
 
@@ -1086,7 +1084,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         MenuEdit.add(MenuItemEditSendSelected);
 
         MenuItemEditSendLine.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
-        MenuItemEditSendLine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/run_line.png"))); // NOI18N
+        MenuItemEditSendLine.setIcon(Icon.RUN_LINE); // NOI18N
         MenuItemEditSendLine.setText("<html>Send current <u>L</u>ine to ESP");
         MenuItemEditSendLine.setToolTipText("Send current line from code editor window to ESP");
         MenuItemEditSendLine.addActionListener(evt -> MenuItemEditSendLineActionPerformed(evt));
@@ -1095,16 +1093,16 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         menu.add(MenuEdit);
 
 
-        JMenu MenuView = Context.createM1("View");
+        JMenu MenuView = Context.createM1(Context.BUNDLE.getString("View"));
 
         AlwaysOnTop.setText("Always On Top");
-        AlwaysOnTop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/AlwaysOnTop.png"))); // NOI18N
+        AlwaysOnTop.setIcon(Icon.ALWAYSONTOP); // NOI18N
         AlwaysOnTop.addItemListener(evt -> AlwaysOnTopItemStateChanged(evt));
         MenuView.add(AlwaysOnTop);
 
 
         MenuItemViewClearTerminal.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItemViewClearTerminal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal_clear.png"))); // NOI18N
+        MenuItemViewClearTerminal.setIcon(Icon.TERMINAL_CLEAR); // NOI18N
         MenuItemViewClearTerminal.setText("Clear terminal");
         MenuItemViewClearTerminal.setToolTipText("Clear terminal window");
         MenuItemViewClearTerminal.addActionListener(evt -> MenuItemTerminalClear.doClick());
@@ -1910,9 +1908,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     private void UpdateLedCTS() {
         try {
             if (serialPort.isCTS()) {
-                PortCTS.setIcon(LED.GREEN);
+                PortCTS.setIcon(Icon.LED_GREEN);
             } else {
-                PortCTS.setIcon(LED.GREY);
+                PortCTS.setIcon(Icon.LED_GREY);
             }
         } catch (Exception e) {
             LOGGER.info(e.toString());
@@ -2291,7 +2289,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
     private void FinalInit() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/ESP8266-64x64.png")));
+        setIconImage(Icon.ESP8299_64X64.getImage());
         setLocationRelativeTo(null); // window centered
 
 
@@ -2352,7 +2350,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         // PopUp menu items
         if (FileName.endsWith(".lua")) {
-            FileAsButton.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/lua.png")));
+            FileAsButton.get(i).setIcon(Icon.LUA);
             FileAsButton.get(i).setToolTipText(FileAsButton.get(i).getActionCommand() + ", LeftClick - Run, RightClick - Other actions");
             AddMenuItemRun(x, FileName);
             AddMenuItemCompile(x, FileName);
@@ -2365,7 +2363,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             AddMenuItemSeparator(x);
             AddMenuItemRemove(x, FileName);
         } else if (FileName.endsWith(".lc")) {
-            FileAsButton.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/lc.png")));
+            FileAsButton.get(i).setIcon(Icon.LC);
             FileAsButton.get(i).setToolTipText(FileAsButton.get(i).getActionCommand() + ", LeftClick - Run, RightClick - Other actions");
             AddMenuItemRun(x, FileName);
             AddMenuItemSeparator(x);
@@ -2375,7 +2373,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             AddMenuItemSeparator(x);
             AddMenuItemRemove(x, FileName);
         } else {
-            FileAsButton.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/file.png")));
+            FileAsButton.get(i).setIcon(Icon.FILE);
             FileAsButton.get(i).setToolTipText(FileAsButton.get(i).getActionCommand() + ", LeftClick - View, RightClick - Other actions");
             AddMenuItemView(x, FileName);
             AddMenuItemDump(x, FileName);
@@ -2399,7 +2397,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         FilePopupMenuItem.add(new javax.swing.JMenuItem());
         y = FilePopupMenuItem.size() - 1;
-        FilePopupMenuItem.get(y).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/edit.png")));
+        FilePopupMenuItem.get(y).setIcon(Icon.EDIT);
         FilePopupMenuItem.get(y).setText("Edit " + FileName);
         FilePopupMenuItem.get(y).setToolTipText("Download file from ESP and open in new editor window");
         FilePopupMenuItem.get(y).setActionCommand(FileName + "Size:" + Integer.toString(size));
@@ -2414,7 +2412,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         FilePopupMenuItem.add(new javax.swing.JMenuItem());
         y = FilePopupMenuItem.size() - 1;
-        FilePopupMenuItem.get(y).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/download.png")));
+        FilePopupMenuItem.get(y).setIcon(Icon.DOWNLOAD);
         FilePopupMenuItem.get(y).setText("Download " + FileName);
         FilePopupMenuItem.get(y).setToolTipText("Download file from ESP and save to disk");
         FilePopupMenuItem.get(y).setActionCommand(FileName + "Size:" + Integer.toString(size));
@@ -2429,7 +2427,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         FilePopupMenuItem.add(new javax.swing.JMenuItem());
         y = FilePopupMenuItem.size() - 1;
-        FilePopupMenuItem.get(y).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/play.png")));
+        FilePopupMenuItem.get(y).setIcon(Icon.PLAY);
         FilePopupMenuItem.get(y).setText("Run " + FileName);
         FilePopupMenuItem.get(y).setToolTipText("Execute command dofile(\"" + FileName + "\") for run this file");
         FilePopupMenuItem.get(y).setActionCommand(FileName);
@@ -2441,7 +2439,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         FilePopupMenuItem.add(new javax.swing.JMenuItem());
         y = FilePopupMenuItem.size() - 1;
-        FilePopupMenuItem.get(y).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/wizard.png")));
+        FilePopupMenuItem.get(y).setIcon(Icon.WIZARD);
         FilePopupMenuItem.get(y).setText("Compile " + FileName + " to .lc");
         FilePopupMenuItem.get(y).setToolTipText("Execute command node.compile(\"" + FileName + "\")");
         FilePopupMenuItem.get(y).setActionCommand(FileName);
@@ -2460,7 +2458,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         FilePopupMenuItem.add(new javax.swing.JMenuItem());
         y = FilePopupMenuItem.size() - 1;
-        FilePopupMenuItem.get(y).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/rename.png")));
+        FilePopupMenuItem.get(y).setIcon(Icon.RENAME);
         FilePopupMenuItem.get(y).setText("Rename " + FileName);
         FilePopupMenuItem.get(y).setToolTipText("Execute command file.rename(\"" + FileName + "\",\"NewName\")");
         FilePopupMenuItem.get(y).setActionCommand(FileName);
@@ -2478,7 +2476,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         FilePopupMenuItem.add(new javax.swing.JMenuItem());
         y = FilePopupMenuItem.size() - 1;
-        FilePopupMenuItem.get(y).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/trash.png")));
+        FilePopupMenuItem.get(y).setIcon(Icon.TRASH);
         FilePopupMenuItem.get(y).setText("Remove " + FileName);
         FilePopupMenuItem.get(y).setToolTipText("Execute command file.remove(\"" + FileName + "\") and delete file from NodeMCU filesystem");
         FilePopupMenuItem.get(y).setActionCommand(FileName);
@@ -2490,7 +2488,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         FilePopupMenuItem.add(new javax.swing.JMenuItem());
         y = FilePopupMenuItem.size() - 1;
-        FilePopupMenuItem.get(y).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/view.png")));
+        FilePopupMenuItem.get(y).setIcon(Icon.VIEW);
         FilePopupMenuItem.get(y).setText("View " + FileName);
         FilePopupMenuItem.get(y).setToolTipText("View content of file " + FileName + " on terminalArea");
         FilePopupMenuItem.get(y).setActionCommand(FileName);
@@ -2502,7 +2500,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         int y;
         FilePopupMenuItem.add(new javax.swing.JMenuItem());
         y = FilePopupMenuItem.size() - 1;
-        FilePopupMenuItem.get(y).setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/dump.png")));
+        FilePopupMenuItem.get(y).setIcon(Icon.DUMP);
         FilePopupMenuItem.get(y).setText("HexDump " + FileName);
         FilePopupMenuItem.get(y).setToolTipText("View HexDump " + FileName + "in terminalArea");
         FilePopupMenuItem.get(y).setActionCommand(FileName);
@@ -2928,10 +2926,10 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             return;
         }
         if (busyIcon) {
-            Busy.setIcon(LED.BLUE);
+            Busy.setIcon(Icon.LED_BLUE);
 
         } else {
-            Busy.setIcon(LED.RED);
+            Busy.setIcon(Icon.LED_RED);
 
         }
         busyIcon = !busyIcon;
@@ -2948,7 +2946,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             }
         }
         if (simple) {
-            Busy.setIcon(LED.GREY);
+            Busy.setIcon(Icon.LED_GREY);
 
         }
     }
@@ -2977,7 +2975,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     public void Busy() {
         Busy.setText("BUSY");
-        Busy.setBackground(new java.awt.Color(153, 0, 0)); // RED
+        Busy.setBackground(new java.awt.Color(153, 0, 0)); // LED_RED
 
 
         ProgressBar.setValue(0);
@@ -2997,14 +2995,14 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     public void SendLock() {
         Busy();
         FileSaveESP.setText("Cancel");
-        FileSaveESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/abort.png")));
+        FileSaveESP.setIcon(Icon.ABORT);
         FileSaveESP.setSelected(true);
     }
 
     public void Idle() {
         Busy.setText("IDLE");
-        Busy.setBackground(new java.awt.Color(0, 153, 0)); // GREEN
-        Busy.setIcon(LED.GREY);
+        Busy.setBackground(new java.awt.Color(0, 153, 0)); // LED_GREEN
+        Busy.setIcon(Icon.LED_GREY);
 
 
         ProgressBar.setVisible(false);
@@ -3015,29 +3013,29 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     public void UpdateLED() {
         if (!Open.isSelected()) {
-            PortDTR.setIcon(LED.GREY);
-            PortRTS.setIcon(LED.GREY);
-            PortCTS.setIcon(LED.GREY);
+            PortDTR.setIcon(Icon.LED_GREY);
+            PortRTS.setIcon(Icon.LED_GREY);
+            PortCTS.setIcon(Icon.LED_GREY);
             Open.setText("Open");
-            Open.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/connect1.png")));
-            PortOpenLabel.setIcon(LED.GREY);
+            Open.setIcon(Icon.CONNECT1);
+            PortOpenLabel.setIcon(Icon.LED_GREY);
         } else {
             Open.setText("Close");
-            Open.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/disconnect1.png")));
-            PortOpenLabel.setIcon(LED.GREEN);
+            Open.setIcon(Icon.DISCONNECT1);
+            PortOpenLabel.setIcon(Icon.LED_GREEN);
             UpdateLedCTS();
             if (PortDTR.isSelected()) {
-                PortDTR.setIcon(LED.GREEN);
+                PortDTR.setIcon(Icon.LED_GREEN);
             } else {
-                PortDTR.setIcon(LED.GREY);
+                PortDTR.setIcon(Icon.LED_GREY);
             }
             if (PortRTS.isSelected()) {
-                PortRTS.setIcon(LED.GREEN);
+                PortRTS.setIcon(Icon.LED_GREEN);
             } else {
-                PortRTS.setIcon(LED.GREY);
+                PortRTS.setIcon(Icon.LED_GREY);
             }
             if (portJustOpen) {
-                PortOpenLabel.setIcon(LED.RED);
+                PortOpenLabel.setIcon(Icon.LED_RED);
             }
         }
     }
@@ -3045,7 +3043,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     public void SendUnLock() {
         Idle();
         FileSaveESP.setText("Save to ESP");
-        FileSaveESP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/move.png")));
+        FileSaveESP.setIcon(Icon.MOVE);
         FileSaveESP.setSelected(false);
         FileSendESP.setSelected(false);
     }
@@ -3295,10 +3293,10 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             return;
         }
         if (busyIcon) {
-            Busy.setIcon(LED.BLUE);
+            Busy.setIcon(Icon.LED_BLUE);
 
         } else {
-            Busy.setIcon(LED.RED);
+            Busy.setIcon(Icon.LED_RED);
 
         }
         busyIcon = !busyIcon;

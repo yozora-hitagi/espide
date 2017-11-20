@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by yozora on 2017/6/12.
@@ -23,6 +24,8 @@ import java.util.List;
 public class Context {
 
     public static final Font FONT_12 =new Font("雅黑", 0, 12);
+
+    public static final ResourceBundle BUNDLE=ResourceBundle.getBundle("lang");
 
     public static RSyntaxTextArea create1(FirmwareType type) {
         RSyntaxTextArea textArea = new RSyntaxTextArea();
@@ -89,7 +92,7 @@ public class Context {
 
     public static JMenu createM1(String text) {
         JMenu item = new JMenu(text);
-        item.setFont(new Font("����", Font.PLAIN, 12));
+        item.setFont(new Font("????", Font.PLAIN, 12));
         return item;
     }
 
