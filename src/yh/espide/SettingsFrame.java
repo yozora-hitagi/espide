@@ -68,13 +68,10 @@ public class SettingsFrame extends JDialog {
 
     private JLayeredPane OptionsOther() {
 
-
-
-
-        EditorThemeLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        EditorThemeLabel.setFont(Context.FONT_10); // NOI18N
         EditorThemeLabel.setText("Editor color theme");
 
-        EditorTheme.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        EditorTheme.setFont(Context.FONT_10); // NOI18N
         EditorTheme.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Default", "Dark", "Eclipse", "IDEA", "Visual Studio", "Default-alt"}));
         EditorTheme.setSelectedIndex(Config.ins.getColor_theme());
         EditorTheme.addActionListener(evt -> EditorThemeActionPerformed(evt));
@@ -82,7 +79,7 @@ public class SettingsFrame extends JDialog {
 
         JLayeredPane OptionsOther = new JLayeredPane();
 
-        OptionsOther.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Other", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10))); // NOI18N
+        OptionsOther.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Other", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, Context.FONT_10)); // NOI18N
 
 
         OptionsOther.setLayer(EditorThemeLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -126,13 +123,13 @@ public class SettingsFrame extends JDialog {
 
     private JLayeredPane OptionsFileSendMode() {
 
-        DelayLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        DelayLabel.setFont(Context.FONT_10); // NOI18N
         DelayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         DelayLabel.setText("Delay after answer = 0 ms");
         DelayLabel.setToolTipText("It's not \"line delay\", as you known. It's delay between answer from ESP and send new data");
 
 
-        Delay.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        Delay.setFont(Context.FONT_10); // NOI18N
         Delay.setMajorTickSpacing(500);
         Delay.setMaximum(1000);
         Delay.setMinorTickSpacing(100);
@@ -144,12 +141,12 @@ public class SettingsFrame extends JDialog {
         Delay.setAlignmentY(1.0F);
         Delay.addChangeListener(evt -> DelayStateChanged(evt));
 
-        AnswerDelayLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        AnswerDelayLabel.setFont(Context.FONT_10); // NOI18N
         AnswerDelayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         AnswerDelayLabel.setText("Answer timeout = 3 s");
         AnswerDelayLabel.setToolTipText("How many time we waiting answer from ESP8266");
 
-        AnswerDelay.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        AnswerDelay.setFont(Context.FONT_10); // NOI18N
         AnswerDelay.setMajorTickSpacing(5);
         AnswerDelay.setMaximum(10);
         AnswerDelay.setMinorTickSpacing(1);
@@ -160,17 +157,17 @@ public class SettingsFrame extends JDialog {
         AnswerDelay.setValue(3);
         AnswerDelay.addChangeListener(evt -> AnswerDelayStateChanged(evt));
 
-        DumbMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        DumbMode.setFont(Context.FONT_10); // NOI18N
         DumbMode.setText("\"Dumb Mode\", never check answers");
         DumbMode.addItemListener(evt -> DumbModeItemStateChanged(evt));
 
-        LineDelayLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        LineDelayLabel.setFont(Context.FONT_10); // NOI18N
         LineDelayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LineDelayLabel.setText("Line delay for \"Dumb Mode\" = 200 ms");
         LineDelayLabel.setToolTipText("It's usual \"line delay\", as you known.");
 
 
-        LineDelay.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        LineDelay.setFont(Context.FONT_10); // NOI18N
         LineDelay.setMajorTickSpacing(500);
         LineDelay.setMaximum(1000);
         LineDelay.setMinorTickSpacing(100);
@@ -184,7 +181,7 @@ public class SettingsFrame extends JDialog {
 
         LineDelay.addChangeListener(evt -> LineDelayStateChanged(evt));
 
-        TurboMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        TurboMode.setFont(Context.FONT_10); // NOI18N
         TurboMode.setText("\"Turbo Mode\"");
         TurboMode.addActionListener(evt -> TurboModeActionPerformed(evt));
 
@@ -193,8 +190,8 @@ public class SettingsFrame extends JDialog {
 
         OptionsFileSendMode.setLayout(new GridLayout(8,1));
 
-        OptionsFileSendMode.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Send", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10))); // NOI18N
-        OptionsFileSendMode.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        OptionsFileSendMode.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Send", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, Context.FONT_10)); // NOI18N
+        OptionsFileSendMode.setFont(Context.FONT_10); // NOI18N
         OptionsFileSendMode.add(TurboMode);
         OptionsFileSendMode.add(DelayLabel);
         OptionsFileSendMode.add(Delay);
@@ -212,7 +209,7 @@ public class SettingsFrame extends JDialog {
     private void EditorThemeActionPerformed(java.awt.event.ActionEvent evt) {
         int n = EditorTheme.getSelectedIndex();
         Config.ins.setColor_theme(n);
-        Startup.ide.updateTheme(true); // for all
+        Startup.ide.updateTheme(); // for all
     }
 
     private void DelayStateChanged(javax.swing.event.ChangeEvent evt) {

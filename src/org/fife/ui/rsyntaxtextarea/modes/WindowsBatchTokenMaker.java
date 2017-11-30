@@ -148,7 +148,7 @@ public class WindowsBatchTokenMaker extends AbstractTokenMaker {
 		tokenMap.put("doskey",		reservedWord);
 		tokenMap.put("dosshell",		reservedWord);
 		tokenMap.put("drivparm",		reservedWord);
-		tokenMap.put("echo",			reservedWord);
+		tokenMap.put("comment",			reservedWord);
 		tokenMap.put("edit",			reservedWord);
 		tokenMap.put("edlin",		reservedWord);
 		tokenMap.put("emm386",		reservedWord);

@@ -6,40 +6,50 @@
     <option name="CUSTOM_SCOPE_NAME" value="Current File" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="755c87fb-789a-4a51-adcb-8d74efc7dba1" name="Default" comment="简单提交">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.project" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/CommandsSet$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/CommandsSet.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$10.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$9.class" afterPath="" />
+    <list default="true" id="755c87fb-789a-4a51-adcb-8d74efc7dba1" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/yh/espide/Buffer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/yh/espide/BufferCenter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/yh/espide/FileList.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/yh/espide/Image2lua.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/yh/espide/Progress.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/yh/espide/TextEditTabbed.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortExtraReader.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFileDownloader.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFilesUploader.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortNodeFilesReader.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortPyFilesReader.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortReader.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortTurboReader.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/Regedit.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/yh/espide/Regedit.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/UnixShellTokenMaker.class" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/UnixShellTokenMaker.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/WindowsBatchTokenMaker.class" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/WindowsBatchTokenMaker.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/Config.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/Config.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/Context.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/Context.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EditButton.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EditButton.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$1.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$2.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$3.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$4.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$5.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$6.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$6.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$7.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$7.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$8.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$8.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortExtraReader.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortExtraReader.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFileDownloader.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFileDownloader.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFilesUploader.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFilesUploader.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortNodeFilesReader.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortNodeFilesReader.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortPyFilesReader.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortPyFilesReader.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortReader.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortReader.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortTurboReader.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortTurboReader.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/FirmwareType.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/FirmwareType.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/SettingsFrame.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/SettingsFrame.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/TerminalHandler.class" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/TerminalHandler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lang.properties" afterPath="$PROJECT_DIR$/src/lang.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lang_zh_CN.properties" afterPath="$PROJECT_DIR$/src/lang_zh_CN.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/modes/UnixShellTokenMaker.java" afterPath="$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/modes/UnixShellTokenMaker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/modes/WindowsBatchTokenMaker.java" afterPath="$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/modes/WindowsBatchTokenMaker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/Config.java" afterPath="$PROJECT_DIR$/src/yh/espide/Config.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/Context.java" afterPath="$PROJECT_DIR$/src/yh/espide/Context.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/EspIDE.java" afterPath="$PROJECT_DIR$/src/yh/espide/EspIDE.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/Icon.java" afterPath="$PROJECT_DIR$/src/yh/espide/Icon.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/FirmwareType.java" afterPath="$PROJECT_DIR$/src/yh/espide/FirmwareType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/SettingsFrame.java" afterPath="$PROJECT_DIR$/src/yh/espide/SettingsFrame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/TerminalHandler.java" afterPath="$PROJECT_DIR$/src/yh/espide/TerminalHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/yh/espide/TextEditArea.java" afterPath="$PROJECT_DIR$/src/yh/espide/TextEditArea.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -72,25 +82,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Icon.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/yh/espide/Icon.java">
+      <file leaf-file-name="TextEditArea.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditArea.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" column="114" lean-forward="false" selection-start-line="14" selection-start-column="114" selection-end-line="14" selection-end-column="114" />
-              <folding />
+            <state relative-caret-position="-73">
+              <caret line="42" column="31" lean-forward="false" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="lang.properties" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lang.properties">
-          <provider selected="true" editor-type-id="ResourceBundle">
-            <state />
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+      <file leaf-file-name="TextEditTabbed.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditTabbed.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="362">
+              <caret line="85" column="28" lean-forward="true" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
+              <folding>
+                <marker date="1512039542815" expanded="true" signature="2902:2910" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -98,18 +109,24 @@
       <file leaf-file-name="EspIDE.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/yh/espide/EspIDE.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="2210" column="57" lean-forward="true" selection-start-line="2210" selection-start-column="57" selection-end-line="2210" selection-end-column="57" />
-              <folding />
+            <state relative-caret-position="-578">
+              <caret line="1530" column="42" lean-forward="false" selection-start-line="1530" selection-start-column="34" selection-end-line="1530" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#90734#90735#0" expanded="true" />
+                <element signature="e#90790#90791#0" expanded="true" />
+                <element signature="e#93268#93269#0" expanded="true" />
+                <element signature="e#93306#93307#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TextEditArea.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditArea.java">
+      <file leaf-file-name="SettingsFrame.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/yh/espide/SettingsFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+            <state relative-caret-position="419">
+              <caret line="80" column="0" lean-forward="true" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -118,18 +135,20 @@
       <file leaf-file-name="Context.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/yh/espide/Context.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="25" column="50" lean-forward="false" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="50" />
-              <folding />
+            <state relative-caret-position="1046">
+              <caret line="142" column="22" lean-forward="true" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="22" />
+              <folding>
+                <marker date="1512033380321" expanded="true" signature="2445:2452" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TerminalHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/yh/espide/TerminalHandler.java">
+      <file leaf-file-name="BufferCenter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/yh/espide/BufferCenter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="165" column="17" lean-forward="false" selection-start-line="165" selection-start-column="16" selection-end-line="165" selection-end-column="17" />
+            <state relative-caret-position="171">
+              <caret line="9" column="53" lean-forward="false" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -147,46 +166,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sendcom</find>
-      <find>btnsend</find>
-      <find>FileListReloadActionPerformed</find>
-      <find>nodelist</find>
-      <find>firmware_type_label</find>
-      <find>RightFilesSplitPane</find>
-      <find>rightter</find>
-      <find>RightTerminal</find>
-      <find>JSplitPane</find>
-      <find>HorizontSplit</find>
-      <find>&quot;divider</find>
-      <find>RightTerminalSplitPane</find>
-      <find>FileManagerScrollPane</find>
-      <find>ScrollPaneConstants</find>
-      <find>EditorTheme</find>
-      <find>theme</find>
-      <find>setting</find>
-      <find>MenuItemFileOpen</find>
-      <find>.png</find>
-      <find>chooser</find>
-      <find>AutoScroll</find>
-      <find>new java.awt.Font(&quot;Tahoma&quot;, 0, 8)</find>
-      <find>Font(</find>
-      <find>new java.awt.Font(&quot;Tahoma&quot;, 0, 12)</find>
-      <find>undo</find>
-      <find>MenuItemEditUndo</find>
-      <find>filemanager</find>
-      <find>NodeFileMgrPane</find>
-      <find>fs info</find>
-      <find>REFRESH3</find>
+      <find>setSelectChangedListener</find>
+      <find>FilePopupMenuItem.get(y)</find>
+      <find>finalini</find>
+      <find>addmenu</find>
+      <find>FileDownload</find>
+      <find>savefile</find>
+      <find>save</find>
+      <find>add</find>
+      <find>AutoScrollActionPerformed</find>
+      <find>formComponentResized</find>
+      <find>MenuItemESPFileDo</find>
+      <find>ContextMenuESPFileLUA</find>
+      <find>jpro</find>
+      <find>getCurrentEdit()</find>
+      <find>Theme</find>
+      <find>Progress.ins.start(&quot;Reload &quot; + area.file.ge</find>
+      <find>Idle()</find>
+      <find>thandler.updateTheme();</find>
+      <find>filenew(</find>
+      <find>BufferCenter.DownBuffer.reset()</find>
+      <find>Receive final sequense. File downloa</find>
+      <find>BufferCenter.DownBuffer</find>
+      <find>appe</find>
+      <find>append</find>
+      <find>BufferCenter.RcvBuffer</find>
+      <find>new java.awt.Font(&quot;Tahoma&quot;, 0, 10)</find>
+      <find>FILENEW(</find>
+      <find>Separator</find>
+      <find>AddMenuItemSeparator(popup)</find>
+      <find>} else if (event.isCTS()) {</find>
     </findStrings>
     <replaceStrings>
-      <replace>firmwareType.eq(FirmwareType.NodeMCU)</replace>
-      <replace>set.add</replace>
-      <replace>FirmwareType.current</replace>
-      <replace>Startup.prefs</replace>
-      <replace>LOGGER.info(</replace>
-      <replace>thandler.add(</replace>
-      <replace>thandler.echo(</replace>
-      <replace>Context.getInt(</replace>
       <replace>Context.getString(</replace>
       <replace>Context.gettBoolean(</replace>
       <replace>Context.getBoolean(</replace>
@@ -207,8 +218,16 @@
       <replace>TextEditArea.TEXT_EDIT_AREAS.get(iTab).file</replace>
       <replace>TextEditArea.TEXT_EDIT_AREAS.get(iTab).rSyntaxTextArea</replace>
       <replace>Context.FONT_8</replace>
-      <replace>Context.FONT_10</replace>
       <replace>Context.FONT_12</replace>
+      <replace>Config.</replace>
+      <replace>getCurrentEdit()</replace>
+      <replace>area.isNew()</replace>
+      <replace>getCurrentEdit().isChanged()</replace>
+      <replace>popup</replace>
+      <replace>menu</replace>
+      <replace>area</replace>
+      <replace>Context.FONT_10</replace>
+      <replace>popup.add(new JPopupMenu.Separator())</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -248,19 +267,28 @@
         <option value="$PROJECT_DIR$/src/resources/nodemcu.autocomplete" />
         <option value="$PROJECT_DIR$/src/resources/python.autocomplete" />
         <option value="$PROJECT_DIR$/src/yh/espide/CompletionProviderCreator.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/TextEditArea.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/Config.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/CommandsSet.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/SettingsFrame.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/Regedit.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/TerminalHandler.java" />
-        <option value="$PROJECT_DIR$/src/lang_zh_CN.properties" />
         <option value="$PROJECT_DIR$/src/yh/espide/LED.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/EditButton.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/yh/espide/Icon.java" />
-        <option value="$PROJECT_DIR$/src/yh/espide/Context.java" />
         <option value="$PROJECT_DIR$/src/lang.properties" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Regedit.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Image2lua.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/FirmwareType.java" />
+        <option value="$PROJECT_DIR$/src/lang_zh_CN.properties" />
+        <option value="$PROJECT_DIR$/out/production/espide/lang_zh_CN.properties" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Config.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/FileList.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/ProgressBar.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/TerminalHandler.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Progress.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Context.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/TextEditArea.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/Buffer.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/TextEditTabbed.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/BufferCenter.java" />
+        <option value="$PROJECT_DIR$/src/yh/espide/SettingsFrame.java" />
         <option value="$PROJECT_DIR$/src/yh/espide/EspIDE.java" />
       </list>
     </option>
@@ -312,6 +340,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -347,10 +377,6 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Resource Bundle 'lang'" />
-              <option name="myItemType" value="com.intellij.lang.properties.projectView.ResourceBundleNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -367,90 +393,12 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="out" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="production" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Resource Bundle 'lang'" />
-              <option name="myItemType" value="com.intellij.lang.properties.projectView.ResourceBundleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="out" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="production" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="espide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -497,14 +445,14 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="AutoCompleteDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="Image2lua" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="yh.espide.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="MAIN_CLASS_NAME" value="yh.esplorer.AutoCompleteDemo" />
+      <option name="MAIN_CLASS_NAME" value="yh.espide.Image2lua" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -513,7 +461,7 @@
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="esplorer" />
+      <module name="espide" />
       <envs />
       <method />
     </configuration>
@@ -910,12 +858,12 @@
     </configuration>
     <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Application.Startup" />
-      <item index="1" class="java.lang.String" itemvalue="Application.AutoCompleteDemo" />
+      <item index="1" class="java.lang.String" itemvalue="Application.Image2lua" />
     </list>
     <recent_temporary>
       <list size="2">
         <item index="0" class="java.lang.String" itemvalue="Application.Startup" />
-        <item index="1" class="java.lang.String" itemvalue="Application.AutoCompleteDemo" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Image2lua" />
       </list>
     </recent_temporary>
   </component>
@@ -967,7 +915,17 @@
       <workItem from="1510915009854" duration="6431000" />
       <workItem from="1510924051007" duration="274000" />
       <workItem from="1511138871413" duration="7613000" />
-      <workItem from="1511148166356" duration="6251000" />
+      <workItem from="1511148166356" duration="7481000" />
+      <workItem from="1511225170005" duration="1945000" />
+      <workItem from="1511607420549" duration="6316000" />
+      <workItem from="1511678079750" duration="1847000" />
+      <workItem from="1511685214968" duration="3331000" />
+      <workItem from="1511744119384" duration="28036000" />
+      <workItem from="1511789019754" duration="190000" />
+      <workItem from="1511828958029" duration="27770000" />
+      <workItem from="1511874410986" duration="32000" />
+      <workItem from="1511874825158" duration="1219000" />
+      <workItem from="1512001925038" duration="20166000" />
     </task>
     <task id="LOCAL-00001" summary="简单提交">
       <created>1510796107130</created>
@@ -1018,11 +976,18 @@
       <option name="project" value="LOCAL" />
       <updated>1511147735428</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="简单提交">
+      <created>1511163083871</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1511163083871</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="241853000" />
+    <option name="totallyTimeSpent" value="333935000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1040,27 +1005,27 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864866" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32540542" sideWeight="0.49520767" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243243" sideWeight="0.49254525" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38477802" sideWeight="0.50572914" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5286487" sideWeight="0.50532484" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864866" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32756758" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28221512" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23109691" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32540542" sideWeight="0.4968051" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5286487" sideWeight="0.4946752" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3837838" sideWeight="0.49427083" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38054055" sideWeight="0.49427083" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1103,7 +1068,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="71" />
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="120" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1112,90 +1080,279 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://D:/Green/jdk1.8.0_77/src.zip!/javax/swing/text/AbstractDocument.java" />
-    <entry file="jar://D:/Green/jdk1.8.0_77/src.zip!/javax/swing/text/PlainDocument.java" />
-    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rtextarea/RDocument.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="21" column="39" lean-forward="false" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JFileChooser.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/DefaultComboBoxModel.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/event/KeyEvent.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/event/ActionListener.java" />
+    <entry file="file://$PROJECT_DIR$/src/lang.properties">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
-    </entry>
-    <entry file="jar://D:/Green/jdk1.8.0_77/src.zip!/javax/swing/text/JTextComponent.java" />
-    <entry file="jar://D:/Green/jdk1.8.0_77/src.zip!/javax/swing/text/Keymap.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/text/Document.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/text/Element.java" />
-    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/folding/DefaultFoldManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="280" column="38" lean-forward="false" selection-start-line="280" selection-start-column="38" selection-end-line="280" selection-end-column="38" />
-        </state>
+      <provider selected="true" editor-type-id="ResourceBundle">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/folding/FoldManager.java">
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Image2lua.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="153" column="8" lean-forward="false" selection-start-line="153" selection-start-column="8" selection-end-line="153" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/security/PrivilegedAction.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/text/AbstractDocument.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/event/KeyAdapter.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/lang/Object.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/ArrayTable.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/InputMap.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/text/PlainDocument.java" />
-    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rtextarea/RTextAreaEditorKit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="2589" column="24" lean-forward="false" selection-start-line="2589" selection-start-column="24" selection-end-line="2589" selection-end-column="24" />
+        <state relative-caret-position="164">
+          <caret line="37" column="49" lean-forward="true" selection-start-line="37" selection-start-column="49" selection-end-line="37" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/util/List.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/util/ArrayList.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JLayeredPane.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/lang/Object.java" />
     <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rtextarea/RTextArea.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="1649" column="16" lean-forward="false" selection-start-line="1649" selection-start-column="16" selection-end-line="1649" selection-end-column="16" />
+        <state relative-caret-position="313">
+          <caret line="567" column="16" lean-forward="false" selection-start-line="567" selection-start-column="16" selection-end-line="567" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/espide/lang_zh_CN.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" column="7" lean-forward="false" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/Container.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JButton.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/AbstractButton.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/event/MouseEvent.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JList.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/Component.java" />
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JComponent.java" />
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Icon.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="14" column="114" lean-forward="false" selection-start-line="14" selection-start-column="114" selection-end-line="14" selection-end-column="114" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/ActionMap.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JComponent.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/AWTKeyStroke.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/KeyStroke.java" />
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/CommandsSet.java" />
-    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/Theme.java">
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/FirmwareType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-429">
-          <caret line="178" column="16" lean-forward="false" selection-start-line="178" selection-start-column="16" selection-end-line="178" selection-end-column="16" />
+        <state relative-caret-position="551">
+          <caret line="30" column="28" lean-forward="false" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JTabbedPane.java" />
+    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/autocomplete/AutoCompleteDescWindow.properties">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/modes/CSharpTokenMaker.flex">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1425">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/modes/LuaTokenMaker.flex">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-688">
+          <caret line="293" column="20" lean-forward="false" selection-start-line="293" selection-start-column="13" selection-end-line="293" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/RSyntaxDocument.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="655" column="17" lean-forward="false" selection-start-line="655" selection-start-column="17" selection-end-line="655" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/fife/ui/rsyntaxtextarea/RSyntaxTextArea.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="2598" column="23" lean-forward="false" selection-start-line="2598" selection-start-column="23" selection-end-line="2598" selection-end-column="23" />
-          <folding />
+        <state relative-caret-position="432">
+          <caret line="2908" column="53" lean-forward="true" selection-start-line="2908" selection-start-column="53" selection-end-line="2908" selection-end-column="53" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JTextArea.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/awt/Container.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JSplitPane.java" />
-    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/beans/PropertyChangeListener.java" />
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Regedit.java">
+    <entry file="file://$PROJECT_DIR$/src/lang_zh_CN.properties">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JProgressBar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="48" column="39" lean-forward="false" selection-start-line="48" selection-start-column="39" selection-end-line="48" selection-end-column="39" />
+        <state relative-caret-position="299">
+          <caret line="131" column="13" lean-forward="false" selection-start-line="131" selection-start-column="13" selection-end-line="131" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/encodings.xml">
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/text/JTextComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="1668" column="44" lean-forward="true" selection-start-line="1668" selection-start-column="44" selection-end-line="1668" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/text/AbstractDocument.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="77">
+          <caret line="650" column="57" lean-forward="true" selection-start-line="650" selection-start-column="57" selection-end-line="650" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/FileList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="87" column="40" lean-forward="false" selection-start-line="87" selection-start-column="40" selection-end-line="87" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="264" column="0" lean-forward="false" selection-start-line="264" selection-start-column="0" selection-end-line="264" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Progress.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="18" lean-forward="false" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+          <folding>
+            <element signature="e#511#512#0" expanded="true" />
+            <element signature="e#543#544#0" expanded="true" />
+            <element signature="e#784#785#0" expanded="true" />
+            <element signature="e#815#816#0" expanded="true" />
+            <element signature="e#1091#1092#0" expanded="true" />
+            <element signature="e#1118#1119#0" expanded="true" />
+            <element signature="e#1151#1152#0" expanded="true" />
+            <element signature="e#1182#1183#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/TerminalHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Version.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="25" lean-forward="false" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+          <folding>
+            <element signature="e#211#212#0" expanded="true" />
+            <element signature="e#260#261#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="956" column="18" lean-forward="false" selection-start-line="956" selection-start-column="18" selection-end-line="956" selection-end-column="18" />
+          <folding>
+            <element signature="e#36393#36394#0" expanded="false" />
+            <element signature="e#36459#36460#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/util/Arrays.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="3234" column="25" lean-forward="false" selection-start-line="3234" selection-start-column="25" selection-end-line="3234" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditArea.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-73">
+          <caret line="42" column="31" lean-forward="false" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/io/ByteArrayOutputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="177" column="29" lean-forward="false" selection-start-line="177" selection-start-column="29" selection-end-line="177" selection-end-column="29" />
+          <folding>
+            <element signature="e#1176#1177#0" expanded="false" />
+            <element signature="e#1200#1201#0" expanded="false" />
+            <element signature="e#5255#5256#0" expanded="false" />
+            <element signature="e#5280#5281#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/lang/AbstractStringBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11">
+          <caret line="1384" column="33" lean-forward="false" selection-start-line="1384" selection-start-column="33" selection-end-line="1384" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/java/lang/StringBuffer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="663" column="17" lean-forward="false" selection-start-line="663" selection-start-column="17" selection-end-line="663" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk1.8.0_91/src.zip!/javax/swing/JTextArea.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="472" column="16" lean-forward="false" selection-start-line="472" selection-start-column="16" selection-end-line="472" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditTabbed.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="85" column="28" lean-forward="true" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
+          <folding>
+            <marker date="1512039542815" expanded="true" signature="2902:2910" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/espide.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1205,163 +1362,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/yh/espide/SettingsFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+        <state relative-caret-position="419">
+          <caret line="80" column="0" lean-forward="true" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Startup.java">
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/Buffer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
+        <state relative-caret-position="304">
+          <caret line="16" column="12" lean-forward="false" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#209#210#0" expanded="true" />
+            <element signature="e#256#257#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/FirmwareType.java">
+    <entry file="file://$PROJECT_DIR$/src/yh/espide/BufferCenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="12" lean-forward="false" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/jssc/SerialNativeInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="306" column="7" lean-forward="false" selection-start-line="306" selection-start-column="7" selection-end-line="306" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lang_zh_CN.properties">
-      <provider editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="7" lean-forward="true" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/pyFiler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/EditButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="15" column="19" lean-forward="false" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/terminal_clear.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources/ESP8266-64x64.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Version.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.project">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/out/production/espide/lang_zh_CN.properties">
-      <provider editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="171">
+          <caret line="9" column="53" lean-forward="false" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/yh/espide/Context.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="25" column="50" lean-forward="false" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="50" />
-          <folding />
+        <state relative-caret-position="1046">
+          <caret line="142" column="22" lean-forward="true" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="22" />
+          <folding>
+            <marker date="1512033380321" expanded="true" signature="2445:2452" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/TextEditArea.java">
+    <entry file="file://$PROJECT_DIR$/src/jssc/SerialPortEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/Icon.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="114" lean-forward="false" selection-start-line="14" selection-start-column="114" selection-end-line="14" selection-end-column="114" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lang.properties">
-      <provider selected="true" editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/yh/espide/TerminalHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="165" column="17" lean-forward="false" selection-start-line="165" selection-start-column="16" selection-end-line="165" selection-end-column="17" />
+        <state relative-caret-position="470">
+          <caret line="87" column="19" lean-forward="false" selection-start-line="87" selection-start-column="19" selection-end-line="87" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/yh/espide/EspIDE.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="2210" column="57" lean-forward="true" selection-start-line="2210" selection-start-column="57" selection-end-line="2210" selection-end-column="57" />
-          <folding />
+        <state relative-caret-position="-578">
+          <caret line="1530" column="42" lean-forward="false" selection-start-line="1530" selection-start-column="34" selection-end-line="1530" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#90734#90735#0" expanded="true" />
+            <element signature="e#90790#90791#0" expanded="true" />
+            <element signature="e#93268#93269#0" expanded="true" />
+            <element signature="e#93306#93307#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

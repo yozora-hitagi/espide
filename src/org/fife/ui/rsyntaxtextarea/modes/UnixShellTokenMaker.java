@@ -193,7 +193,7 @@ public class UnixShellTokenMaker extends AbstractTokenMaker {
 		tokenMap.put("dtree",			function);
 		tokenMap.put("du",			function);
 		tokenMap.put("e",			function);
-		tokenMap.put("echo",			function);
+		tokenMap.put("comment",			function);
 		tokenMap.put("ed",			function);
 		tokenMap.put("edit",			function);
 		tokenMap.put("enscript",		function);
@@ -631,7 +631,7 @@ public class UnixShellTokenMaker extends AbstractTokenMaker {
 							currentTokenType = Token.WHITESPACE;
 							break;
 
-						case '/': // Special-case to colorize commands like "echo" in "/bin/echo"
+						case '/': // Special-case to colorize commands like "comment" in "/bin/comment"
 							addToken(text, currentTokenStart,i, Token.IDENTIFIER, newStartOffset+currentTokenStart);
 							currentTokenStart = i+1;
 							currentTokenType = Token.NULL;

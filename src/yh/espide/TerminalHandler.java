@@ -11,13 +11,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +32,8 @@ public class TerminalHandler extends RTextScrollPane {
 
     AtomicInteger location = new AtomicInteger(0);
     AtomicBoolean control = new AtomicBoolean(true);
+
+    AtomicBoolean add = new AtomicBoolean(false);
 
     ArrayList<String> history = new ArrayList();
     int history_loc = 0;
@@ -54,9 +56,6 @@ public class TerminalHandler extends RTextScrollPane {
 
             @Override
             public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                /**
-                 *
-                 */
                 if (super.getLength() > Config.ins.getTermnal_max_text_size() * 1024) {
                     try {
                         super.remove(0, str.length());
@@ -66,11 +65,16 @@ public class TerminalHandler extends RTextScrollPane {
 
                 if (control.get()) {
                     if (offs < location.get()) {
-                        offs = rSyntaxTextArea.getText().length();
+                        offs = getLength();
                         rSyntaxTextArea.setCaretPosition(offs);
+
                     }
                 }
+
+
                 super.insertString(offs, str, a);
+
+
             }
 
 
@@ -127,15 +131,16 @@ public class TerminalHandler extends RTextScrollPane {
                         }
                         listener.listen(command);
 
-                        history.add(command);
-                        history_loc = history.size();
+                        if (null != command && !command.isEmpty()) {
+                            history.add(command);
+                            history_loc = history.size();
+                        }
                     }
                 }
 
-                if (key == KeyEvent.VK_UP || (key == KeyEvent.VK_DOWN)) {
-                    rSyntaxTextArea.setCaretPosition(location.get());
-                }
-                if (key == KeyEvent.VK_UP && history_loc > 0) {
+
+                if (e.isControlDown() && key == KeyEvent.VK_MINUS && history_loc > 0) {
+                    //上翻历史
                     history_loc--;
                     try {
                         rSyntaxTextArea.getDocument().remove(location.get(), length - location.get());
@@ -144,7 +149,8 @@ public class TerminalHandler extends RTextScrollPane {
                     }
                     rSyntaxTextArea.append(history.get(history_loc));
 
-                } else if (key == KeyEvent.VK_DOWN && history_loc < history.size() - 1) {
+                } else if (e.isControlDown() && key == KeyEvent.VK_EQUALS && history_loc < history.size() - 1) {
+                    //下翻历史
                     history_loc++;
                     try {
                         rSyntaxTextArea.getDocument().remove(location.get(), length - location.get());
@@ -153,6 +159,10 @@ public class TerminalHandler extends RTextScrollPane {
                     }
                     rSyntaxTextArea.append(history.get(history_loc));
 
+                }
+
+                if (e.isControlDown() && (key == KeyEvent.VK_MINUS || key == KeyEvent.VK_EQUALS)) {
+                    rSyntaxTextArea.setCaretPosition(rSyntaxTextArea.getText().length());
                 }
 
 
@@ -171,7 +181,7 @@ public class TerminalHandler extends RTextScrollPane {
 
         List rl = new ArrayList();
         rl.add(rSyntaxTextArea.getInputMap().get(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK, false)));
-        rl.add(rSyntaxTextArea.getInputMap().get(KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.KEY_LOCATION_UNKNOWN, false)));
+        //rl.add(rSyntaxTextArea.getInputMap().get(KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.KEY_LOCATION_UNKNOWN, false)));
         ActionMap am = rSyntaxTextArea.getActionMap();
         while (null != am) {
             for (Object b : rl)
@@ -216,6 +226,13 @@ public class TerminalHandler extends RTextScrollPane {
         }
     }
 
+    public void updateTheme() {
+        Theme theme = Context.GetTheme();
+        if (null != theme) {
+            setTheme(theme);
+            setFontSize(Config.ins.getTerminal_font_size());
+        }
+    }
 
     public void setEditable(boolean b) {
         rSyntaxTextArea.setEditable(b);
@@ -236,36 +253,30 @@ public class TerminalHandler extends RTextScrollPane {
     }
 
 
-    public void setTheme(Theme theme){
+    public void setTheme(Theme theme) {
         theme.apply(rSyntaxTextArea);
     }
 
 
-    public void add(String rc) {
-        Document doc = rSyntaxTextArea.getDocument();
+    public synchronized void add(String rc) {
+        add.set(true);
+        rSyntaxTextArea.append(rc);
 
-        try {
-            doc.insertString(doc.getLength(), rc, null);
-        } catch (Exception e) {
-            logger.info(e.toString());
-        }
-        if (Regedit.getBoolean(Regedit.AUTO_SCROLL, true)) {
+        if (add.get() && Config.ins.getAutoScroll()) {
+            int loca = rSyntaxTextArea.getText().length();
             try {
-                rSyntaxTextArea.setCaretPosition(doc.getLength());
+                rSyntaxTextArea.setCaretPosition(loca);
             } catch (Exception e) {
-                logger.info(e.toString());
+                logger.log(Level.WARNING, "SCROLL ERROR : " + e.getMessage(), e);
             }
+            location.set(loca);
         }
 
-        try {
-            location.set(rSyntaxTextArea.getLineEndOffset(rSyntaxTextArea.getLineCount() - 1));
-        } catch (BadLocationException e) {
-            location.set(rSyntaxTextArea.getText().length());
-        }
+        add.set(false);
     }
 
 
-    public void echo(String s, boolean end) {
+    public void comment(String s, boolean end) {
         String pre = "#--";
         if (FirmwareType.current.eq(FirmwareType.NodeMCU)) {
             pre = "---";
