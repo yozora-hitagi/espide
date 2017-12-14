@@ -36,24 +36,22 @@ public class TextEditTabbed extends JTabbedPane {
 
     public void RemoveTab() {
         int index = getSelectedIndex();
-        if (getTabCount() <= 1) {
-            AddTab("");
-        }
         if (index >= 0 && index < getTabCount()) {
             removeTabAt(index);
         }
     }
 
-
-    public TextEditArea AddTab(File file) {
-        TextEditArea area = (TextEditArea) getSelectedComponent();
-        if (null == area || !area.isNew() || area.isChanged()) {
-            area = AddTab("");
+    public boolean hashOpen(File file) {
+        for (int i = 0; i < getTabCount(); i++) {
+            if (((TextEditArea) getComponentAt(i)).getFile().equals(file)) {
+                setSelectedIndex(i);
+                return true;
+            }
         }
-        area.file = file;
-        area.setTitle(file.getName());
-        return area;
+        return false;
     }
+
+
 
     public void updateTheme() {
         Theme theme = Context.GetTheme();
@@ -66,10 +64,8 @@ public class TextEditTabbed extends JTabbedPane {
         }
     }
 
-    public TextEditArea AddTab(String content) {
-
-        TextEditArea area = new TextEditArea(this, FirmwareType.current);
-
+    public TextEditArea AddTab(File file) {
+        TextEditArea area = new TextEditArea(this, file);
 
         area.rSyntaxTextArea.addCaretListener(evt ->
                 ide.UpdateEditorButtons(area)
@@ -81,7 +77,6 @@ public class TextEditTabbed extends JTabbedPane {
             }
         });
 
-
         Theme theme = Context.GetTheme();
         if (null != theme) {
             theme.apply(area.rSyntaxTextArea);
@@ -90,10 +85,6 @@ public class TextEditTabbed extends JTabbedPane {
 
         if (null != selectchanged) {
             selectchanged.SelectChanged(area);
-        }
-
-        if (null != content && !content.isEmpty()) {
-            area.rSyntaxTextArea.append(content);
         }
 
         return area;

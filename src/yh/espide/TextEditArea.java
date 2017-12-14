@@ -3,7 +3,6 @@ package yh.espide;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.GroupLayout;
@@ -24,19 +23,23 @@ public class TextEditArea extends JLayeredPane {
     private static final String NewFile = "(*)";
 
     public RSyntaxTextArea rSyntaxTextArea;
-    public File file;
     // public boolean filechanged;
     public AutoCompletion autoCompletion;
     JTabbedPane parent;
     Logger logger = Logger.getLogger(TextEditArea.class.getName());
     TextChangedListener listener;
+    private File file;
     private String title = NewFile;
 
-    public TextEditArea(JTabbedPane parent, FirmwareType type) {
+    public TextEditArea(JTabbedPane parent, File file) {
         this.parent = parent;
 
+        this.file = file;
 
-        rSyntaxTextArea = new RSyntaxTextArea(new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_LUA) {
+        String suffix = FileType.Get_suffix(file);
+        this.setTitle(file.getName());
+
+        rSyntaxTextArea = new RSyntaxTextArea(new RSyntaxDocument(FileType.SYNTAX_MAP.get(suffix)) {
             @Override
             public void remove(int offs, int len) throws BadLocationException {
                 super.remove(offs, len);
@@ -55,11 +58,8 @@ public class TextEditArea extends JLayeredPane {
             }
         });
 
-        if (FirmwareType.MicroPython.eq(type)) {
-            rSyntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
-        } else {
-            rSyntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
-        }
+        rSyntaxTextArea.setSyntaxEditingStyle(FileType.SYNTAX_MAP.get(suffix));
+
         rSyntaxTextArea.setColumns(20);
         rSyntaxTextArea.setRows(5);
         rSyntaxTextArea.setDragEnabled(false);
@@ -75,10 +75,7 @@ public class TextEditArea extends JLayeredPane {
         rSyntaxTextArea.setPopupMenu(null);
 
 
-        file = new File("");
-        //filechanged = false;
-
-        autoCompletion = new AutoCompletion(Context.create2(type));
+        autoCompletion = new AutoCompletion(FileType.create(suffix));
         autoCompletion.install(rSyntaxTextArea);
 
 
@@ -111,9 +108,6 @@ public class TextEditArea extends JLayeredPane {
         this.listener = listener;
     }
 
-    public boolean isNew() {
-        return NewFile.equals(title);
-    }
 
     public void copy() {
         rSyntaxTextArea.copy();
@@ -129,6 +123,9 @@ public class TextEditArea extends JLayeredPane {
         //filechanged=true;
     }
 
+    public File getFile() {
+        return this.file;
+    }
 
     public boolean isChanged() {
         return rSyntaxTextArea.canUndo();
@@ -138,7 +135,7 @@ public class TextEditArea extends JLayeredPane {
         return this.title;
     }
 
-    public void setTitle(String title) {
+    private void setTitle(String title) {
         this.title = title;
         if (null != parent) {
             for (int i = 0; i < parent.getTabCount(); i++) {

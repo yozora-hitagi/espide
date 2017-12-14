@@ -304,7 +304,7 @@ public class SerialNativeInterface {
     public static native String getNativeLibraryVersion();
 
     /**
-     * Open port
+     * AddTab port
      *
      * @param portName name of port for opening
      * @param useTIOCEXCL enable/disable using of <b>TIOCEXCL</b>. Take effect only on *nix based systems

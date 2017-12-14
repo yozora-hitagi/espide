@@ -1,23 +1,20 @@
 package yh.espide;
 
-import org.fife.ui.autocomplete.BasicCompletion;
-import org.fife.ui.autocomplete.CompletionProvider;
-import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.BufferedReader;
+import java.awt.Toolkit;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,43 +68,6 @@ public class Context {
         return MessageFormat.format(BUNDLE.getString(message), args);
     }
 
-    public static CompletionProvider create2(FirmwareType type) {
-        DefaultCompletionProvider provider = new DefaultCompletionProvider();
-        try {
-            String name = null;
-            if (FirmwareType.MicroPython.eq(type)) {
-                name = "/resources/python.autocomplete";
-            } else {
-                name = "/resources/nodemcu.autocomplete";
-            }
-
-            List<String> list = new ArrayList();
-
-            if (null != name) {
-                InputStream is = Context.class.getResourceAsStream(name);
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                String line = null;
-                while ((line = br.readLine()) != null) {
-                    list.add(line);
-                }
-                br.close();
-                is.close();
-            }
-
-            list.forEach(s -> provider.addCompletion(new BasicCompletion(provider, s)));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-//        provider.addCompletion(new ShorthandCompletion(provider, "sysout",
-//                "System.out.println(", "System.out.println("));
-//        provider.addCompletion(new ShorthandCompletion(provider, "syserr",
-//                "System.err.println(", "System.err.println("));
-
-        return provider;
-
-    }
 
     public static JMenu createM1(String text) {
         JMenu item = new JMenu(text);
@@ -115,7 +75,47 @@ public class Context {
         return item;
     }
 
-    public static File[] ShowFileDialog(Component parent, String title, File select, boolean multi, boolean isopen, boolean filter) {
+
+    public static int Dialog(String msg, int btn) {
+        Toolkit.getDefaultToolkit().beep();
+        int returnVal = JOptionPane.showConfirmDialog(null, msg, Context.BUNDLE.getString("Attention"), btn, JOptionPane.WARNING_MESSAGE);
+        return returnVal;
+    }
+
+    public static String GetLua(String file, String... args) {
+        InputStream is = Context.class.getResourceAsStream(file);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int len = 0;
+        byte[] buf = new byte[1024];
+        try {
+            while ((len = is.read(buf)) != -1) {
+                baos.write(buf, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String str = new String(baos.toByteArray());
+        try {
+            baos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < args.length; i++) {
+            String key = "_espide_script_args" + i;
+            str = str.replace(key, args[i]);
+        }
+
+        return str;
+    }
+
+
+    public static File[] ShowFileDialog(Component parent, String title, File select, boolean multi, boolean isopen) {
 
         JFileChooser chooser = new JFileChooser(Config.ins.getPath());
         if (null != title) {
@@ -129,9 +129,11 @@ public class Context {
         if (null != select) {
             chooser.setSelectedFile(select);
         }
-        if (filter) {
-            chooser.setFileFilter(FirmwareType.GetFileFilter());
+
+        for (FileFilter filter : FileType.FILTER_MAP.values()) {
+            chooser.addChoosableFileFilter(filter);
         }
+
         int returnVal;
         if (isopen) {
             returnVal = chooser.showOpenDialog(parent);

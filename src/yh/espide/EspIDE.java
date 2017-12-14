@@ -75,10 +75,12 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     public ArrayList<Integer> PacketsNum;
 
     public FileList fileList = new FileList();
-    boolean portJustOpen;
+
+    SerialPortStatus serialPortStatus = SerialPortStatus.CLOSED;
+
     JButton firmware_type_label;
     String DownloadedFileName = "";
-    int FileCount = 0;
+
     private TerminalHandler thandler = new TerminalHandler(this);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem AlwaysOnTop;
@@ -356,7 +358,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         ButtonFileNew.addActionListener(evt -> MenuItemFileNew.doClick());
         FilesToolBar.add(ButtonFileNew);
 
-        ButtonFileOpen = new EditButton(Context.BUNDLE.getString("Open"), Icon.FOLDER_OPEN, "Open file from disk");
+        ButtonFileOpen = new EditButton(Context.BUNDLE.getString("Open"), Icon.FOLDER_OPEN, "AddTab file from disk");
         ButtonFileOpen.addActionListener(evt -> MenuItemFileOpen.doClick());
         FilesToolBar.add(ButtonFileOpen);
 
@@ -580,7 +582,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         Open.setFont(Context.FONT_10);
         Open.setIcon(Icon.CONNECT1);
         Open.setText("Open");
-        Open.setToolTipText("Open/Close selected serial port");
+        Open.setToolTipText("AddTab/Close selected serial port");
         Open.setIconTextGap(2);
         Open.setMargin(new java.awt.Insets(1, 1, 1, 1));
         Open.setMaximumSize(new java.awt.Dimension(100, 25));
@@ -948,7 +950,25 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         MenuItemFileNew.setIcon(Icon.DOCUMENT);
         MenuItemFileNew.setText(Context.BUNDLE.getString("New"));
         MenuItemFileNew.setToolTipText("File New");
-        MenuItemFileNew.addActionListener(evt -> FilesTabbedPane.AddTab(""));
+        MenuItemFileNew.addActionListener(e -> {
+            File[] file = Context.ShowFileDialog(null, Context.BUNDLE.getString("Create new file"), null, false, false);
+            if (null == file) {
+                return;
+            }
+            if (file[0].exists()) {
+                Context.Dialog("File " + file[0] + " existed!!!", JOptionPane.YES_OPTION);
+            } else {
+                try {
+                    if (file[0].createNewFile()) {
+                        OpenFile(file[0]);
+                        return;
+                    }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                Context.Dialog("File " + file[0] + " create fail!!!", JOptionPane.YES_OPTION);
+            }
+        });
         MenuFile.add(MenuItemFileNew);
 
         MenuItemFileOpen.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
@@ -969,7 +989,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         MenuItemFileReload.setIcon(Icon.REFRESH);
         MenuItemFileReload.setText(Context.BUNDLE.getString("Reload"));
         MenuItemFileReload.setToolTipText("Reload file from disk, if you use external editor");
-        MenuItemFileReload.setEnabled(false);
         MenuItemFileReload.addActionListener(evt -> {
             new Thread() {
                 @Override
@@ -1161,7 +1180,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
     private void UpdateButtons() {
-        if (Open.isSelected() && !portJustOpen) {
+        if (Open.isSelected() && serialPortStatus.isOpened()) {
             Port.setEnabled(false);
             //Speed.setEnabled(false);
             ReScan.setEnabled(false);
@@ -1249,42 +1268,14 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         boolean success = false;
 
         try {
-            if (area.isNew()) { // we saving new file
-                LOGGER.info("Saving new file...");
-                FileCount++;
-                String fileExt;
-                if (FirmwareType.current.eq(FirmwareType.NodeMCU)) {
-                    fileExt = ".lua";
-                } else { // MicroPython
-                    fileExt = ".py";
-                }
-
-
-                area.file = new File("script" + Integer.toString(FileCount) + fileExt);
-                File[] files = Context.ShowFileDialog(null, null, area.file, false, false, true);
-                if (null == files) {
-                    LOGGER.info("Saving abort by user.");
-                    return false;
-                }
-
-                area.file = files[0];
-                if (area.file.exists()) {
-                    LOGGER.info("File " + area.file.getName() + " already exist, waiting user choice");
-                    int shouldWrite = Dialog("File " + area.file.getName() + " already exist. Overwrite?", JOptionPane.YES_NO_OPTION);
-                    if (shouldWrite != JOptionPane.YES_OPTION) {
-                        return false;
-                    }
-                }
-            }
             try {
-                LOGGER.info("Try to saving file " + area.file.getName() + " ...");
+                LOGGER.info("Try to saving file " + area.getFile().getName() + " ...");
                 area.save_file();
-                String filename = area.file.getName();
+                String filename = area.getFile().getName();
                 LOGGER.info("Save file " + filename + ": Success.");
-                area.setTitle(filename);
                 success = true;
             } catch (IOException ex) {
-                LOGGER.log(Level.WARNING, "Save file " + area.file.getName() + ": FAIL.", ex);
+                LOGGER.log(Level.WARNING, "Save file " + area.getFile().getName() + ": FAIL.", ex);
                 JOptionPane.showMessageDialog(null, "Error, file not saved!");
             }
 
@@ -1297,62 +1288,50 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
 
     private void OpenFile() {
-        File[] files = Context.ShowFileDialog(LeftBasePane, null, null, true, true, true);
+        File[] files = Context.ShowFileDialog(LeftBasePane, null, null, true, true);
         if (null != files) {
             for (File file : files) {
-                boolean isopen = false;
-                for (int i = 0; i < FilesTabbedPane.getTabCount(); i++) {
-                    if (file.getPath().equals(((TextEditArea) FilesTabbedPane.getComponentAt(i)).file.getPath())) {
-                        isopen = true;
-                        FilesTabbedPane.setSelectedIndex(i);
-                        UpdateEditorButtons(getCurrentEdit());
-                        String filename = file.getName();
-                        LOGGER.info("File " + filename + " already open, select tab to file " + filename);
-                        JOptionPane.showMessageDialog(null, Context.FormatString("SF_HasOpened", filename));
-                        break;
-                    }
-                }
-                if (isopen) {
+                //文件已打开
+                if (FilesTabbedPane.hashOpen(file)) {
+                    UpdateEditorButtons(getCurrentEdit());
+                    String filename = file.getName();
+                    LOGGER.info("File " + filename + " already open, select tab to file " + filename);
+                    JOptionPane.showMessageDialog(null, Context.FormatString("SF_HasOpened", filename));
                     continue;
                 }
 
+                OpenFile(file);
 
-                TextEditArea area = FilesTabbedPane.AddTab(file);
-
-                try {
-
-                    Busy();
-                    Progress.ins.start("Open " + area.file.getAbsolutePath(), area::reload_file);
-
-                    SelectChanged(area);
-
-                    Idle();
-                } catch (Exception ex) {
-                    LOGGER.log(Level.WARNING, "Loading " + area.file + ": FAIL.", ex);
-                    JOptionPane.showMessageDialog(null, "Error, file not load!");
-                }
-                LOGGER.info("Open \"" + area.file.getName() + "\": Success.");
             }
         }
         UpdateEditorButtons(getCurrentEdit());
     }
 
+    public void OpenFile(File file) {
+        TextEditArea area = FilesTabbedPane.AddTab(file);
+        try {
+            Busy();
+            Progress.ins.start("AddTab " + area.getFile().getName(), area::reload_file);
+            SelectChanged(area);
+            Idle();
+        } catch (Exception ex) {
+            LOGGER.log(Level.WARNING, "Loading " + area.getFile() + ": FAIL.", ex);
+            JOptionPane.showMessageDialog(null, "Error, file not load!");
+        }
+        LOGGER.info("AddTab \"" + area.getFile().getName() + "\": Success.");
+    }
+
 
     public void UpdateEditorButtons(TextEditArea area) {
-        if (area.isNew() || area.isChanged()) {
+        if (area == null) {
+            return;
+        }
+        if (area.isChanged()) {
             MenuItemFileSave.setEnabled(true);
             ButtonFileSave.setEnabled(true);
         } else {
             MenuItemFileSave.setEnabled(false);
             ButtonFileSave.setEnabled(false);
-        }
-
-        if (area.isNew()) {
-            MenuItemFileReload.setEnabled(false);
-            ButtonFileReload.setEnabled(false);
-        } else {
-            MenuItemFileReload.setEnabled(true);
-            ButtonFileReload.setEnabled(true);
         }
 
         // CanUndo
@@ -1428,22 +1407,11 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
     private void NodeListFiles() {
-        if (portJustOpen) {
+        if (!serialPortStatus.isOpened()) {
             LOGGER.info("ERROR: Communication with MCU not yet established.");
             return;
         }
-        //String cmd = "print(\"~~~File \"..\"list START~~~\") for k,v in pairs(file.list()) do l = string.format(\"%-15s\",k) print(l..\" - \"..v..\" bytes\") end l=nil k=nil v=nil print(\"~~~File \"..\"list END~~~\")";
-        String cmd = "_dir=function()\n"
-                + "     local k,v,l\n"
-                + "     print(\"~~~File \"..\"list START~~~\")\n"
-                + "     for k,v in pairs(file.list()) do \n"
-                + "          l = string.format(\"%-15s\",k) \n"
-                + "          print(l..\" : \"..v..\" bytes\") \n"
-                + "     end \n"
-                + "     print(\"~~~File \"..\"list END~~~\")\n"
-                + "end\n"
-                + "_dir()\n"
-                + "_dir=nil";
+        String cmd = Context.GetLua("/yh/espide/file_list.lua");
         try {
             serialPort.removeEventListener();
         } catch (Exception e) {
@@ -1497,7 +1465,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
     private void FileDownload(String param) {
-        if (portJustOpen) {
+        if (!serialPortStatus.isOpened()) {
             LOGGER.info("Downloader: Communication with MCU not yet established.");
             return;
         }
@@ -1517,30 +1485,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         BufferCenter.DownBuffer.reset();
         rx_byte = new byte[0];
         PacketsCRC = new ArrayList<>();
-        String cmd = "_dl=function() "
-                + "  file.open(\"" + DownloadedFileName + "\", \"r\")\n"
-                + "  local buf "
-                + "  local i=0 "
-                + "  local checksum\n"
-                + "  repeat "
-                + "     buf = file.read(1024) "
-                + "     if buf ~= nil then "
-                + "          i = i + 1 "
-                + "          checksum = 0 "
-                + "          for j=1, string.len(buf) do\n"
-                + "               checksum = checksum + (buf:byte(j)*20)%19 "
-                + "          end "
-                + "          buf='~~~'..'DATA-START~~~'..buf..'~~~'..'DATA-LENGTH~~~'..string.len(buf)..'~~~'..'DATA-N~~~'..i..'~~~'..'DATA-CRC~~~'..checksum..'~~~'..'DATA-END~~~'\n"
-                + "          uart.write(0,buf) "
-                + "     end "
-                + "     tmr.wdclr() "
-                + "  until(buf == nil) "
-                + "  file.close()\n"
-                + "  buf='~~~'..'DATA-TOTAL-START~~~'..i..'~~~'..'DATA-TOTAL-END~~~'\n"
-                + "  uart.write(0,buf) "
-                + "end "
-                + "_dl() "
-                + "_dl=nil\n";
+        String cmd = Context.GetLua("/yh/espide/file_download.lua", DownloadedFileName);
         s = cmd.split("\r?\n");
         for (String subs : s) {
             sendBuf.add(subs);
@@ -1597,9 +1542,10 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         if (success) {
             thandler.comment("Success.", true);
             if (DownloadCommand.startsWith("EDIT")) {
-                FilesTabbedPane.AddTab(new String(BufferCenter.RcvBuffer.toByteArray()));
+                File file = SaveDownloadedFile(DownloadedFileName, BufferCenter.RcvBuffer.toByteArray());
+                OpenFile(file);
             } else if (DownloadCommand.startsWith("DOWNLOAD")) {
-                SaveDownloadedFile(DownloadedFileName);
+                SaveDownloadedFile(DownloadedFileName, BufferCenter.DownBuffer.toByteArray());
             } else {
                 // nothing, reserved
             }
@@ -1690,58 +1636,25 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
     private void HexDump(String FileName) {
-        String cmd = "_dump=function()\n"
-                + "  local buf\n"
-                + "  local j=0\n"
-                + "  if file.open(\"" + FileName + "\", \"r\") then\n"
-                + "  print('--HexDump start')\n"
-                + "  repeat\n"
-                + "     buf=file.read(1024)\n"
-                + "     if buf~=nil then\n"
-                + "     local n \n"
-                + "     if #buf==1024 then\n"
-                + "        n=(#buf/16)*16\n"
-                + "     else\n"
-                + "        n=(#buf/16+1)*16\n"
-                + "     end\n"
-                + "     for i=1,n do\n"
-                + "         j=j+1\n"
-                + "         if (i-1)%16==0 then\n"
-                + "            uart.write(0,string.format('%08X  ',j-1)) \n"
-                + "         end\n"
-                + "         uart.write(0,i>#buf and'   'or string.format('%02X ',buf:byte(i)))\n"
-                + "         if i%8==0 then uart.write(0,' ')end\n"
-                + "         if i%16==0 then uart.write(0,buf:sub(i-16+1, i):gsub('%c','.'),'\\n')end\n"
-                + "         if i%128==0 then tmr.wdclr()end\n"
-                + "     end\n"
-                + "     end\n"
-                + "  until(buf==nil)\n"
-                + "  file.close()\n"
-                + "  print(\"\\n--HexDump done.\")\n"
-                + "  else\n"
-                + "  print(\"\\n--HexDump error: can't open file\")\n"
-                + "  end\n"
-                + "end\n"
-                + "_dump()\n"
-                + "_dump=nil\n";
+        String cmd = Context.GetLua("/yh/espide/file_hexdump.lua", FileName);
         SendToESP(cmdPrep(cmd));
     }
 
     private ArrayList<String> cmdPrep(String cmd) {
         String[] str = cmd.split("\n");
-        ArrayList<String> s256 = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
         int i = 0;
-        s256.add("");
+        list.add("");
         for (String subs : str) {
-            if ((s256.get(i).length() + subs.trim().length()) <= 250) {
-                s256.set(i, s256.get(i) + " " + subs.trim());
+            if ((list.get(i).length() + subs.trim().length()) <= 250) {
+                list.set(i, list.get(i) + " " + subs.trim());
             } else {
-                s256.set(i, s256.get(i) + "\r");
-                s256.add(subs);
+                list.set(i, list.get(i) + "\r");
+                list.add(subs.trim());
                 i++;
             }
         }
-        return s256;
+        return list;
     }
 
     private void UpdateLedCTS() {
@@ -1799,7 +1712,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     private void MenuItemESPFormatActionPerformed(java.awt.event.ActionEvent evt) {
 
-        int isFormat = Dialog("Format ESP flash data area and remove ALL files. Are you sure?", JOptionPane.YES_NO_OPTION);
+        int isFormat = Context.Dialog("Format ESP flash data area and remove ALL files. Are you sure?", JOptionPane.YES_NO_OPTION);
         if (isFormat == JOptionPane.YES_OPTION) {
             btnSend("file.format()");
         }
@@ -1889,9 +1802,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             if (CloseFile() == JOptionPane.CANCEL_OPTION) {
                 return;
             }
-            if ((FilesTabbedPane.getTabCount() == 1) && getCurrentEdit().isNew()) {
-                break;
-            }
         }
         this.setVisible(false);
         System.exit(0);
@@ -1917,16 +1827,17 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
     private void FileSaveESPActionPerformed(java.awt.event.ActionEvent evt) {
-        if (!FileSaveESP.isSelected()) {
+        TextEditArea area = getCurrentEdit();
+        if (area == null || !FileSaveESP.isSelected()) {
             StopSend();
             return;
         }
-        if (getCurrentEdit().rSyntaxTextArea.getText().length() == 0) {
+        if (area.rSyntaxTextArea.getText().length() == 0) {
             FileSaveESP.setSelected(false);
             JOptionPane.showMessageDialog(null, "File empty.");
             return;
         }
-        String fName = getCurrentEdit().file.getName();
+        String fName = area.getFile().getName();
         if (fName.length() == 0) {
             FileSaveESP.setSelected(false);
             String msg = " Can't save file to ESP without name.";
@@ -1934,7 +1845,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             JOptionPane.showMessageDialog(null, msg);
             return;
         }
-        if (!Open.isSelected() || portJustOpen) {
+        if (!Open.isSelected() || !serialPortStatus.isOpened()) {
             LOGGER.info("FileSaveESP: Serial port not open. Operation canceled.");
             FileSaveESP.setSelected(false);
             return;
@@ -2045,10 +1956,10 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         }
 
         if (success) {
-            LOGGER.info("Open port " + portName + " - Success.");
+            LOGGER.info("AddTab port " + portName + " - Success.");
             thandler.comment("PORT OPEN " + getBaudRate(), true);
 
-            portJustOpen = true;
+            serialPortStatus = SerialPortStatus.CONNECTED;
             //
             btnSend("\r\n");
         }
@@ -2059,6 +1970,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     public void portClose() {
         try {
             if (serialPort.closePort()) {
+                serialPortStatus = SerialPortStatus.CLOSED;
                 thandler.comment("PORT CLOSED - Success.", false);
             } else {
                 thandler.comment("PORT CLOSED - Fail.", false);
@@ -2100,7 +2012,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
 
         FilesTabbedPane.removeAll();
-        FilesTabbedPane.AddTab("");
         FilesTabbedPane.setSelectChangedListener(this);
 
         LoadPrefs();
@@ -2272,19 +2183,11 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
 
-    private int Dialog(String msg, int btn) {
-        this.setAlwaysOnTop(false);
-        Toolkit.getDefaultToolkit().beep();
-        int returnVal = JOptionPane.showConfirmDialog(null, msg, "Attention", btn, JOptionPane.WARNING_MESSAGE);
-        this.setAlwaysOnTop(AlwaysOnTop.isSelected());
-        return returnVal;
-    }
-
-
     private int CloseFile() {
-        if (getCurrentEdit().isChanged()) {
+        TextEditArea area = getCurrentEdit();
+        if (area != null && area.isChanged()) {
             LOGGER.info("File changed. Ask before closing.");
-            int returnVal = Dialog("Save file \"" + getCurrentEdit().file + "\" before closing?", JOptionPane.YES_NO_CANCEL_OPTION);
+            int returnVal = Context.Dialog("Save file \"" + area.getFile() + "\" before closing?", JOptionPane.YES_NO_CANCEL_OPTION);
             if (returnVal == JOptionPane.YES_OPTION) {
                 if (!SaveFile()) {
                     LOGGER.info("File close: FAIL (file not saved, closing aborted)");
@@ -2304,12 +2207,9 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     private void ReloadFile() {
         TextEditArea area = getCurrentEdit();
-        if (area.isNew()) {
-            return;
-        }
         if (area.isChanged()) {
             LOGGER.info("File reload: File changed. Ask before reloading.");
-            int returnVal = Dialog("Discard any changes and reload file from disk?", JOptionPane.YES_NO_OPTION);
+            int returnVal = Context.Dialog("Discard any changes and reload file from disk?", JOptionPane.YES_NO_OPTION);
             if (returnVal != JOptionPane.OK_OPTION) {
                 LOGGER.info("File reload: FAIL (file not saved, reload cancelled by user choice)");
                 return;
@@ -2321,13 +2221,11 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         try {
 
             Busy();
-            Progress.ins.start("Reload " + area.file.getAbsolutePath(), area::reload_file);
-
+            Progress.ins.start("Reload " + area.getFile().getAbsolutePath(), area::reload_file);
             SelectChanged(area);
-
             Idle();
         } catch (Exception ex) {
-            LOGGER.log(Level.WARNING, "Loading " + area.file + ": FAIL.", ex);
+            LOGGER.log(Level.WARNING, "Loading " + area.getFile() + ": FAIL.", ex);
             JOptionPane.showMessageDialog(null, "Error, file not load!");
         }
 
@@ -2360,7 +2258,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     private boolean SendToESP(String str) {
         boolean success = false;
-        if (!Open.isSelected() || portJustOpen) {
+        if (!Open.isSelected() || !serialPortStatus.isOpened()) {
             LOGGER.info("SendESP: Serial port not open. Canceled.");
             return success;
         }
@@ -2374,7 +2272,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     private boolean SendToESP(ArrayList<String> buf) {
         boolean success = false;
-        if (!Open.isSelected() || portJustOpen) {
+        if (!Open.isSelected() || !serialPortStatus.isOpened()) {
             LOGGER.info("SendESP: Serial port not open. Cancel.");
             return success;
         }
@@ -2705,11 +2603,10 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             PortCTS.setIcon(Icon.LED_GREY);
             Open.setText("Open");
             Open.setIcon(Icon.CONNECT1);
-            PortOpenLabel.setIcon(Icon.LED_GREY);
         } else {
             Open.setText("Close");
             Open.setIcon(Icon.DISCONNECT1);
-            PortOpenLabel.setIcon(Icon.LED_GREEN);
+
             UpdateLedCTS();
             if (PortDTR.isSelected()) {
                 PortDTR.setIcon(Icon.LED_GREEN);
@@ -2721,31 +2618,35 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             } else {
                 PortRTS.setIcon(Icon.LED_GREY);
             }
-            if (portJustOpen) {
-                PortOpenLabel.setIcon(Icon.LED_RED);
-            }
+        }
+
+        if (serialPortStatus.isClosed()) {
+            PortOpenLabel.setIcon(Icon.LED_GREY);
+        } else if (serialPortStatus.isConnected()) {
+            PortOpenLabel.setIcon(Icon.LED_RED);
+        } else if (serialPortStatus.isOpened()) {
+            PortOpenLabel.setIcon(Icon.LED_GREEN);
         }
     }
 
 
-    boolean SaveDownloadedFile(String filename) {
-        boolean success = false;
+    File SaveDownloadedFile(String filename, byte[] data) {
         LOGGER.info("Saving downloaded file...");
         File f = new File(filename);
-        File[] files = Context.ShowFileDialog(null, "Save downloaded from ESP file \"" + filename + "\" As...", f, false, false, false);
+        File[] files = Context.ShowFileDialog(null, "Save downloaded from ESP file \"" + filename + "\" As...", f, false, false);
         if (null == files) {
             LOGGER.info("Saving abort by user.");
-            return success;
+            return null;
         }
         f = files[0];
         filename = f.getName();
 
         if (f.exists()) {
             LOGGER.info("File " + filename + " already exist, waiting user choice");
-            int shouldWrite = Dialog("File " + filename + " already exist. Overwrite?", JOptionPane.YES_NO_OPTION);
+            int shouldWrite = Context.Dialog("File " + filename + " already exist. Overwrite?", JOptionPane.YES_NO_OPTION);
             if (shouldWrite != JOptionPane.YES_OPTION) {
                 LOGGER.info("Saving canceled by user, because file " + filename + " already exist");
-                return success;
+                return null;
             } else {
                 LOGGER.info("File " + filename + " will be overwriten by user choice");
             }
@@ -2753,16 +2654,14 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             LOGGER.info("We saving new file " + filename);
         }
         try {
-            Context.Save(f, BufferCenter.DownBuffer.toByteArray());
-
+            Context.Save(f, data);
             LOGGER.info("Save file " + filename + ": Success, size:" + Long.toString(f.length()));
-            success = true;
         } catch (Exception e) {
             LOGGER.info("Save file " + filename + ": FAIL.");
             LOGGER.info(e.toString());
             JOptionPane.showMessageDialog(null, "Error, file " + filename + " not saved!");
         }
-        return success;
+        return f;
     }
 
     private void UploadFiles() {
@@ -2770,12 +2669,12 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             thandler.comment("Uploader: Serial port not open, operation FAILED.", true);
             return;
         }
-        if (portJustOpen) {
+        if (!serialPortStatus.isOpened()) {
             thandler.comment("Uploader: Communication with MCU not yet established.", true);
             return;
         }
 
-        File[] files = Context.ShowFileDialog(LeftBasePane, "Select file to upload to ESP", null, true, true, false);
+        File[] files = Context.ShowFileDialog(LeftBasePane, "Select file to upload to ESP", null, true, true);
         upload_file_list = new ArrayList<>();
         LOGGER.info("Uploader: chooser selected file:" + files.length);
         if (upload_file_list.addAll(Arrays.asList(files))) {
@@ -2968,24 +2867,8 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     }
 
     private void ViewFile(String fn) {
-        String cmd = "_view=function()\n"
-                + "local _line\n"
-                + "if file.open(\"" + fn + "\",\"r\") then \n"
-                + "    print(\"--FileView start\")\n"
-                + "    repeat _line = file.readline() \n"
-                + "        if (_line~=nil) then \n"
-                + "            print(string.sub(_line,1,-2)) \n"
-                + "        end \n"
-                + "    until _line==nil\n"
-                + "    file.close() \n"
-                + "    print(\"--FileView done.\") \n"
-                + "else\n"
-                + "  print(\"\\r--FileView error: can't open file\")\n"
-                + "end\n"
-                + "end\n"
-                + "_view()\n"
-                + "_view=nil\n";
-        SendToESP(cmdPrep(cmd));
+        String c = Context.GetLua("/yh/espide/file_view.lua", fn);
+        SendToESP(cmdPrep(c));
     }
 
     private void SetFirmwareType(FirmwareType ftype) {
@@ -3043,7 +2926,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     } // ClearPyFileManager
 
     private void PyListFiles() {
-        if (portJustOpen) {
+        if (!serialPortStatus.isOpened()) {
             LOGGER.info("ERROR: Communication with MCU not yet established.");
             return;
         }
@@ -3118,10 +3001,10 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
     @Override
     public void SelectChanged(TextEditArea area) {
-        if (null == area || area.isNew()) {
+        if (null == area) {
             FilePathLabel.setText("");
         } else {
-            FilePathLabel.setText(area.file.getPath());
+            FilePathLabel.setText(area.getFile().getPath());
         }
         UpdateEditorButtons(area);
     }
@@ -3381,7 +3264,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
                 }
                 if (null != data) {
                     thandler.add(data);
-                    if (portJustOpen) {
+                    if (serialPortStatus.isConnected()) {
                         if (!data.trim().isEmpty()) {
                             if (data.contains("\r\n>>>")) {
                                 thandler.comment("MicroPython firmware detected.", true);
@@ -3399,7 +3282,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
                                 thandler.comment("Can't detect firmware, Choose by yourself.", true);
                             }
 
-                            portJustOpen = false;
+                            serialPortStatus = SerialPortStatus.OPENED;
                             UpdateButtons();
                         }
                     }
