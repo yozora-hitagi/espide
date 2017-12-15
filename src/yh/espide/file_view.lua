@@ -4,7 +4,12 @@ _espide_view = function()
         print("--FileView start")
         repeat _line = file.readline()
             if (_line ~= nil) then
-                print(string.sub(_line, 1, -2))
+                e = string.sub(_line, #_line, -1)
+                if (e == "\n" or e == "\r") then
+                    print(string.sub(_line, 1, -2))
+                else
+                    print(_line)
+                end
             end
         until _line == nil
         file.close()
