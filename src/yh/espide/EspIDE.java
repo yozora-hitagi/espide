@@ -52,7 +52,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
     public static String s[];
     public static String rcvBuf = "";
     public static String rx_data = "";
-    public static byte[] rx_byte;
+
     public static byte[] tx_byte;
 
     public static boolean busyIcon = false;
@@ -303,7 +303,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             }
         });
 
-        addPropertyChangeListener(this::formPropertyChange);
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
             }
@@ -1465,11 +1465,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         }
         // param  init.luaSize:123
         String[] args = param.split("Size:");
-        int size = Integer.parseInt(args[1]);
-        int packet_count = size / 1024;
-        if (size % 1024 > 0) {
-            packet_count++;
-        }
+
         sendBuf = new ArrayList<>();
         String cmd = Context.GetLua("/yh/espide/file_download.lua", args[0]);
         s = cmd.split("\r?\n");
@@ -1481,14 +1477,14 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         SendLock();
         rx_data = "";
         rcvBuf = "";
-        rx_byte = new byte[0];
+
         try {
             serialPort.removeEventListener();
         } catch (Exception e) {
             LOGGER.info(e.toString());
         }
         try {
-            serialPort.addEventListener(new PortFileDownloader(args[0], open, packet_count), portMask);
+            serialPort.addEventListener(new PortFileDownloader(args[0], open, Integer.parseInt(args[1])), portMask);
             LOGGER.info("Downloader: Add EventListener: Success.");
         } catch (SerialPortException e) {
             LOGGER.info("Downloader: Add EventListener Error. Canceled.");
@@ -1535,7 +1531,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             thandler.comment("FAIL.", true);
         }
 
-        FileDownloadHandler.PACKETS.clear();
     }
 
     private byte[] concatArray(byte[] a, byte[] b) {
@@ -1569,36 +1564,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             LOGGER.info("len   =" + Integer.toString(len));
         }
         return r;
-    }
-
-    private int FindPacketID(int nPacket) {
-        int i, j, n, ret = -1;
-        boolean success;
-        String s = "~~~DATA-START~~~";
-        i = 0;
-        n = 0;
-        while (i < rx_byte.length - s.length()) {
-            success = true;
-            for (j = 0; j < s.length(); j++) {
-                if (!(rx_byte[i + j] == s.charAt(j))) {
-                    success = false;
-                    break;
-                }
-            }
-            if (success) {
-                n++;
-                //log("Downloader: n =" + Integer.toString(n));
-                //log("Downloader: nPacket =" + Integer.toString(nPacket));
-            }
-            if (success && (n == nPacket)) {
-                ret = i + s.length();
-                break;
-            } else {
-            }
-            i++;
-        }
-        //log("Downloader: FindPacketID=" + Integer.toString(ret));
-        return ret;
     }
 
     private int CRC(byte[] s) {
@@ -1709,9 +1674,6 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
         }
     }
 
-    private void formPropertyChange(java.beans.PropertyChangeEvent evt) {
-        //log(evt.getPropertyName());
-    }
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {
         isFileManagerShow();
@@ -2682,7 +2644,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         sendPacketsCRC = new ArrayList<>();
         rcvBuf = "";
-        rx_byte = new byte[0];
+
         tx_byte = new byte[0];
 
         if (!LoadBinaryFile(upload_file_list.get(upload_file_index))) {
@@ -3094,14 +3056,15 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
         private String filename;
         private boolean open;
-        private int packet_count;
+        private int packet_size;
 
         private Buffer buffer = new Buffer();
+        private int packet_count = 0;
 
-        public PortFileDownloader(String filename, boolean open, int packet_count) {
+        public PortFileDownloader(String filename, boolean open, int packet_size) {
             this.filename = filename;
             this.open = open;
-            this.packet_count = packet_count;
+            this.packet_size = packet_size;
         }
 
 
@@ -3110,7 +3073,7 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
             if (event.isRXCHAR() && event.getEventValue() > 0) {
                 try {
                     byte[] b = serialPort.readBytes();
-                    rx_byte = concatArray(rx_byte, b);
+
                     String data = new String(b);
                     rcvBuf = rcvBuf + data;
                     rx_data = rx_data + data;
@@ -3145,11 +3108,10 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
                     // we got full packet
                     String buf = rx_data.substring(0, rx_data.indexOf("~~~DATA-END~~~") + 14);
                     FileDownloadPacket packet = new FileDownloadPacket(buf);
-                    FileDownloadHandler.PACKETS.add(packet);
+                    packet_count++;
+
                     rx_data = rx_data.substring(rx_data.indexOf("~~~DATA-END~~~") + 14); // and remove it from buf
-                    if (this.packet_count > 0) { // exclude div by zero
-                        Progress.ins.setValue(FileDownloadHandler.PACKETS.size() * 100 / this.packet_count);
-                    }
+
 
                     if (packet.crc == CRC(packet.data.getBytes())) {
                         try {
@@ -3181,21 +3143,32 @@ public class EspIDE extends javax.swing.JFrame implements TerminalHandler.Comman
 
 
                         buffer.clean();
+
                         FileDownloadFinisher(null, this.filename, this.open);
                     }
-                } else if ((rx_data.lastIndexOf("~~~DATA-TOTAL-END~~~") >= 0) && (FileDownloadHandler.PACKETS.size() ==  this.packet_count)) {
+
+                    Progress.ins.setValue(buffer.size()  / this.packet_size);
+
+                } else if (rx_data.lastIndexOf("~~~DATA-TOTAL-END~~~") >= 0) {
+                    String l = rx_data.substring(rx_data.lastIndexOf("~~~DATA-TOTAL-START~~~") + 22, rx_data.lastIndexOf("~~~DATA-TOTAL-END~~~"));
                     try {
-                        timeout.stop();
-                    } catch (Exception e) {
-                        LOGGER.info(e.toString());
+                        int c = Integer.parseInt(l);
+                        if (c == this.packet_count) {
+                            try {
+                                timeout.stop();
+                            } catch (Exception e) {
+                                LOGGER.info(e.toString());
+                            }
+                            Progress.ins.setValue(100);
+                            LOGGER.info("Downloader: Receive final sequense. File download: Success");
+                            //log(rx_data);
+                            FileDownloadFinisher(buffer, this.filename, this.open);
+                        }
+                    } catch (NumberFormatException e) {
                     }
-                    Progress.ins.setValue(100);
-                    LOGGER.info("Downloader: Receive final sequense. File download: Success");
-                    //log(rx_data);
-                    FileDownloadFinisher(buffer, this.filename, this.open);
-                } else {
-                    //log("rxbyte - " + Integer.toString( rx_byte.length ));
+
                 }
+
             } else if (event.isCTS()) {
                 UpdateLedCTS();
             } else if (event.isERR()) {

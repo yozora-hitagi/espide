@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class FileDownloadHandler {
 
-    public static final ArrayList<FileDownloadPacket> PACKETS = new ArrayList<>();
+
 
 
     public static final FileDownloadHandler ins = new FileDownloadHandler();
