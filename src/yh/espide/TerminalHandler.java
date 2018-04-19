@@ -6,9 +6,9 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.ActionMap;
-import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
+import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import java.awt.event.KeyAdapter;
@@ -28,6 +28,8 @@ public class TerminalHandler extends RTextScrollPane {
     Logger logger = Logger.getLogger(TerminalHandler.class.getName());
 
     RSyntaxTextArea rSyntaxTextArea;
+
+    JPopupMenu popup;
 
 
     AtomicInteger location = new AtomicInteger(0);
@@ -189,6 +191,59 @@ public class TerminalHandler extends RTextScrollPane {
             am = am.getParent();
         }
 
+
+        popup = new JPopupMenu();
+        JMenuItem MenuItemTerminalClear = new JMenuItem();
+        MenuItemTerminalClear.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_MASK));
+        MenuItemTerminalClear.setIcon(Icon.TERMINAL_CLEAR);
+        MenuItemTerminalClear.setText(Context.BUNDLE.getString("Clear"));
+        MenuItemTerminalClear.addActionListener(evt -> clean());
+        popup.add(MenuItemTerminalClear);
+
+        JMenuItem MenuItemTerminalCopy = new JMenuItem();
+        MenuItemTerminalCopy.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        MenuItemTerminalCopy.setIcon(Icon.COPY);
+        MenuItemTerminalCopy.setText(Context.BUNDLE.getString("Copy"));
+        MenuItemTerminalCopy.setToolTipText("Copy selected text to system clipboard");
+        MenuItemTerminalCopy.setEnabled(false);
+        MenuItemTerminalCopy.addActionListener(evt -> copy());
+        popup.add(MenuItemTerminalCopy);
+
+        JCheckBoxMenuItem AutoScroll = new JCheckBoxMenuItem();
+        AutoScroll.setSelected(Config.ins.getAutoScroll());
+        AutoScroll.setText(Context.BUNDLE.getString("AutoScroll"));
+        AutoScroll.setToolTipText("terminalArea AutoScroll Enable/Disable");
+        AutoScroll.addActionListener(evt -> Config.ins.setAutoScroll(AutoScroll.isSelected()));
+        popup.add(AutoScroll);
+
+        JCheckBoxMenuItem EOL = new JCheckBoxMenuItem();
+        EOL.setSelected(Config.ins.getShowEOL());
+        EOL.setText("EOL");
+        EOL.setToolTipText("EOL visible Enable/Disable");
+        EOL.addItemListener(evt -> setEOLMarkersVisible(EOL.isSelected()));
+        popup.add(EOL);
+
+        popup.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                try {
+                    MenuItemTerminalCopy.setEnabled(hasSelected());
+                } catch (Exception exp) {
+                    MenuItemTerminalCopy.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+
+            }
+        });
+        rSyntaxTextArea.setPopupMenu(popup);
     }
 
 
@@ -207,24 +262,6 @@ public class TerminalHandler extends RTextScrollPane {
         rSyntaxTextArea.setEOLMarkersVisible(b);
     }
 
-
-    public void setPopupMenu(JPopupMenu popup) {
-        rSyntaxTextArea.setPopupMenu(popup);
-    }
-
-
-    public void setSyntaxEditingStyle(FirmwareType type) {
-
-        switch (type) {
-            case MicroPython:
-                rSyntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
-                break;
-            default:
-                rSyntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_LUA);
-                break;
-
-        }
-    }
 
     public void updateTheme() {
         Theme theme = Context.GetTheme();
@@ -277,10 +314,8 @@ public class TerminalHandler extends RTextScrollPane {
 
 
     public void comment(String s, boolean end) {
-        String pre = "#--";
-        if (FirmwareType.current.eq(FirmwareType.NodeMCU)) {
-            pre = "---";
-        }
+        String pre = "---";
+
         add("\r\n" + pre + s);
         if (end) {
             add("\r\n");

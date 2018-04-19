@@ -5,10 +5,10 @@ package yh.espide;
  */
 public class Version {
 
-    public static final String version="1.0";
-    public static final String name="espide";
+    public static final String version = "1.0";
+    public static final String name = "NodeMCU IDE";
 
-    public static String title(){
-        return name+" "+version+" for YH";
+    public static String title() {
+        return name + " " + version;
     }
 }

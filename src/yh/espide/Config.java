@@ -19,9 +19,6 @@ public class Config {
     private static final String SERIAL_PORT = "serial_port";
     private static final String SERIAL_BAUD_RATE = "serial_baud_rate";
     private static final String PATH = "path";
-    private static final String FILE_AUTO_SAVE_DISK = "file_auto_save_disk";
-    private static final String FILE_AUTO_SAVE_ESP = "file_auto_save_esp";
-    private static final String FILE_AUTO_RUN = "file_auto_run";
     private static final String COLOR_THEME = "color_theme";
     private static final String DELAY_AFTER_ANSWER = "delay_after_answer";
     private static final String ANSWER_TIMEOUT = "answer_timeout";
@@ -30,22 +27,17 @@ public class Config {
     private static final String LINE_DELAY = "line_delay";
     private static final String TERMINAL_FONT_SIZE = "terminal_font_size";
     private static final String EDITOR_FONT_SIZE = "editor_font_size";
-    private static final String LOG_FONT_SIZE = "log_font_size";
     private static final String AUTO_SCROLL = "auto_scroll";
     private static final String SHOW_TOOLBAR = "show_toolbar";
     private static final String SHOW_FM_RIGHT = "show_fm_right";
-    private static final String USE_CUSTOM_PORT = "use_custom_port";
-    private static final String CUSTOM_PORT_NAME = "custom_port_name";
     private static final String FM_DIV_DIVIDERLOCATION = "fm_div_dividerlocation";
     private static final String PORT_RTS = "port_rts";
     private static final String PORT_DTR = "port_dtr";
-    private static final String USE_EXT_EDITOR = "use_ext_editor";
     private static final String SHOW_EOL = "show_eol";
     private static final String WIN_X = "win_x";
     private static final String WIN_Y = "win_y";
     private static final String WIN_H = "win_h";
     private static final String WIN_W = "win_w";
-    private static final String COMMAND_ECHO = "command_echo";
 
     Logger logger = Logger.getLogger(Config.class.getName());
 
@@ -54,16 +46,12 @@ public class Config {
     private int default_termnal_max_text_size = 100;
     private boolean default_dumb_mode = false;
     private boolean default_turbo_mode = false;
-    private boolean default_file_auto_save_esp = true;
-    private boolean default_file_auto_save_disk = true;
-    private boolean default_file_auto_run = false;
     private int default_color_theme = 1;
     private int default_delay_after_answer = 0;
     private int default_line_delay_for_dumb = 200;
     private int default_answer_timeout = 3;
     private int default_terminal_font_size = 16;
     private int default_editor_font_size = 13;
-    private String default_serial_port = "";
     private int default_win_x = 0;
     private int default_win_y = 0;
     private int default_win_h = 768;
@@ -87,6 +75,8 @@ public class Config {
         }
 
     }
+
+
 
 
     public void setWinX(int x) {
