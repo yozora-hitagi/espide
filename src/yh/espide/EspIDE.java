@@ -7,9 +7,7 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,28 +19,25 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     public static final Logger LOGGER = Logger.getLogger(EspIDE.class.getName());
 
-    private static final int portMask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS;
-    public static SerialPort serialPort;
+
     public static ArrayList<String> sendBuf;
 
 
     public static int j = 0;
     public static boolean sendPending = false;
 
-    public static String rcvBuf = "";
+
     public static String rx_data = "";
 
-    public static byte[] tx_byte;
 
     public static boolean busyIcon = false;
 
-    public final int SEND_PACKET_SIZE = 250;
+
     public ActionListener taskPerformer;
-    public ActionListener watchDog;
+
     public Timer timer;
-    public Timer timeout;
-    // downloader
-    public int packets = 0;
+    public WatchDog watchDog = new WatchDog(this);
+
 
     public ArrayList<byte[]> sendPackets;
     public ArrayList<Boolean> sendPacketsCRC;
@@ -50,10 +45,8 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     public FileList fileList = new FileList();
 
-    SerialPortStatus serialPortStatus = SerialPortStatus.CLOSED;
 
-
-    private TerminalHandler thandler = new TerminalHandler(this);
+    public TerminalHandler thandler = new TerminalHandler(this);
     private JCheckBoxMenuItem AlwaysOnTop;
     private JLabel Busy;
     private JButton ButtonCopy;
@@ -988,8 +981,8 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         UpdateButtons();
     }
 
-    private void UpdateButtons() {
-        if (Open.isSelected() && serialPortStatus.isOpened()) {
+    public void UpdateButtons() {
+        if (Open.isSelected() && SerialObject.ins.getSerialPortStatus().isOpened()) {
             Port.setEnabled(false);
             ReScan.setEnabled(false);
         } else {
@@ -1171,18 +1164,18 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     }
 
     private void NodeListFiles() {
-        if (!serialPortStatus.isOpened()) {
+        if (!SerialObject.ins.getSerialPortStatus().isOpened()) {
             LOGGER.info("ERROR: Communication with MCU not yet established.");
             return;
         }
         String cmd = Context.GetLua("/yh/espide/file_list.lua");
         try {
-            serialPort.removeEventListener();
+            SerialObject.ins.removeEventListener();
         } catch (Exception e) {
             LOGGER.info(e.toString());
         }
         try {
-            serialPort.addEventListener(new PortNodeFilesReader(), portMask);
+            SerialObject.ins.addEventListener(new PortNodeFilesReader());
             LOGGER.info("FileManager: Add EventListener: Success.");
         } catch (SerialPortException e) {
             LOGGER.info("FileManager: Add EventListener Error. Canceled.");
@@ -1190,7 +1183,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         }
         ClearNodeFileManager();
         rx_data = "";
-        rcvBuf = "";
+
         sendBuf = cmdPrep(cmd);
         LOGGER.info("FileManager: Starting...");
         SendLock();
@@ -1205,7 +1198,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         timer = new Timer(delay, taskPerformer);
         timer.setRepeats(false);
         timer.setInitialDelay(delay);
-        WatchDog();
+        watchDog.start();
         timer.start();
     }
 
@@ -1229,63 +1222,43 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     }
 
     private void FileDownload(String param, boolean open) {
-        if (!serialPortStatus.isOpened()) {
+        if (!SerialObject.ins.getSerialPortStatus().isOpened()) {
             LOGGER.info("Downloader: Communication with MCU not yet established.");
             return;
         }
         // param  init.luaSize:123
         String[] args = param.split("Size:");
 
-        sendBuf = new ArrayList<>();
-        String cmd = Context.GetLua("/yh/espide/file_download.lua", args[0]);
-        String[] s = cmd.split("\r?\n");
-        for (String subs : s) {
-            sendBuf.add(subs);
-        }
         LOGGER.info("Downloader: Starting...");
         startTime = System.currentTimeMillis();
         SendLock();
         rx_data = "";
-        rcvBuf = "";
+
 
         try {
-            serialPort.removeEventListener();
+            SerialObject.ins.removeEventListener();
         } catch (Exception e) {
             LOGGER.info(e.toString());
         }
         try {
-            serialPort.addEventListener(new PortFileDownloader(args[0], open, Integer.parseInt(args[1])), portMask);
+            PortFileDownloader downloader = new PortFileDownloader(this, args[0], open, Integer.parseInt(args[1]));
+            SerialObject.ins.addEventListener(downloader);
+            downloader.start();
             LOGGER.info("Downloader: Add EventListener: Success.");
         } catch (SerialPortException e) {
             LOGGER.info("Downloader: Add EventListener Error. Canceled.");
             return;
         }
-        int delay = 10;
-        j0();
-        taskPerformer = evt -> {
-            if (j < sendBuf.size()) {
-                send(addCR(sendBuf.get(j)), false);
-                sendPending = false;
-            }
-        };
-        timer = new Timer(delay, taskPerformer);
-        timer.setRepeats(false);
-        LOGGER.info("Downloader: Start");
-        thandler.comment("Download file \"" + args[0] + "\"...", true);
-        timer.setInitialDelay(delay);
-        WatchDog();
-        timer.start();
-        return;
     }
 
-    private void FileDownloadFinisher(Buffer buffer, String filename, boolean open) {
+    public void FileDownloadFinisher(Buffer buffer, String filename, boolean open) {
         try {
-            serialPort.removeEventListener();
+            SerialObject.ins.removeEventListener();
         } catch (Exception e) {
             LOGGER.info(e.toString());
         }
         try {
-            serialPort.addEventListener(new PortReader(), portMask);
+            SerialObject.ins.addEventListener(new PortReader(this));
         } catch (SerialPortException e) {
             LOGGER.info("Downloader: Can't Add OldEventListener.");
         }
@@ -1303,40 +1276,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     }
 
-    private byte[] concatArray(byte[] a, byte[] b) {
-        if (a == null) {
-            return b;
-        }
-        if (b == null) {
-            return a;
-        }
-        byte[] r = new byte[a.length + b.length];
-        System.arraycopy(a, 0, r, 0, a.length);
-        System.arraycopy(b, 0, r, a.length, b.length);
-        return r;
-    }
-
-    private byte[] copyPartArray(byte[] a, int start, int len) {
-        if (a == null) {
-            return null;
-        }
-        if (start > a.length) {
-            return null;
-        }
-        byte[] r = new byte[len];
-        try {
-            System.arraycopy(a, start, r, 0, len);
-        } catch (Exception e) {
-            LOGGER.info(e.toString());
-            LOGGER.info("copyPartArray exception");
-            LOGGER.info("size a=" + Integer.toString(a.length));
-            LOGGER.info("start =" + Integer.toString(start));
-            LOGGER.info("len   =" + Integer.toString(len));
-        }
-        return r;
-    }
-
-    private int CRC(byte[] s) {
+    public int CRC(byte[] s) {
         int cs = 0;
         int x;
         try {
@@ -1376,9 +1316,9 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         return list;
     }
 
-    private void UpdateLedCTS() {
+    public void UpdateLedCTS() {
         try {
-            if (serialPort.isCTS()) {
+            if (SerialObject.ins.isCTS()) {
                 PortCTS.setIcon(Icon.LED_GREEN);
             } else {
                 PortCTS.setIcon(Icon.LED_GREY);
@@ -1453,7 +1393,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     private void PortDTRActionPerformed(ActionEvent evt) {
         Config.ins.setPortDtr(PortDTR.isSelected());
         try {
-            serialPort.setDTR(PortDTR.isSelected());
+            SerialObject.ins.setDTR(PortDTR.isSelected());
             if (PortDTR.isSelected()) {
                 LOGGER.info("DTR set to ON");
             } else {
@@ -1470,7 +1410,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     private void PortRTSActionPerformed(ActionEvent evt) {
         Config.ins.setPortRts(PortRTS.isSelected());
         try {
-            serialPort.setRTS(PortRTS.isSelected());
+            SerialObject.ins.setRTS(PortRTS.isSelected());
             if (PortRTS.isSelected()) {
                 LOGGER.info("RTS set to ON");
             } else {
@@ -1561,13 +1501,13 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
             JOptionPane.showMessageDialog(null, msg);
             return;
         }
-        if (!Open.isSelected() || !serialPortStatus.isOpened()) {
+        if (!Open.isSelected() || !SerialObject.ins.getSerialPortStatus().isOpened()) {
             LOGGER.info("FileSaveESP: Serial port not open. Operation canceled.");
             FileSaveESP.setSelected(false);
             return;
         }
 
-        nodeSaveFileESP(fName);
+        SaveToESP(fName);
 
     }
 
@@ -1599,9 +1539,6 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         send(addCRLF(cmd), true);
     }
 
-    public void inc_j() {
-        ++j;
-    }
 
     public void j0() {
         j = 0;
@@ -1627,45 +1564,37 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         return Integer.parseInt(String.valueOf(Speed.getSelectedItem()));
     }
 
-    public boolean SetSerialPortParams() {
-        boolean success = false;
-        String portName = GetSerialPortName();
-        try {
-            success = serialPort.setParams(getBaudRate(),
-                    SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1,
-                    SerialPort.PARITY_NONE,
-                    PortRTS.isSelected(),
-                    PortDTR.isSelected());
-        } catch (Exception e) {
-            LOGGER.info(e.toString());
-        }
-        if (!success) {
-            LOGGER.info("ERROR setting port " + portName + " parameters.");
-        }
-        UpdateLED();
-        return success;
-    }
 
     public boolean portOpen() {
         String portName = GetSerialPortName();
         LOGGER.info("Try to open port " + portName + ", baud " + getBaudRate() + ", 8N1");
-        serialPort = new SerialPort(portName);
+        SerialObject.ins = new SerialObject(portName);
         try {
-            if (!serialPort.openPort()) {
+            if (!SerialObject.ins.openPort()) {
                 LOGGER.info("ERROR opening serial port " + portName);
                 return false;
             }
-            SetSerialPortParams();
-            serialPort.addEventListener(new PortReader(), portMask);
+
+            try {
+                if (!SerialObject.ins.setParams(getBaudRate(),
+                        SerialPort.DATABITS_8,
+                        SerialPort.STOPBITS_1,
+                        SerialPort.PARITY_NONE,
+                        PortRTS.isSelected(),
+                        PortDTR.isSelected())) {
+                    LOGGER.info("ERROR setting port " + portName + " parameters.");
+                }
+            } catch (Exception e) {
+                LOGGER.info(e.toString());
+            }
+            UpdateLED();
+            SerialObject.ins.addEventListener(new PortReader(this));
         } catch (SerialPortException ex) {
             LOGGER.info(ex.toString());
-            return false;
         }
 
         LOGGER.info("AddTab port " + portName + " - Success.");
         thandler.comment("PORT OPEN " + getBaudRate(), true);
-        serialPortStatus = SerialPortStatus.CONNECTED;
         btnSend("\r\n");
         return true;
 
@@ -1673,8 +1602,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     public void portClose() {
         try {
-            if (serialPort.closePort()) {
-                serialPortStatus = SerialPortStatus.CLOSED;
+            if (SerialObject.ins.closePort()) {
                 thandler.comment("PORT CLOSED - Success.", false);
             } else {
                 thandler.comment("PORT CLOSED - Fail.", false);
@@ -1902,9 +1830,9 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     }
 
-    private void StopSend() {
+    public void StopSend() {
         try {
-            serialPort.removeEventListener();
+            SerialObject.ins.removeEventListener();
         } catch (Exception e) {
         }
         try {
@@ -1912,11 +1840,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         } catch (Exception e) {
         }
         try {
-            timeout.stop();
-        } catch (Exception e) {
-        }
-        try {
-            serialPort.addEventListener(new PortReader(), portMask);
+            SerialObject.ins.addEventListener(new PortReader(this));
         } catch (SerialPortException e) {
         }
         SendUnLock();
@@ -1925,22 +1849,13 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     }
 
     private boolean SendToESP(String str) {
-        boolean success = false;
-        if (!Open.isSelected() || !serialPortStatus.isOpened()) {
-            LOGGER.info("SendESP: Serial port not open. Canceled.");
-            return success;
-        }
-        sendBuf = new ArrayList<>();
         String[] s = str.split("\r?\n");
-        sendBuf.addAll(Arrays.asList(s));
-        success = SendTimerStart();
-        LOGGER.info("SendToESP: Starting...");
-        return success;
+        return SendToESP(Arrays.asList(s));
     }
 
-    private boolean SendToESP(ArrayList<String> buf) {
+    private boolean SendToESP(java.util.List<String> buf) {
         boolean success = false;
-        if (!Open.isSelected() || !serialPortStatus.isOpened()) {
+        if (!Open.isSelected() || !SerialObject.ins.getSerialPortStatus().isOpened()) {
             LOGGER.info("SendESP: Serial port not open. Cancel.");
             return success;
         }
@@ -1952,27 +1867,8 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         return success;
     }
 
-    private void WatchDog() {
-        if (Config.ins.isDumb_mode()) {
-            return;
-        }
-        watchDog = evt -> {
-            StopSend();
-            Toolkit.getDefaultToolkit().beep();
-            thandler.comment("Waiting answer from ESP - Timeout reached. Command aborted.", true);
-            LOGGER.info("Waiting answer from ESP - Timeout reached. Command aborted.");
-        };
-        int delay = Config.ins.getAnswer_timeout() * 1000;
-        if (delay == 0) {
-            delay = 300;
-        }
-        timeout = new Timer(delay, watchDog);
-        timeout.setRepeats(false);
-        timeout.setInitialDelay(delay);
-        timeout.start();
-    }
 
-    private boolean nodeSaveFileESP(String ft) {
+    private boolean SaveToESP(String ft) {
         boolean success = false;
         LOGGER.info("FileSaveESP: Try to save file to ESP...");
         sendBuf = new ArrayList<>();
@@ -1994,7 +1890,6 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     }
 
     private boolean nodeSaveFileESPTurbo(String ft) {
-        boolean success = false;
         LOGGER.info("FileSaveESP-Turbo: Try to save file to ESP in Turbo Mode...");
         sendBuf.add("local FILE=\"" + ft + "\" file.remove(FILE) file.open(FILE,\"w+\") uart.setup(0," + getBaudRate() + ",8,0,1,0)");
         sendBuf.add("ESP_Receiver=function(rcvBuf) if string.match(rcvBuf,\"^ESP_cmd_close\")==nil then file.write(string.gsub(rcvBuf, \'\\r\', \'\')) uart.write(0, \"> \") else uart.on(\"data\") ");
@@ -2019,7 +1914,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         sendBuf.add("ESP_cmd_close");
         sendBuf.add("\r\n");
 
-        success = SendTurboTimerStart();
+        boolean success = SendTurboTimerStart();
         LOGGER.info("FileSaveESP-Turbo: Starting...");
         return success;
     }
@@ -2027,13 +1922,13 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     public boolean SendTurboTimerStart() {
         startTime = System.currentTimeMillis();
         SendLock();
-        rcvBuf = "";
+
         try {
-            serialPort.removeEventListener();
+            SerialObject.ins.removeEventListener();
         } catch (Exception e) {
         }
         try {
-            serialPort.addEventListener(new PortTurboReader(), portMask);
+            SerialObject.ins.addEventListener(new PortTurboReader());
         } catch (SerialPortException e) {
             LOGGER.info("DataTurboSender: Add EventListener Error. Canceled.");
             return false;
@@ -2054,7 +1949,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         timer.setRepeats(false);
         LOGGER.info("DataTurboSender: start \"Smart Mode\"");
         timer.setInitialDelay(delay);
-        WatchDog();
+        watchDog.start();
         timer.start();
         return true;
     }
@@ -2063,22 +1958,22 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     public boolean SendTimerStart() {
         startTime = System.currentTimeMillis();
         SendLock();
-        rcvBuf = "";
+
         try {
-            serialPort.removeEventListener();
+            SerialObject.ins.removeEventListener();
         } catch (Exception e) {
         }
         try {
             if (Config.ins.isDumb_mode()) {
-                serialPort.addEventListener(new PortReader(), portMask);
+                SerialObject.ins.addEventListener(new PortReader(this));
             } else {
-                serialPort.addEventListener(new PortExtraReader(), portMask);
+                SerialObject.ins.addEventListener(new PortExtraReader());
             }
         } catch (SerialPortException e) {
             LOGGER.info("DataSender: Add EventListener Error. Canceled.");
             return false;
         }
-        int delay = 0;
+        int delay;
         j0();
         if (Config.ins.isDumb_mode()) { // DumbMode
             delay = Config.ins.getLine_delay_for_dumb();
@@ -2086,7 +1981,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
             taskPerformer = evt -> {
                 if (j < sendBuf.size()) {
                     send(addCRLF(sendBuf.get(j).trim()), false);
-                    inc_j();
+                    j++;
                     int div = sendBuf.size() - 1;
                     if (div == 0) {
                         div = 1; // for non-zero divide
@@ -2121,7 +2016,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
             timer.setInitialDelay(delay);
             timer.start();
             LOGGER.info("DataSender: start \"Smart Mode\"");
-            WatchDog();
+            watchDog.start();
         }
         return true;
     }
@@ -2140,13 +2035,13 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         busyIcon = !busyIcon;
         try {
             LOGGER.info("sending:" + s.replace("\r\n", "<CR><LF>"));
-            serialPort.writeString(s);
+            SerialObject.ins.writeString(s);
         } catch (SerialPortException ex) {
             LOGGER.info("send FAIL:" + s.replace("\r\n", "<CR><LF>"));
         }
         if (!Config.ins.isDumb_mode() && !simple) {
             try {
-                timeout.restart();
+                watchDog.feed();
             } catch (Exception e) {
             }
         }
@@ -2156,27 +2051,6 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         }
     }
 
-    public void sendBin(byte data) {
-        if (!Open.isSelected()) {
-            LOGGER.info("DataSender: Serial port not open, operation FAILED.");
-            return;
-        }
-        try {
-            serialPort.writeByte(data);
-        } catch (SerialPortException ex) {
-            LOGGER.info("send FAIL:" + (char) data);
-        }
-    }
-
-    public void sendStart() {
-        byte data = 0x05;
-        sendBin(data);
-    }
-
-    public void sendEnd() {
-        byte data = 0x04;
-        sendBin(data);
-    }
 
     public void Busy() {
         Busy.setText("BUSY");
@@ -2241,11 +2115,11 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
             }
         }
 
-        if (serialPortStatus.isClosed()) {
+        if (SerialObject.ins.getSerialPortStatus().isClosed()) {
             PortOpenLabel.setIcon(Icon.LED_GREY);
-        } else if (serialPortStatus.isConnected()) {
+        } else if (SerialObject.ins.getSerialPortStatus().isConnected()) {
             PortOpenLabel.setIcon(Icon.LED_RED);
-        } else if (serialPortStatus.isOpened()) {
+        } else if (SerialObject.ins.getSerialPortStatus().isOpened()) {
             PortOpenLabel.setIcon(Icon.LED_GREEN);
         }
     }
@@ -2290,7 +2164,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
             thandler.comment("Uploader: Serial port not open, operation FAILED.", true);
             return;
         }
-        if (!serialPortStatus.isOpened()) {
+        if (!SerialObject.ins.getSerialPortStatus().isOpened()) {
             thandler.comment("Uploader: Communication with MCU not yet established.", true);
             return;
         }
@@ -2320,19 +2194,13 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
 
         sendPacketsCRC = new ArrayList<>();
-        rcvBuf = "";
 
-        tx_byte = new byte[0];
-
-        if (!LoadBinaryFile(upload_file_list.get(upload_file_index))) {
+        sendPackets = Context.LoadBinaryFile(upload_file_list.get(upload_file_index));
+        if (sendPackets.isEmpty()) {
             LOGGER.info("Uploader: loaded fail!");
             return;
         }
-        int lastPacketSize = SplitDataToPackets();
-        if (lastPacketSize < 0) {
-            LOGGER.info("Uploader: SplitDataToPackets fail!");
-            return;
-        }
+
         LOGGER.info("sendPackets=" + Integer.toString(sendPackets.size()));
         String cmd = "_up=function(n,l,ll)\n"
                 + "     local cs = 0\n"
@@ -2358,25 +2226,18 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                 + "end\n"
                 + "file.remove(\"" + UploadFileName + "\")\n";
         sendBuf = cmdPrep(cmd);
-        int startPackets;
-        if (packets == 1) { // small file
-            startPackets = lastPacketSize;
-        } else {
-            startPackets = SEND_PACKET_SIZE;
-        }
-        sendBuf.add("_up(" + Integer.toString(packets) + "," + Integer.toString(startPackets) + "," + Integer.toString(lastPacketSize) + ")");
+        sendBuf.add("_up(" + sendPackets.size() + "," + sendPackets.get(0).length + "," + sendPackets.get(sendPackets.size() - 1).length + ")");
         LOGGER.info("Uploader: Starting...");
         startTime = System.currentTimeMillis();
         SendLock();
         rx_data = "";
-        rcvBuf = "";
         try {
-            serialPort.removeEventListener();
+            SerialObject.ins.removeEventListener();
         } catch (Exception e) {
             LOGGER.info(e.toString());
         }
         try {
-            serialPort.addEventListener(new PortFilesUploader(), portMask);
+            SerialObject.ins.addEventListener(new PortFilesUploader());
             LOGGER.info("Uploader: Add EventListener: Success.");
         } catch (SerialPortException e) {
             LOGGER.info("Uploader: Add EventListener Error. Canceled.");
@@ -2402,65 +2263,10 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         LOGGER.info("Uploader: Start");
         thandler.comment("Uploading to ESP file " + UploadFileName + "...", true);
         timer.setInitialDelay(delay);
-        WatchDog();
+        watchDog.start();
         timer.start();
     }
 
-    private boolean LoadBinaryFile(File f) {
-        boolean success = false;
-        try {
-            LOGGER.info("BinaryFileLoader: Try to load file " + f.getName() + " ...");
-
-            DataInputStream dis = new DataInputStream(new FileInputStream(f));
-            tx_byte = new byte[dis.available()];
-            int size = dis.read(tx_byte);
-            dis.close();
-            if (size == f.length()) {
-                LOGGER.info("BinaryFileLoader: Load file " + f.getName() + ": Success, size:" + Long.toString(f.length()));
-                success = true;
-            } else {
-                LOGGER.info("BinaryFileLoader: Load file " + f.getName() + ": Fail, file size:" + Long.toString(f.length()) + ", read:" + Integer.toString(size));
-            }
-        } catch (IOException e) {
-            LOGGER.info("BinaryFileLoader: Load file " + f.getName() + ": FAIL.");
-            LOGGER.info(e.toString());
-            JOptionPane.showMessageDialog(null, "BinaryFileLoader: Error, file " + f.getName() + " can't be read!");
-        }
-        return success;
-    }
-
-    private int SplitDataToPackets() {
-        sendPackets = new ArrayList<>();
-        packets = tx_byte.length / SEND_PACKET_SIZE;
-        LOGGER.info("1. packets = " + Integer.toString(packets));
-        if ((tx_byte.length % SEND_PACKET_SIZE) > 0) {
-            packets++;
-        }
-        LOGGER.info("2. packets = " + Integer.toString(packets));
-        if (tx_byte.length < SEND_PACKET_SIZE) {
-            packets = 1;
-        }
-        int remain = tx_byte.length;
-        int lastPacketSize = -1;
-        byte[] b;
-        int pos = 0;
-        for (int i = 0; i < packets; i++) {
-            LOGGER.info("3. packet = " + Integer.toString(i));
-            if (remain > SEND_PACKET_SIZE) {
-                b = new byte[SEND_PACKET_SIZE]; // default value is 200
-            } else {
-                b = new byte[remain];
-                lastPacketSize = remain;
-            }
-            System.arraycopy(tx_byte, pos, b, 0, b.length);
-            sendPackets.add(b);
-            LOGGER.info("BinaryFileLoader: Prepare next packet for send, len=" + Integer.toString(b.length));
-            remain -= b.length;
-            pos += b.length;
-        }
-        LOGGER.info("BinaryFileLoader: Total packets prepared=" + Integer.toString(sendPackets.size()));
-        return lastPacketSize;
-    }
 
     public void sendBytes(byte[] b) {
         if (!Open.isSelected()) {
@@ -2477,7 +2283,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         busyIcon = !busyIcon;
         try {
             //log("BytesSender sending:" + b.toString().replace("\r\n", "<CR><LF>"));
-            serialPort.writeBytes(b);
+            SerialObject.ins.writeBytes(b);
         } catch (SerialPortException ex) {
             LOGGER.info("BytesSender send FAIL:" + b.toString().replace("\r\n", "<CR><LF>"));
 
@@ -2527,29 +2333,31 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     private class PortNodeFilesReader implements SerialPortEventListener {
 
+        private String sendResp = "";
+
         public void serialEvent(SerialPortEvent event) {
             String data;
             if (event.isRXCHAR() && event.getEventValue() > 0) {
                 try {
-                    data = serialPort.readString(event.getEventValue());
-                    rcvBuf = rcvBuf + data;
+                    data = SerialObject.ins.readString(event.getEventValue());
+                    sendResp = sendResp + data;
                     rx_data = rx_data + data;
                 } catch (Exception e) {
                     data = "";
                     LOGGER.info(e.toString());
                 }
-                if (rcvBuf.contains("> ")) {
+                if (sendResp.contains("> ")) {
                     try {
-                        timeout.restart();
+                        watchDog.feed();
                     } catch (Exception e) {
                         LOGGER.info(e.toString());
                     }
-                    rcvBuf = "";
+                    sendResp = "";
                     if (j < sendBuf.size() - 1) {
                         if (timer.isRunning() || sendPending) {
                             //
                         } else {
-                            inc_j();
+                            j++;
                             sendPending = true;
                             timer.start();
                         }
@@ -2563,7 +2371,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                 try {
                     if (rx_data.contains("~~~File list END~~~")) {
                         try {
-                            timeout.stop();
+                            watchDog.stop();
                         } catch (Exception e) {
                             LOGGER.info(e.toString());
                         }
@@ -2604,10 +2412,10 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                             LOGGER.info(e.toString());
                         }
                         try {
-                            serialPort.removeEventListener();
+                            SerialObject.ins.removeEventListener();
                         } catch (Exception e) {
                         }
-                        serialPort.addEventListener(new PortReader(), portMask);
+                        SerialObject.ins.addEventListener(new PortReader(EspIDE.this));
                         SendUnLock();
                     }
                 } catch (SerialPortException ex) {
@@ -2621,185 +2429,16 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         }
     }
 
-    private class PortFileDownloader implements SerialPortEventListener {
-
-
-        private String filename;
-        private boolean open;
-        private int packet_size;
-
-        private Buffer buffer = new Buffer();
-        private int packet_count = 0;
-
-        public PortFileDownloader(String filename, boolean open, int packet_size) {
-            this.filename = filename;
-            this.open = open;
-            this.packet_size = packet_size;
-        }
-
-
-        public void serialEvent(SerialPortEvent event) {
-
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                try {
-                    byte[] b = serialPort.readBytes();
-
-                    String data = new String(b);
-                    rcvBuf = rcvBuf + data;
-                    rx_data = rx_data + data;
-                    //TerminalAdd(data);
-                } catch (SerialPortException e) {
-                    LOGGER.info(e.toString());
-                }
-                if (rcvBuf.contains("> ")) {
-                    try {
-                        timeout.restart();
-                    } catch (Exception e) {
-                        LOGGER.info(e.toString());
-                    }
-                    rcvBuf = "";
-                    if (j < sendBuf.size() - 1) {
-                        if (timer.isRunning() || sendPending) {
-                            //
-                        } else {
-                            inc_j();
-                            sendPending = true;
-                            timer.start();
-                        }
-                    } else { // send done
-                        try {
-                            timer.stop();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-
-                if ((rx_data.lastIndexOf("~~~DATA-END~~~") >= 0) && (rx_data.lastIndexOf("~~~DATA-START~~~") >= 0)) {
-                    // we got full packet
-                    String buf = rx_data.substring(0, rx_data.indexOf("~~~DATA-END~~~") + 14);
-                    FileDownloadPacket packet = new FileDownloadPacket(buf);
-                    packet_count++;
-
-                    rx_data = rx_data.substring(rx_data.indexOf("~~~DATA-END~~~") + 14); // and remove it from buf
-
-
-                    if (packet.crc == CRC(packet.data.getBytes())) {
-                        try {
-                            timeout.restart();
-                        } catch (Exception e) {
-                            LOGGER.info(e.toString());
-                        }
-
-                        try {
-                            buffer.write(packet.data.getBytes());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        LOGGER.info("Downloader: Receive packet: " + packet.index + "/" + Integer.toString(packets)
-                                + ", size:" + packet.len
-                                + ", CRC check: Success");
-                    } else {
-                        try {
-                            timeout.stop();
-                        } catch (Exception e) {
-                            LOGGER.info(e.toString());
-                        }
-                        LOGGER.info("Downloader: Receive packets: " + packet.index + "/" + Integer.toString(packets)
-                                + ", size expected:" + packet.len
-                                + ", size received:" + Integer.toString(buffer.size())
-                                + "\r\n, CRC expected :" + packet.crc
-                                + "  CRC received :" + Integer.toString(CRC(packet.data.getBytes())));
-                        LOGGER.info("Downloader: FAIL.");
-
-
-                        buffer.clean();
-
-                        FileDownloadFinisher(null, this.filename, this.open);
-                    }
-
-                    Progress.ins.setValue(buffer.size() / this.packet_size);
-
-                } else if (rx_data.lastIndexOf("~~~DATA-TOTAL-END~~~") >= 0) {
-                    String l = rx_data.substring(rx_data.lastIndexOf("~~~DATA-TOTAL-START~~~") + 22, rx_data.lastIndexOf("~~~DATA-TOTAL-END~~~"));
-                    try {
-                        int c = Integer.parseInt(l);
-                        if (c == this.packet_count) {
-                            try {
-                                timeout.stop();
-                            } catch (Exception e) {
-                                LOGGER.info(e.toString());
-                            }
-                            Progress.ins.setValue(100);
-                            LOGGER.info("Downloader: Receive final sequense. File download: Success");
-                            //log(rx_data);
-                            FileDownloadFinisher(buffer, this.filename, this.open);
-                        }
-                    } catch (NumberFormatException e) {
-                    }
-
-                }
-
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("Downloader: Unknown serial port error received.");
-                FileDownloadFinisher(null, this.filename, this.open);
-            }
-        }
-    }
-
-    private class PortReader implements SerialPortEventListener {
-
-        public void serialEvent(SerialPortEvent event) {
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                String data = null;
-                try {
-                    data = serialPort.readString(event.getEventValue());
-                } catch (SerialPortException ex) {
-                    LOGGER.info(ex.toString());
-                }
-                if (null != data) {
-                    thandler.add(data);
-                    if (serialPortStatus.isConnected()) {
-                        if (!data.trim().isEmpty()) {
-                            if (data.contains("\r\n>>>")) {
-                                thandler.comment("MicroPython firmware detected.", true);
-                                btnSend("import sys; print(\"MicroPython ver:\",sys.version_info)");
-
-                            } else if (data.contains("\r\n>")) {
-                                thandler.comment("NodeMCU firmware detected.", true);
-                                btnSend("=node.info()");
-
-                            } else if (data.contains("\r\nERR")) {
-                                thandler.comment("AT-based firmware detected.", true);
-                                btnSend("AT+GMR");
-
-                            } else {
-                                thandler.comment("Can't detect firmware.", true);
-                            }
-
-                            serialPortStatus = SerialPortStatus.OPENED;
-                            UpdateButtons();
-                        }
-                    }
-                }
-
-
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("FileManager: Unknown serial port error received.");
-            }
-        }
-    }
 
     private class PortExtraReader implements SerialPortEventListener {
+
+        private String sendResp = "";
 
         public void serialEvent(SerialPortEvent event) {
             if (event.isRXCHAR() && event.getEventValue() > 0) {
                 String data = "";
                 try {
-                    data = serialPort.readString(event.getEventValue());
+                    data = SerialObject.ins.readString(event.getEventValue());
                 } catch (SerialPortException ex) {
                     LOGGER.info(ex.toString());
                 }
@@ -2808,13 +2447,13 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                 data = data.replace("\r\n> ", "");
                 data = data.replace("\r\n\r\n", "\r\n");
 
-                rcvBuf = rcvBuf + data;
+                sendResp = sendResp + data;
                 LOGGER.info("recv:" + data.replace("\r\n", "<CR><LF>"));
                 thandler.add(data);
-                if (rcvBuf.contains(sendBuf.get(j).trim())) {
+                if (sendResp.contains(sendBuf.get(j).trim())) {
                     // first, reset watchdog timer
                     try {
-                        timeout.stop();
+                        watchDog.stop();
                     } catch (Exception e) {
                     }
                     /*
@@ -2823,12 +2462,12 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                         JOptionPane.showMessageDialog(null, msg);
                     }
                      */
-                    rcvBuf = "";
+                    sendResp = "";
                     if (j < sendBuf.size() - 1) {
                         if (timer.isRunning() || sendPending) {
                             // waiting
                         } else {
-                            inc_j();
+                            j++;
                             sendPending = true;
                             int div = sendBuf.size() - 1;
                             if (div == 0) {
@@ -2841,14 +2480,9 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                         StopSend();
                     }
                 }
-                if (rcvBuf.contains("powered by Lua 5.")) {
+                if (sendResp.contains("powered by Lua 5.")) {
                     StopSend();
                     String msg[] = {"ESP module reboot detected!", "Event: internal NodeMCU exception or power fail.", "Please, try again."};
-                    JOptionPane.showMessageDialog(null, msg);
-                }
-                if (rcvBuf.contains("Type \"help()")) {
-                    StopSend();
-                    String msg[] = {"ESP module reboot detected!", "Event: internal MicroPython exception or power fail.", "Please, try again."};
                     JOptionPane.showMessageDialog(null, msg);
                 }
             } else if (event.isCTS()) {
@@ -2861,31 +2495,33 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     private class PortTurboReader implements SerialPortEventListener {
 
+        private String sendResp = "";
+
         public void serialEvent(SerialPortEvent event) {
             if (event.isRXCHAR() && event.getEventValue() > 0) {
                 String data = "";
                 try {
-                    data = serialPort.readString(event.getEventValue());
+                    data = SerialObject.ins.readString(event.getEventValue());
                 } catch (SerialPortException ex) {
                     LOGGER.info(ex.toString());
                 }
-                rcvBuf = rcvBuf + data;
+                sendResp = sendResp + data;
                 String l = data.replace("\r", "<CR>");
                 l = l.replace("\n", "<LF>");
                 l = l.replace("`", "<OK>");
                 LOGGER.info("recv:" + l);
                 thandler.add(data);
-                if (rcvBuf.contains("> ")) {
+                if (sendResp.contains("> ")) {
                     try {
-                        timeout.stop(); // first, reset watchdog timer
+                        watchDog.stop();
                     } catch (Exception e) {
                     }
-                    rcvBuf = "";
+                    sendResp = "";
                     if (j < sendBuf.size() - 1) {
                         if (timer.isRunning() || sendPending) {
                             // waiting
                         } else {
-                            inc_j();
+                            j++;
                             sendPending = true;
                             int div = sendBuf.size() - 1;
                             if (div == 0) {
@@ -2907,23 +2543,23 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     }
 
     private class PortFilesUploader implements SerialPortEventListener {
+        private String sendResp = "";
 
         public void serialEvent(SerialPortEvent event) {
             String data, crc_parsed;
             boolean gotProperAnswer = false;
             if (event.isRXCHAR() && event.getEventValue() > 0) {
                 try {
-                    data = serialPort.readString(event.getEventValue());
-                    rcvBuf = rcvBuf + data;
+                    data = SerialObject.ins.readString(event.getEventValue());
+                    sendResp = sendResp + data;
                     rx_data = rx_data + data;
-                    //log("rcv:"+data);
                 } catch (Exception e) {
                     data = "";
                     LOGGER.info(e.toString());
                 }
-                if (rcvBuf.contains("> ") && j < sendBuf.size()) {
+                if (sendResp.contains("> ") && j < sendBuf.size()) {
                     //log("got intepreter answer, j="+Integer.toString(j));
-                    rcvBuf = "";
+                    sendResp = "";
                     gotProperAnswer = true;
                 }
                 if (rx_data.contains("~~~CRC-END~~~")) {
@@ -2953,7 +2589,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                 }
                 if (gotProperAnswer) {
                     try {
-                        timeout.restart();
+                        watchDog.feed();
                     } catch (Exception e) {
                         LOGGER.info(e.toString());
                     }
@@ -2962,7 +2598,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                         if (timer.isRunning() || sendPending) {
                             //
                         } else {
-                            inc_j();
+                            j++;
                             sendPending = true;
                             timer.start();
                         }
@@ -2980,7 +2616,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                     } catch (Exception e) {
                     }
                     try {
-                        timeout.stop();
+                        watchDog.stop();
                     } catch (Exception e) {
                         LOGGER.info(e.toString());
                     }
@@ -2999,12 +2635,12 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
                         LOGGER.info("Uploader: Fail");
                     }
                     try {
-                        serialPort.removeEventListener();
+                        SerialObject.ins.removeEventListener();
                     } catch (Exception e) {
                         LOGGER.info(e.toString());
                     }
                     try {
-                        serialPort.addEventListener(new PortReader(), portMask);
+                        SerialObject.ins.addEventListener(new PortReader(EspIDE.this));
                     } catch (Exception e) {
                         LOGGER.info(e.toString());
                     }

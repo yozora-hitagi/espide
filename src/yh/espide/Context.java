@@ -9,12 +9,9 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +20,10 @@ import java.util.logging.Logger;
  * Created by yozora on 2017/6/12.
  */
 public class Context {
+
+
+    public static final int SEND_PACKET_SIZE = 250;
+
 
     public static final Font FONT_16 = new Font("雅黑", 0, 16);
     public static final Font FONT_14 = new Font("雅黑", 0, 14);
@@ -81,6 +82,35 @@ public class Context {
         int returnVal = JOptionPane.showConfirmDialog(null, msg, Context.BUNDLE.getString("Attention"), btn, JOptionPane.WARNING_MESSAGE);
         return returnVal;
     }
+
+
+    public static ArrayList<byte[]> LoadBinaryFile(File f) {
+        ArrayList<byte[]> packets = new ArrayList<>();
+        byte[] buf = new byte[SEND_PACKET_SIZE];
+        try {
+            logger.info("BinaryFileLoader: Try to load file " + f.getName() + " ...");
+
+            DataInputStream dis = new DataInputStream(new FileInputStream(f));
+
+            int len;
+            while ((len = dis.read(buf)) >= 0) {
+                if (len == SEND_PACKET_SIZE) {
+                    packets.add(buf);
+                } else {
+                    byte[] b = new byte[len];
+                    System.arraycopy(buf, 0, b, 0, len);
+                    packets.add(b);
+                }
+            }
+
+        } catch (IOException e) {
+            logger.info("BinaryFileLoader: Load file " + f.getName() + ": FAIL.");
+            logger.info(e.toString());
+            JOptionPane.showMessageDialog(null, "BinaryFileLoader: Error, file " + f.getName() + " can't be read!");
+        }
+        return packets;
+    }
+
 
     public static String GetLua(String file, String... args) {
         InputStream is = Context.class.getResourceAsStream(file);
