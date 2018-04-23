@@ -18,5 +18,4 @@ _espide_view = function()
         print("\r--FileView error: can't open file")
     end
 end
-_espide_view()
-_espide_view = nil
+_espide_view() _espide_view = nil

@@ -30,5 +30,4 @@ _espide_dump = function()
         print("\n--HexDump error: can't open file")
     end
 end
-_espide_dump()
-_espide_dump = nil
+_espide_dump() _espide_dump = nil

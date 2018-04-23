@@ -101,7 +101,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     private JCheckBoxMenuItem MenuItemViewFileManager;
     private JCheckBoxMenuItem MenuItemViewTerminalOnly;
     private JCheckBoxMenuItem MenuItemViewToolbar;
-    private JLayeredPane NodeFileMgrPane;
+    public JLayeredPane NodeFileMgrPane;
     private JPanel NodeMCU;
     private JToggleButton Open;
     private JComboBox Port;
@@ -1168,38 +1168,25 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
             LOGGER.info("ERROR: Communication with MCU not yet established.");
             return;
         }
-        String cmd = Context.GetLua("/yh/espide/file_list.lua");
+
         try {
             SerialObject.ins.removeEventListener();
         } catch (Exception e) {
             LOGGER.info(e.toString());
         }
+        PortNodeFilesReader portNodeFilesReader = new PortNodeFilesReader(this);
         try {
-            SerialObject.ins.addEventListener(new PortNodeFilesReader());
+            SerialObject.ins.addEventListener(portNodeFilesReader);
             LOGGER.info("FileManager: Add EventListener: Success.");
         } catch (SerialPortException e) {
             LOGGER.info("FileManager: Add EventListener Error. Canceled.");
             return;
         }
         ClearNodeFileManager();
-        rx_data = "";
 
-        sendBuf = cmdPrep(cmd);
-        LOGGER.info("FileManager: Starting...");
         SendLock();
-        int delay = 10;
-        j0();
-        taskPerformer = evt -> {
-            if (j < sendBuf.size()) {
-                send(addCR(sendBuf.get(j)), false);
-                sendPending = false;
-            }
-        };
-        timer = new Timer(delay, taskPerformer);
-        timer.setRepeats(false);
-        timer.setInitialDelay(delay);
-        watchDog.start();
-        timer.start();
+
+        portNodeFilesReader.start();
     }
 
     private void ClearNodeFileManager() {
@@ -1296,10 +1283,10 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     private void HexDump(String FileName) {
         String cmd = Context.GetLua("/yh/espide/file_hexdump.lua", FileName);
-        SendToESP(cmdPrep(cmd));
+        SendToESP(Arrays.asList(cmd.split("\r?\n")));
     }
 
-    private ArrayList<String> cmdPrep(String cmd) {
+    public ArrayList<String> cmdPrep(String cmd) {
         String[] str = cmd.split("\n");
         ArrayList<String> list = new ArrayList<>();
         int i = 0;
@@ -1649,7 +1636,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         LOGGER.info("Load saved settings: DONE.");
     }
 
-    private void AddNodeFileButton(String FileName, int size) {
+    public void AddNodeFileButton(String FileName, int size) {
         JPopupMenu popup = new JPopupMenu();
         if (FileName.endsWith(".lua")) {
             AddMenuItemRun(popup, FileName);
@@ -1849,8 +1836,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     }
 
     private boolean SendToESP(String str) {
-        String[] s = str.split("\r?\n");
-        return SendToESP(Arrays.asList(s));
+        return SendToESP(Arrays.asList(str.split("\r?\n")));
     }
 
     private boolean SendToESP(java.util.List<String> buf) {
@@ -1859,10 +1845,10 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
             LOGGER.info("SendESP: Serial port not open. Cancel.");
             return success;
         }
-        sendBuf = new ArrayList<>();
+        ArrayList sendBuf = new ArrayList<>();
         sendBuf.addAll(buf);
 
-        success = SendTimerStart();
+        success = SendTimerStart(sendBuf);
         LOGGER.info("SendToESP: Starting...");
         return success;
     }
@@ -1871,26 +1857,29 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
     private boolean SaveToESP(String ft) {
         boolean success = false;
         LOGGER.info("FileSaveESP: Try to save file to ESP...");
-        sendBuf = new ArrayList<>();
+
         if (Config.ins.isTurbo_mode()) {
             return nodeSaveFileESPTurbo(ft);
         }
+
+        ArrayList sendBuf = new ArrayList<>();
         sendBuf.add("file.remove(\"" + ft + "\");");
         sendBuf.add("file.open(\"" + ft + "\",\"w+\");");
-        sendBuf.add("w = file.writeline\r\n");
+        sendBuf.add("w = file.writeline");
         String[] s = getCurrentEdit().rSyntaxTextArea.getText().split("\r?\n");
         for (String subs : s) {
             sendBuf.add("w([==[" + subs + "]==]);");
         }
         sendBuf.add("file.close();");
         // data ready
-        success = SendTimerStart();
+        success = SendTimerStart(sendBuf);
         LOGGER.info("FileSaveESP: Starting...");
         return success;
     }
 
     private boolean nodeSaveFileESPTurbo(String ft) {
         LOGGER.info("FileSaveESP-Turbo: Try to save file to ESP in Turbo Mode...");
+        ArrayList sendBuf = new ArrayList<>();
         sendBuf.add("local FILE=\"" + ft + "\" file.remove(FILE) file.open(FILE,\"w+\") uart.setup(0," + getBaudRate() + ",8,0,1,0)");
         sendBuf.add("ESP_Receiver=function(rcvBuf) if string.match(rcvBuf,\"^ESP_cmd_close\")==nil then file.write(string.gsub(rcvBuf, \'\\r\', \'\')) uart.write(0, \"> \") else uart.on(\"data\") ");
         sendBuf.add("file.flush() file.close() FILE=nil rcvBuf=nil ESP_Receiver=nil uart.setup(0," + getBaudRate() + ",8,0,1,1) str=\"\\r\\n--Done--\\r\\n> \" print(str) str=nil collectgarbage() end end uart.on(\"data\",'\\r',ESP_Receiver,0)");
@@ -1914,12 +1903,8 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         sendBuf.add("ESP_cmd_close");
         sendBuf.add("\r\n");
 
-        boolean success = SendTurboTimerStart();
-        LOGGER.info("FileSaveESP-Turbo: Starting...");
-        return success;
-    }
 
-    public boolean SendTurboTimerStart() {
+        LOGGER.info("FileSaveESP-Turbo: Starting...");
         startTime = System.currentTimeMillis();
         SendLock();
 
@@ -1927,35 +1912,19 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
             SerialObject.ins.removeEventListener();
         } catch (Exception e) {
         }
+        PortTurboReader portTurboReader = new PortTurboReader(this,sendBuf);
         try {
-            SerialObject.ins.addEventListener(new PortTurboReader());
+            SerialObject.ins.addEventListener(portTurboReader);
         } catch (SerialPortException e) {
             LOGGER.info("DataTurboSender: Add EventListener Error. Canceled.");
             return false;
         }
-        int delay = 0;
-        j0();
-        delay = Config.ins.getDelay_after_answer();
-        if (delay == 0) {
-            delay = 10;
-        }
-        taskPerformer = evt -> {
-            if (j < sendBuf.size()) {
-                send(addCR(sendBuf.get(j)), false);
-                sendPending = false;
-            }
-        };
-        timer = new Timer(delay, taskPerformer);
-        timer.setRepeats(false);
-        LOGGER.info("DataTurboSender: start \"Smart Mode\"");
-        timer.setInitialDelay(delay);
-        watchDog.start();
-        timer.start();
+        portTurboReader.start();
         return true;
     }
 
 
-    public boolean SendTimerStart() {
+    public boolean SendTimerStart(ArrayList<String> sendBuf) {
         startTime = System.currentTimeMillis();
         SendLock();
 
@@ -1966,58 +1935,43 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         try {
             if (Config.ins.isDumb_mode()) {
                 SerialObject.ins.addEventListener(new PortReader(this));
+                int delay;
+                j0();
+                if (Config.ins.isDumb_mode()) { // DumbMode
+                    delay = Config.ins.getLine_delay_for_dumb();
+
+                    taskPerformer = evt -> {
+                        if (j < sendBuf.size()) {
+                            send(addCRLF(sendBuf.get(j).trim()), false);
+                            j++;
+                            int div = sendBuf.size() - 1;
+                            if (div == 0) {
+                                div = 1; // for non-zero divide
+                            }
+                            Progress.ins.setValue((j * 100) / div);
+                            if (j > sendBuf.size() - 1) {
+                                timer.stop();
+                                StopSend();
+                            }
+                        }
+                    };
+
+                    timer = new Timer(delay, taskPerformer);
+                    timer.setRepeats(true);
+                    timer.setInitialDelay(delay);
+                    timer.start();
+                    LOGGER.info("DataSender: start \"Dumb Mode\"");
+                }
             } else {
-                SerialObject.ins.addEventListener(new PortExtraReader());
+                PortExtraReader portExtraReader = new PortExtraReader(this,sendBuf);
+                SerialObject.ins.addEventListener(portExtraReader);
+                portExtraReader.start();
             }
         } catch (SerialPortException e) {
             LOGGER.info("DataSender: Add EventListener Error. Canceled.");
             return false;
         }
-        int delay;
-        j0();
-        if (Config.ins.isDumb_mode()) { // DumbMode
-            delay = Config.ins.getLine_delay_for_dumb();
 
-            taskPerformer = evt -> {
-                if (j < sendBuf.size()) {
-                    send(addCRLF(sendBuf.get(j).trim()), false);
-                    j++;
-                    int div = sendBuf.size() - 1;
-                    if (div == 0) {
-                        div = 1; // for non-zero divide
-                    }
-                    Progress.ins.setValue((j * 100) / div);
-                    if (j > sendBuf.size() - 1) {
-                        timer.stop();
-                        StopSend();
-                    }
-                }
-            };
-
-            timer = new Timer(delay, taskPerformer);
-            timer.setRepeats(true);
-            timer.setInitialDelay(delay);
-            timer.start();
-            LOGGER.info("DataSender: start \"Dumb Mode\"");
-        } else { // SmartMode
-            delay = Config.ins.getDelay_after_answer();
-            if (delay == 0) {
-                delay = 10;
-            }
-            taskPerformer = evt -> {
-                if (j < sendBuf.size()) {
-                    LOGGER.info(Integer.toString(j));
-                    send(addCRLF(sendBuf.get(j).trim()), false);
-                    sendPending = false;
-                }
-            };
-            timer = new Timer(delay, taskPerformer);
-            timer.setRepeats(false);
-            timer.setInitialDelay(delay);
-            timer.start();
-            LOGGER.info("DataSender: start \"Smart Mode\"");
-            watchDog.start();
-        }
         return true;
     }
 
@@ -2292,7 +2246,7 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
 
     private void ViewFile(String fn) {
         String c = Context.GetLua("/yh/espide/file_view.lua", fn);
-        SendToESP(cmdPrep(c));
+        SendToESP(Arrays.asList(c.split("\r?\n")));
     }
 
 
@@ -2331,216 +2285,11 @@ public class EspIDE extends JFrame implements TerminalHandler.CommandListener, F
         thandler.updateTheme();
     }
 
-    private class PortNodeFilesReader implements SerialPortEventListener {
-
-        private String sendResp = "";
-
-        public void serialEvent(SerialPortEvent event) {
-            String data;
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                try {
-                    data = SerialObject.ins.readString(event.getEventValue());
-                    sendResp = sendResp + data;
-                    rx_data = rx_data + data;
-                } catch (Exception e) {
-                    data = "";
-                    LOGGER.info(e.toString());
-                }
-                if (sendResp.contains("> ")) {
-                    try {
-                        watchDog.feed();
-                    } catch (Exception e) {
-                        LOGGER.info(e.toString());
-                    }
-                    sendResp = "";
-                    if (j < sendBuf.size() - 1) {
-                        if (timer.isRunning() || sendPending) {
-                            //
-                        } else {
-                            j++;
-                            sendPending = true;
-                            timer.start();
-                        }
-                    } else { // send done
-                        try {
-                            timer.stop();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-                try {
-                    if (rx_data.contains("~~~File list END~~~")) {
-                        try {
-                            watchDog.stop();
-                        } catch (Exception e) {
-                            LOGGER.info(e.toString());
-                        }
-                        Progress.ins.setValue(100);
-                        LOGGER.info("FileManager: File list found! Do parsing...");
-                        try {
-                            // parsing answer
-                            int start = rx_data.indexOf("~~~File list START~~~");
-                            rx_data = rx_data.substring(start + 23, rx_data.indexOf("~~~File list END~~~"));
-                            //log(rx_data.replaceAll("\r?\n", "<CR+LF>\r\n"));
-                            String[] s = rx_data.split("\r?\n");
-                            Arrays.sort(s);
-//                            TerminalAdd("\r\n" + rx_data + "\r\n> ");
-                            int usedSpace = 0;
-                            thandler.comment("----------------------------", false);
-                            for (String subs : s) {
-                                thandler.comment(subs, false);
-                                String[] parts = subs.split(":");
-                                if (parts[0].trim().length() > 0) {
-                                    int size = Integer.parseInt(parts[1].trim().split(" ")[0]);
-                                    AddNodeFileButton(parts[0].trim(), size);
-                                    usedSpace += size;
-                                    LOGGER.info("FileManager found file " + parts[0].trim());
-                                }
-                            }
-                            if (fileList.listsize() == 0) {
-                                thandler.comment("No files found.", true);
-                            } else {
-                                thandler.comment("Total file(s)   : " + Integer.toString(s.length), false);
-                                thandler.comment("Total size      : " + Integer.toString(usedSpace) + " bytes", true);
-                            }
-                            NodeFileMgrPane.invalidate();
-                            NodeFileMgrPane.doLayout();
-                            NodeFileMgrPane.repaint();
-                            NodeFileMgrPane.requestFocusInWindow();
-                            LOGGER.info("FileManager: File list parsing done, found " + fileList.listsize() + " file(s).");
-                        } catch (Exception e) {
-                            LOGGER.info(e.toString());
-                        }
-                        try {
-                            SerialObject.ins.removeEventListener();
-                        } catch (Exception e) {
-                        }
-                        SerialObject.ins.addEventListener(new PortReader(EspIDE.this));
-                        SendUnLock();
-                    }
-                } catch (SerialPortException ex) {
-                    LOGGER.info(ex.toString());
-                }
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("FileManager: Unknown serial port error received.");
-            }
-        }
-    }
 
 
-    private class PortExtraReader implements SerialPortEventListener {
 
-        private String sendResp = "";
 
-        public void serialEvent(SerialPortEvent event) {
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                String data = "";
-                try {
-                    data = SerialObject.ins.readString(event.getEventValue());
-                } catch (SerialPortException ex) {
-                    LOGGER.info(ex.toString());
-                }
-                data = data.replace(">> ", "");
-                data = data.replace(">>", "");
-                data = data.replace("\r\n> ", "");
-                data = data.replace("\r\n\r\n", "\r\n");
 
-                sendResp = sendResp + data;
-                LOGGER.info("recv:" + data.replace("\r\n", "<CR><LF>"));
-                thandler.add(data);
-                if (sendResp.contains(sendBuf.get(j).trim())) {
-                    // first, reset watchdog timer
-                    try {
-                        watchDog.stop();
-                    } catch (Exception e) {
-                    }
-                    /*
-                    if (rcvBuf.contains("stdin:")) {
-                        String msg[] = {"Interpreter error detected!", rcvBuf, "Click OK to continue."};
-                        JOptionPane.showMessageDialog(null, msg);
-                    }
-                     */
-                    sendResp = "";
-                    if (j < sendBuf.size() - 1) {
-                        if (timer.isRunning() || sendPending) {
-                            // waiting
-                        } else {
-                            j++;
-                            sendPending = true;
-                            int div = sendBuf.size() - 1;
-                            if (div == 0) {
-                                div = 1;
-                            }
-                            Progress.ins.setValue((j * 100) / div);
-                            timer.start();
-                        }
-                    } else {  // send done
-                        StopSend();
-                    }
-                }
-                if (sendResp.contains("powered by Lua 5.")) {
-                    StopSend();
-                    String msg[] = {"ESP module reboot detected!", "Event: internal NodeMCU exception or power fail.", "Please, try again."};
-                    JOptionPane.showMessageDialog(null, msg);
-                }
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("FileManager: Unknown serial port error received.");
-            }
-        }
-    }
-
-    private class PortTurboReader implements SerialPortEventListener {
-
-        private String sendResp = "";
-
-        public void serialEvent(SerialPortEvent event) {
-            if (event.isRXCHAR() && event.getEventValue() > 0) {
-                String data = "";
-                try {
-                    data = SerialObject.ins.readString(event.getEventValue());
-                } catch (SerialPortException ex) {
-                    LOGGER.info(ex.toString());
-                }
-                sendResp = sendResp + data;
-                String l = data.replace("\r", "<CR>");
-                l = l.replace("\n", "<LF>");
-                l = l.replace("`", "<OK>");
-                LOGGER.info("recv:" + l);
-                thandler.add(data);
-                if (sendResp.contains("> ")) {
-                    try {
-                        watchDog.stop();
-                    } catch (Exception e) {
-                    }
-                    sendResp = "";
-                    if (j < sendBuf.size() - 1) {
-                        if (timer.isRunning() || sendPending) {
-                            // waiting
-                        } else {
-                            j++;
-                            sendPending = true;
-                            int div = sendBuf.size() - 1;
-                            if (div == 0) {
-                                div = 1;
-                            }
-                            Progress.ins.setValue((j * 100) / div);
-                            timer.start();
-                        }
-                    } else { // send done
-                        StopSend();
-                    }
-                }
-            } else if (event.isCTS()) {
-                UpdateLedCTS();
-            } else if (event.isERR()) {
-                LOGGER.info("FileManager: Unknown serial port error received.");
-            }
-        }
-    }
 
     private class PortFilesUploader implements SerialPortEventListener {
         private String sendResp = "";

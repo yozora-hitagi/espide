@@ -33,12 +33,14 @@ public class SendBuf {
 
 
     public String next() {
-        if (hasNext())
+        if (hasNext()) {
             return buf.get(index++);
-        else {
+        } else {
             return null;
         }
     }
+
+
 
     public double rate() {
         int div = buf.size() - 1;
