@@ -7,95 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="755c87fb-789a-4a51-adcb-8d74efc7dba1" name="Default" comment="简单提交">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/espide.properties" beforeDir="false" afterPath="$PROJECT_DIR$/espide.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/AutoCompletion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/AutoCompletion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/CompletionCellRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/CompletionCellRenderer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/CompletionProviderBase.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/CompletionProviderBase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/CompletionXMLParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/CompletionXMLParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/DefaultCompletionProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/DefaultCompletionProvider.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/LanguageAwareCompletionProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/LanguageAwareCompletionProvider.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/TipUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/autocomplete/TipUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/MarkOccurrencesSupport.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/MarkOccurrencesSupport.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/ParserManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/ParserManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxDocument.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxDocument.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextArea.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextArea.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$CloseCurlyBraceAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$CloseCurlyBraceAction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$DecreaseIndentAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$DecreaseIndentAction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$DumbCompleteWordAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$DumbCompleteWordAction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$InsertTabAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$InsertTabAction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$ToggleCommentAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaEditorKit$ToggleCommentAction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaHighlighter$SyntaxLayeredHighlightInfoImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxTextAreaHighlighter$SyntaxLayeredHighlightInfoImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxUtilities.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RSyntaxUtilities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RtfToText.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/RtfToText.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/SyntaxScheme.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/SyntaxScheme.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/TextEditorPane.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/TextEditorPane.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/Theme$XmlHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/Theme$XmlHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/Theme.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/Theme.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/TokenImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/TokenImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/TokenMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/TokenMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/focusabletip/TipUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/focusabletip/TipUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/folding/Fold.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/folding/Fold.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/folding/HtmlFoldParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/folding/HtmlFoldParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/folding/NsisFoldParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/folding/NsisFoldParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/GroovyTokenMaker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/GroovyTokenMaker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/LessTokenMaker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/LessTokenMaker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/PerlTokenMaker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/modes/PerlTokenMaker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/templates/StaticCodeTemplate.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rsyntaxtextarea/templates/StaticCodeTemplate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/AbstractGutterComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/AbstractGutterComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/ChangeableHighlightPainter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/ChangeableHighlightPainter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/ColorBackgroundPainterStrategy.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/ColorBackgroundPainterStrategy.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/ConfigurableCaret.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/ConfigurableCaret.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/IconRowHeader.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/IconRowHeader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/RTADefaultInputMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/RTADefaultInputMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/RTextArea.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/RTextArea.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/RTextAreaBase.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/RTextAreaBase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/RTextAreaEditorKit$DumbCompleteWordAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/RTextAreaEditorKit$DumbCompleteWordAction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/SearchContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/SearchContext.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/SearchEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/SearchEngine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/SearchResult.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/SearchResult.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/VolatileImageBackgroundPainterStrategy.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/fife/ui/rtextarea/VolatileImageBackgroundPainterStrategy.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/BeanProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/BeanProperty.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/Binding.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/Binding.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/ELProperty$SourceEntry.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/ELProperty$SourceEntry.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/ELProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/ELProperty.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/Validator$Result.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/beansbinding/Validator$Result.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/Expression$ResolvedProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/Expression$ResolvedProperty.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/MethodExpressionImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/MethodExpressionImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/ValueExpressionImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/ValueExpressionImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/ValueExpressionLiteral.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/ValueExpressionLiteral.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/lang/ELArithmetic$DoubleDelegate.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/lang/ELArithmetic$DoubleDelegate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/lang/ELSupport.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/lang/ELSupport.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/lang/FunctionMapperImpl$Function.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/lang/FunctionMapperImpl$Function.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/parser/AstValue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/parser/AstValue.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/parser/ELParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/parser/ELParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/parser/TokenMgrError.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/el/impl/parser/TokenMgrError.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/swingbinding/adapters/JListAdapterProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/swingbinding/adapters/JListAdapterProvider.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/org/jdesktop/swingbinding/adapters/JTextComponentAdapterProvider$Adapter$Handler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/org/jdesktop/swingbinding/adapters/JTextComponentAdapterProvider$Adapter$Handler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/Config.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/Context.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/Context.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortExtraReader.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFileDownloader.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFilesUploader.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortFilesUploader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortNodeFilesReader.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortPyFilesReader.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortReader.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE$PortTurboReader.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/EspIDE.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/FirmwareType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/TerminalHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/TerminalHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/Version.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/espide/yh/espide/Version.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/espide/yh/espide/pyFiler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/espide/espide.properties" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -293,7 +207,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -589,6 +503,7 @@
       <workItem from="1560475584211" duration="2775000" />
       <workItem from="1570691451803" duration="18000" />
       <workItem from="1587352012075" duration="224000" />
+      <workItem from="1602392241282" duration="357000" />
     </task>
     <task id="LOCAL-00001" summary="简单提交">
       <created>1510796107130</created>
